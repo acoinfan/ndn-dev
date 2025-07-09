@@ -1,0 +1,32 @@
+/pro0/filename/Version/segment=0-10
+interest-> /pro0/filename -> /pro0/filename/Version
+producer : packet /pro0/filename/Version/seg=0 -> cache: seg0,1,2,3,4
+
+interest->
+/pro0/filename/Version/seg0 : cache
+/pro0/filename/Version/seg1 : cache
+/pro0/filename/Version/seg2 : cache
+/pro0/filename/Version/seg3 : cache
+/pro0/filename/Version/seg4 : cache
+
+
+
+Consumer:
+1. register a face
+2. discover a Version
+
+-> /pro0
+/pro0 chunk0 seg1 seg2
+/pro0 chunk1 seg1 seg2
+/pro1 seg1 seg2
+/pro2 
+
+-> /pro(0+1+2)/chunk0/seg1
+
+
+
+pipeline (chunk: segs) -> fetcher (seg)
+chunk-interest
+
+
+producer - consumer: one file(many segments)
