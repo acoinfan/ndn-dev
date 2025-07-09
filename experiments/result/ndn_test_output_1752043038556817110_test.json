@@ -1,0 +1,14 @@
+{
+  "name": "NDN Test Data",
+  "version": "1.0",
+  "description": "Test JSON file for NDN transmission",
+  "data": {
+    "numbers": [1, 2, 3, 4, 5],
+    "strings": ["hello", "world", "ndn"],
+    "nested": {
+      "key1": "value1",
+      "key2": "value2"
+    }
+  },
+  "timestamp": "2025-01-01T00:00:00Z"
+}

@@ -90,11 +90,12 @@ namespace ndn::chunks
         const std::string programName(argv[0]);
 
         Producer::Options opts;
-        std::string prefix, nameConv, signingStr, logFile, logLevel;
+        std::string prefix, nameConv, signingStr, logFile, logLevel, configPath="config.ini"; // 默认配置文件路径
         uint64_t datasetId = 0; // 默认值为0
 
         po::options_description visibleDesc("Options");
-        visibleDesc.add_options()("help,h", "print this help message and exit")("prefix,p", po::value<std::string>(&prefix)->required(), "NDN name for the served content")("datasetId,d", po::value<uint64_t>(&datasetId)->required(), "Dataset ID for the producer");
+        visibleDesc.add_options()("help,h", "print this help message and exit")("prefix,p", po::value<std::string>(&prefix)->required(), "NDN name for the served content")
+        ("datasetId,d", po::value<uint64_t>(&datasetId)->required(), "Dataset ID for the producer")("config,c", po::value<std::string>(&configPath)->required(), "ConfigPath for the producer");
 
         po::variables_map vm;
         try
@@ -115,7 +116,7 @@ namespace ndn::chunks
             return 2;
         }
 
-        if (!readConfigFile("config.ini", opts, nameConv, signingStr, logFile, logLevel))
+        if (!readConfigFile(configPath, opts, nameConv, signingStr, logFile, logLevel))
         {
             return 2;
         }
