@@ -1,1 +1,18 @@
-[2025-07-09 15:37:37.942] [producer_logger] [debug] Started producer
+[2025-07-09 17:52:21.177] [producer_logger] [debug] Started producer
+[2025-07-09 17:52:21.177] [producer_logger] [debug] Finished reading configuration file
+[2025-07-09 17:52:21.178] [producer_logger] [debug] Producer::Producer()
+[2025-07-09 17:52:21.178] [producer_logger] [info] Loading input ...
+[2025-07-09 17:52:21.178] [producer_logger] [debug] Registering prefix /producer
+[2025-07-09 17:52:21.180] [producer_logger] [debug] Producer::run()
+[2025-07-09 17:52:26.210] [producer_logger] [debug] Producer::processSegmentInterest()
+[2025-07-09 17:52:26.210] [producer_logger] [info] Interest: /producer/1/medium_test.txt/seg=0
+[2025-07-09 17:52:26.210] [producer_logger] [debug] Extracted file path: /home/a_coin_fan/code/ndn-dev/experiments/1/medium_test.txt
+[2025-07-09 17:52:26.210] [producer_logger] [info] Loading input ...
+[2025-07-09 17:52:26.211] [producer_logger] [info] Published 2 Data packet(s)
+[2025-07-09 17:52:26.211] [producer_logger] [info] Data: /producer/1/medium_test.txt/seg=0
+[2025-07-09 17:52:26.211] [producer_logger] [debug] Data TLV type: 6
+[2025-07-09 17:52:26.211] [producer_logger] [debug] Producer::processSegmentInterest()
+[2025-07-09 17:52:26.211] [producer_logger] [info] Interest: /producer/1/medium_test.txt/seg=1
+[2025-07-09 17:52:26.211] [producer_logger] [info] Data: /producer/1/medium_test.txt/seg=1
+[2025-07-09 17:52:26.211] [producer_logger] [debug] Data TLV type: 6
+[2025-07-09 17:52:26.211] [producer_logger] [debug] Cleared prefixstr /producer/1/medium_test.txt after sending 2 segments 

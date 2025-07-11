@@ -52,7 +52,7 @@ namespace ndn::chunks
             spdlog::info("Interest: {}", interest.getName().toUri());
         }
         // 处理无效请求
-        if (static_cast<uint64_t>(std::stoi(interest.getName().get(2).toUri())) != m_datasetId)
+        if (static_cast<uint64_t>(std::stoi(interest.getName().get(1).toUri())) != m_datasetId)
         {
             spdlog::info("Interest name does not match the dataset ID of {}", m_prefix.toUri());
             return;
@@ -138,11 +138,12 @@ namespace ndn::chunks
         const Name &prefix = interest.getName().getPrefix(-1);
         std::string prefixstr = prefix.toUri();
         std::string filePathStr;
-        if (prefix.size() >= 4)
+        if (prefix.size() >= 3)
         {
-            Name filePath = prefix.getSubName(3);
+            // 提取文件名（从第2个组件开始，跳过前缀和datasetId）
+            Name filePath = prefix.getSubName(2);
             filePathStr = filePath.toUri();
-            filePathStr = "../experiments/" + std::to_string(m_datasetId) + filePathStr;
+            filePathStr = "/home/a_coin_fan/code/ndn-dev/experiments/" + std::to_string(m_datasetId) + filePathStr;
             spdlog::debug("Extracted file path: {}", filePathStr);
         }
         else

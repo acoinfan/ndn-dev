@@ -6,18 +6,46 @@ from minindn.apps.nfd import Nfd
 from minindn.apps.nlsr import Nlsr
 from minindn.apps.application import Application
 from time import sleep
+import os
+
+def create_custom_nfd_configs(ndn):
+    """为每个节点创建自定义的 NFD 配置文件"""
+    
+    # 读取配置模板
+    with open("nfd-template.conf", "r") as f:
+        template_config = f.read()
+    
+    for host in ndn.net.hosts:
+        # 替换节点名称占位符
+        custom_config = template_config.replace("{{NODE_NAME}}", host.name)
+        
+        # 确保目录存在
+        config_dir = f"/tmp/minindn/{host.name}"
+        os.makedirs(config_dir, exist_ok=True)
+        
+        # 写入节点特定的配置文件
+        config_path = f"{config_dir}/nfd.conf"
+        with open(config_path, "w") as f:
+            f.write(custom_config)
+        
+        print(f"Created custom NFD config for {host.name}: {config_path}")
+        
+        # 设置环境变量以便 NFD 使用正确的 socket 路径
+        host.cmd(f"export NDN_CLIENT_TRANSPORT=unix:///run/nfd/{host.name}.sock")
 
 def main():
     setLogLevel('debug')
     Minindn.cleanUp()
     Minindn.verifyDependencies()
 
-    print("### staring Minindn ###")
+    print("### starting Minindn ###")
     
     ndn = Minindn(topoFile="web.conf")
-
     ndn.start()
-    sleep(10)
+    sleep(5)
+
+    print("### creating custom NFD configs ###")
+    create_custom_nfd_configs(ndn)
 
     print("### starting NFD ###")
     nfds = AppManager(ndn, ndn.net.hosts, Nfd)
