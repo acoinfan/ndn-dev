@@ -1,6 +1,10 @@
 # 自定义网络拓扑配置文件
 # 你可以在这里定义任意复杂的网络拓扑和链路属性
 
+# 绝对路径
+import os
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 # 节点配置
 nodes = {
     'consumer': {
@@ -68,15 +72,15 @@ links = {
 applications = {
     'producer': {
         'prefix': 'producer',
-        'config_file': '/home/a_coin_fan/code/ndn-dev-wsl/exp-proconfig.ini',
-        'directory': '/home/a_coin_fan/code/ndn-dev-wsl/experiments/1'
+        'config_file': os.path.join(PROJECT_ROOT, 'exp-proconfig.ini'),
+        'directory': os.path.join(PROJECT_ROOT, 'experiments/1')
     },
     
     # 你可以添加更多应用
     # 'producer2': {
     #     'prefix': 'producer2',
     #     'dataset_id': 2,
-    #     'config_file': '/home/a_coin_fan/code/ndn-dev/producer/config.ini'
+    #     'config_file': os.path.join(PROJECT_ROOT, 'producer/config.ini')
     # }
 }
 
@@ -103,8 +107,8 @@ tests = [
     {
         'name': 'basic_test',
         'consumer': 'consumer',
-        'config': '/home/a_coin_fan/code/ndn-dev-wsl/exp-conconfig.ini',
-        'interest': '/producer/small_test.txt',
+        'config': os.path.join(PROJECT_ROOT, 'exp-conconfig.ini'),
+        'interest': os.path.join('/producer', 'small_test.txt'),
         'description': '基本的生产者-消费者测试'
     },
     
@@ -112,14 +116,14 @@ tests = [
     # {
     #     'name': 'large_file_test',
     #     'consumer': 'consumer',
-    #     'interest': '/producer/1/large_test.txt',
+    #     'interest': '/producer/1/large_test.txt',  # NDN interest 路径建议保持原格式
     #     'description': '大文件传输测试'
     # },
     
     # {
     #     'name': 'binary_test',
     #     'consumer': 'consumer',
-    #     'interest': '/producer/1/binary_test.dat',
+    #     'interest': '/producer/1/binary_test.dat',  # NDN interest 路径建议保持原格式
     #     'description': '二进制文件测试'
     # }
 ]

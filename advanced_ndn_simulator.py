@@ -12,6 +12,12 @@ from time import sleep
 import os
 import importlib.util
 import sys
+import datetime
+import shutil
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PRODUCER_BIN = os.path.join(PROJECT_ROOT, "producer/bin/ndnput")
+CONSUMER_BIN = os.path.join(PROJECT_ROOT, "consumer/bin/ndnget")
 
 class NDNHost(Host):
     """扩展的 Host 类，支持 NDN 功能"""
@@ -130,19 +136,23 @@ rib {{
         cmd = f"{env} nfd-status"
         return self.cmd(cmd)
     
-    def start_producer(self, prefix, config_file, directory):
+    def start_producer(self, prefix, config_file, directory, log_dir):
         """启动生产者应用"""
+        os.makedirs(log_dir, exist_ok=True)
+        log_path = os.path.join(log_dir, "producer-app.log")
         env = f"NDN_CLIENT_TRANSPORT=unix:///run/nfd/{self.name}.sock"
-        cmd = f"{env} /home/a_coin_fan/code/ndn-dev-wsl/producer/bin/ndnput --prefix {prefix} --config {config_file} -d {directory} > /tmp/producer-app.log 2>&1"
+        cmd = f"{env} {PRODUCER_BIN} --prefix {prefix} --config {config_file} -d {directory} > {log_path} 2>&1"
         proc = self.popen(cmd, shell=True)
         self.app_processes.append(proc)
         print(f"✓ 生产者应用启动在 {self.name}: {prefix}")
         return proc
     
-    def start_consumer(self, config_file, interest_name):
+    def start_consumer(self, config_file, interest_name, log_dir):
         """启动消费者应用"""
+        os.makedirs(log_dir, exist_ok=True)
+        log_path = os.path.join(log_dir, "consumer-app.log")
         env = f"NDN_CLIENT_TRANSPORT=unix:///run/nfd/{self.name}.sock"
-        cmd = f"{env} /home/a_coin_fan/code/ndn-dev-wsl/consumer/bin/ndnget --prefix {interest_name} --config {config_file} > /tmp/consumer-app.log 2>&1"
+        cmd = f"{env} {CONSUMER_BIN} --prefix {interest_name} --config {config_file} > {log_path} 2>&1"
         return self.cmd(cmd)
     
     def cleanup(self):
@@ -202,7 +212,7 @@ def create_topology_from_config(config):
     
     return net, hosts
 
-def setup_ndn_environment(net, hosts, config):
+def setup_ndn_environment(net, hosts, config, log_dir):
     """设置 NDN 环境"""
     
     print("### 启动网络 ###")
@@ -225,12 +235,13 @@ def setup_ndn_environment(net, hosts, config):
             node.start_producer(
                 prefix=app_config['prefix'],
                 config_file=app_config['config_file'],
-                directory=app_config['directory']
+                directory=app_config['directory'],
+                log_dir=log_dir
             )
     
     return net
 
-def run_tests(hosts, config):
+def run_tests(hosts, config, log_dir):
     """运行测试"""
     
     print("### 运行测试 ###")
@@ -244,13 +255,12 @@ def run_tests(hosts, config):
     for test in config.tests:
         print(f"\n--- 测试: {test['name']} ---")
         print(f"描述: {test['description']}")
-        
+        # 统一生成日志目录
         consumer = hosts[test['consumer']]
-        
         print(f"消费者 {test['consumer']} 请求: {test['interest']}")
         import time
         start_time = time.time()
-        result = consumer.start_consumer(test['config'], test['interest'])
+        result = consumer.start_consumer(test['config'], test['interest'], log_dir)
         end_time = time.time()
         transfer_time = end_time - start_time
         
@@ -439,15 +449,20 @@ def main():
         # 创建拓扑
         print("### 创建网络拓扑 ###")
         net, hosts = create_topology_from_config(config)
+
+        # 创建logs目录
+        start_time_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        file_name = os.path.basename(str(config.tests[0]['interest']))
+        log_dir = os.path.join("logs", f"{start_time_str}_{file_name}")
         
         # 设置 NDN 环境
-        net = setup_ndn_environment(net, hosts, config)
+        net = setup_ndn_environment(net, hosts, config, log_dir)
         
         # 等待系统稳定
         sleep(5)
         
         # 运行测试
-        run_tests(hosts, config)
+        run_tests(hosts, config, log_dir)
         
         # 显示状态
         show_network_status(hosts)
@@ -465,6 +480,12 @@ def main():
             net.stop()
         except:
             pass
+
+        # 移动日志文件到指定目录
+        for fname in ['cwnd.log', 'rtt.log']:
+            if os.path.exists(fname):
+                target_path = os.path.join(log_dir, fname)
+                shutil.move(fname, target_path)
 
 if __name__ == '__main__':
     main()
