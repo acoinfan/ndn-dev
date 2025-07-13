@@ -130,19 +130,19 @@ rib {{
         cmd = f"{env} nfd-status"
         return self.cmd(cmd)
     
-    def start_producer(self, prefix, dataset_id, config_file):
+    def start_producer(self, prefix, config_file, directory):
         """启动生产者应用"""
         env = f"NDN_CLIENT_TRANSPORT=unix:///run/nfd/{self.name}.sock"
-        cmd = f"{env} /home/a_coin_fan/code/ndn-dev/producer/bin/ndnput --prefix {prefix} --datasetId {dataset_id} --config {config_file}"
+        cmd = f"{env} /home/a_coin_fan/code/ndn-dev-wsl/producer/bin/ndnput --prefix {prefix} --config {config_file} -d {directory} > /tmp/producer-app.log 2>&1"
         proc = self.popen(cmd, shell=True)
         self.app_processes.append(proc)
         print(f"✓ 生产者应用启动在 {self.name}: {prefix}")
         return proc
     
-    def start_consumer(self, interest_name):
+    def start_consumer(self, config_file, interest_name):
         """启动消费者应用"""
         env = f"NDN_CLIENT_TRANSPORT=unix:///run/nfd/{self.name}.sock"
-        cmd = f"{env} /home/a_coin_fan/code/ndn-dev/consumer/bin/ndnget {interest_name} -v --no-version-discovery"
+        cmd = f"{env} /home/a_coin_fan/code/ndn-dev-wsl/consumer/bin/ndnget --prefix {interest_name} --config {config_file} > /tmp/consumer-app.log 2>&1"
         return self.cmd(cmd)
     
     def cleanup(self):
@@ -224,8 +224,8 @@ def setup_ndn_environment(net, hosts, config):
             node = hosts[node_name]
             node.start_producer(
                 prefix=app_config['prefix'],
-                dataset_id=app_config['dataset_id'],
-                config_file=app_config['config_file']
+                config_file=app_config['config_file'],
+                directory=app_config['directory']
             )
     
     return net
@@ -235,6 +235,12 @@ def run_tests(hosts, config):
     
     print("### 运行测试 ###")
     
+    total_bw = 0.0
+    total_delay = 0.0
+    total_time = 0.0
+    total_bytes = 0
+    test_count = 0
+    
     for test in config.tests:
         print(f"\n--- 测试: {test['name']} ---")
         print(f"描述: {test['description']}")
@@ -242,20 +248,153 @@ def run_tests(hosts, config):
         consumer = hosts[test['consumer']]
         
         print(f"消费者 {test['consumer']} 请求: {test['interest']}")
-        result = consumer.start_consumer(test['interest'])
+        import time
+        start_time = time.time()
+        result = consumer.start_consumer(test['config'], test['interest'])
+        end_time = time.time()
+        transfer_time = end_time - start_time
         
-        # 分析结果
+        # 获取链路参数
+        bw = None
+        delay = None
+        # 查找链路（假设 interest 里有 prefix，且 prefix 与 links 相关）
+        for link_name, link_config in config.links.items():
+            if test['consumer'] in link_config['nodes']:
+                bw = link_config['bw']
+                delay = link_config['delay']
+                break
+        
+        # 分析结果并提取传输信息
+        bytes_transferred = 0
+        segments_received = 0
+        max_segment_number = 0
+        
         if "ERROR" in result:
             print(f"❌ 测试失败:")
             print(result)
         else:
             print(f"✓ 测试成功")
-            # 只显示关键信息
-            for line in result.split('\n'):
-                if any(keyword in line for keyword in ['Published', 'Received', 'segments', 'bytes']):
-                    print(f"  {line}")
         
+        # 调试输出：显示完整的consumer输出
+        print(f"  --- Consumer 完整输出 (调试用) ---")
+        for i, line in enumerate(result.split('\n')):
+            if line.strip():
+                print(f"  [{i}] {line}")
+        print(f"  --- 输出结束 ---")
+            
+        # 提取传输统计信息
+        for line in result.split('\n'):
+            if any(keyword in line for keyword in ['Published', 'Received', 'segments', 'bytes']):
+                print(f"  {line}")
+            
+            # 提取segment号码 - 从 "Received segment #206" 格式中提取
+            if 'received segment #' in line.lower():
+                import re
+                segment_match = re.search(r'segment\s*#(\d+)', line, re.IGNORECASE)
+                if segment_match:
+                    segment_num = int(segment_match.group(1))
+                    max_segment_number = max(max_segment_number, segment_num)
+            
+            # 提取字节数 - 改进的正则表达式
+            if 'bytes' in line.lower():
+                import re
+                # 匹配各种格式：123 bytes, 123bytes, Received 123 bytes, etc.
+                bytes_patterns = [
+                    r'(\d+)\s*bytes',
+                    r'bytes:\s*(\d+)',
+                    r'received\s+(\d+)',
+                    r'transferred\s+(\d+)',
+                    r'size\s*:\s*(\d+)'
+                ]
+                for pattern in bytes_patterns:
+                    bytes_match = re.search(pattern, line, re.IGNORECASE)
+                    if bytes_match:
+                        bytes_transferred = int(bytes_match.group(1))
+                        break
+            
+            # 提取段数 - 改进的正则表达式
+            if 'segment' in line.lower() and 'received segment #' not in line.lower():
+                import re
+                # 匹配各种格式：123 segments, segments: 123, Received 123 segments, etc.
+                segment_patterns = [
+                    r'(\d+)\s*segments?',
+                    r'segments?\s*:\s*(\d+)',
+                    r'received\s+(\d+)\s+segments?',
+                    r'total\s+segments?\s*:\s*(\d+)',
+                    r'segments?\s+received\s*:\s*(\d+)'
+                ]
+                for pattern in segment_patterns:
+                    segments_match = re.search(pattern, line, re.IGNORECASE)
+                    if segments_match:
+                        segments_received = int(segments_match.group(1))
+                        break
+        
+        # 如果找到了segment号码，计算总段数（segment从0开始，所以+1）
+        if max_segment_number > 0:
+            calculated_segments = max_segment_number + 1
+            print(f"  最大段号: #{max_segment_number}")
+            print(f"  计算的段数: {calculated_segments} (基于最大段号+1)")
+            segments_received = max(segments_received, calculated_segments)
+        
+        print(f"  链路带宽: {bw} Mbps")
+        print(f"  链路延迟: {delay}")
+        print(f"  传输时间: {transfer_time:.2f} 秒")
+        
+        if segments_received > 0:
+            print(f"  接收段数: {segments_received}")
+            
+            # 从NDN consumer输出中提取段大小（通常是8192字节）
+            segment_size = 8192  # NDN默认段大小
+            
+            # 尝试从输出中解析实际段大小
+            for line in result.split('\n'):
+                if 'segment size' in line.lower() or 'payload size' in line.lower():
+                    import re
+                    size_match = re.search(r'(\d+)', line)
+                    if size_match:
+                        segment_size = int(size_match.group(1))
+                        break
+            
+            # 计算基于段的数据量
+            calculated_bytes = segments_received * segment_size
+            print(f"  段大小: {segment_size} 字节")
+            print(f"  计算数据量: {calculated_bytes} 字节 ({segments_received} × {segment_size})")
+            
+            if transfer_time > 0:
+                segment_based_bw = calculated_bytes * 8 / transfer_time / 1e6
+                print(f"  基于段的传输带宽: {segment_based_bw:.2f} Mbps")
+                
+                # 计算带宽利用率
+                if bw and bw > 0:
+                    utilization = (segment_based_bw / bw) * 100
+                    print(f"  带宽利用率: {utilization:.1f}%")
+        
+        if bytes_transferred > 0 and transfer_time > 0:
+            reported_bw = bytes_transferred * 8 / transfer_time / 1e6
+            print(f"  报告的传输带宽: {reported_bw:.2f} Mbps")
+            print(f"  报告的数据量: {bytes_transferred} 字节")
+            
+        total_bw += bw if bw else 0
+        total_delay += float(delay.replace('ms','')) if delay else 0
+        total_time += transfer_time
+        
+        # 优先使用基于段的数据量，否则使用报告的字节数
+        if segments_received > 0:
+            segment_size = 8192  # 默认NDN段大小
+            calculated_bytes = segments_received * segment_size
+            total_bytes += calculated_bytes
+        else:
+            total_bytes += bytes_transferred
+            
+        test_count += 1
         sleep(2)  # 测试间隔
+        
+    if test_count > 0:
+        print("\n=== 测试统计 ===")
+        print(f'time: {transfer_time:.2f}')
+        print(f"总传输数据量: {total_bytes} 字节")
+        if total_bytes > 0 and total_time > 0:
+            print(f"总体平均传输速率: {total_bytes * 8 / total_time / 1e6:.2f} Mbps")
 
 def show_network_status(hosts):
     """显示网络状态"""
@@ -312,16 +451,8 @@ def main():
         
         # 显示状态
         show_network_status(hosts)
-        
-        print("\n### 进入 CLI ###")
-        print("可用命令:")
-        print("  <node> <command>    - 在指定节点执行命令")
-        print("  pingall             - 测试所有节点连通性")
-        print("  exit                - 退出")
-        
-        # 进入 CLI
+    
         CLI(net)
-        
     except Exception as e:
         print(f"错误: {e}")
         import traceback

@@ -6,7 +6,6 @@ This file is based on the part of ndn-tools chunks
 
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/security/key-chain.hpp>
-#include <spdlog/spdlog.h>
 #include <fstream>
 
 #ifdef UNIT_TEST
@@ -22,13 +21,11 @@ namespace ndn::chunks
     public:
         struct Options
         {
-            // Todo: Provided by ndn-tools and need to modify and read from config file
             security::SigningInfo signingInfo;
-            time::milliseconds freshnessPeriod = 10_s;
-            size_t maxSegmentSize = 8000;
-            bool isQuiet = false;
-            bool isVerbose = false;
-            bool wantShowVersion = false;
+            time::milliseconds freshnessPeriod;
+            size_t maxSegmentSize;
+            bool isQuiet;
+            bool isVerbose;
         };
 
         /**
@@ -37,7 +34,7 @@ namespace ndn::chunks
          *               version number, the current system time is used as version number.
          */
         Producer(const Name &prefix, Face &face, KeyChain &keyChain,
-                 const Options &opts, uint64_t datasetId);
+                 const Options &opts, std::string fileDir);
 
         /**
          * @brief Run the producer.
@@ -72,12 +69,9 @@ namespace ndn::chunks
         Face &m_face;
         KeyChain &m_keyChain;
         const Options m_options;
-        uint64_t m_datasetId;
         std::unordered_map<std::string, uint64_t> m_nSentSegments;
         bool isini = false;
-
-    public:
-        spdlog::logger *logger;
+        std::string m_fileDir;
     };
 } // namespace ndn::chunks
 

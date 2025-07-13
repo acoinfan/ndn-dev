@@ -5,7 +5,7 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -g
 LDFLAGS = 
-LIBS = -lndn-cxx -lboost_program_options -lboost_system -lboost_thread -lspdlog -lpthread -lfmt
+LIBS = -lndn-cxx -lboost_program_options -lboost_system -lboost_thread -lpthread -lfmt
 
 # Directories
 SRCDIR = .

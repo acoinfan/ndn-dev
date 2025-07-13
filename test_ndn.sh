@@ -4,6 +4,9 @@
 
 echo "=== NDN 网络模拟器测试 ==="
 
+echo "0, cleaning old logs..."
+sudo rm /tmp/consumer-app.log
+sudo rm /tmp/producer-app.log
 # 检查依赖
 echo "1. 检查依赖..."
 if ! command -v nfd &> /dev/null; then
@@ -24,19 +27,19 @@ sudo pkill -f ndnget
 
 # 重新编译应用（如果需要）
 echo "3. 检查应用程序..."
-if [ ! -f "/home/a_coin_fan/code/ndn-dev/producer/bin/ndnput" ]; then
+if [ ! -f "/home/a_coin_fan/code/ndn-dev-wsl/producer/bin/ndnput" ]; then
     echo "编译生产者应用..."
-    cd /home/a_coin_fan/code/ndn-dev/producer && make
+    cd /home/a_coin_fan/code/ndn-dev-wsl/producer && make
 fi
 
-if [ ! -f "/home/a_coin_fan/code/ndn-dev/consumer/bin/ndnget" ]; then
+if [ ! -f "/home/a_coin_fan/code/ndn-dev-wsl/consumer/bin/ndnget" ]; then
     echo "编译消费者应用..."
-    cd /home/a_coin_fan/code/ndn-dev/consumer && make
+    cd /home/a_coin_fan/code/ndn-dev-wsl/consumer && make
 fi
 
 # 运行测试
 echo "4. 运行网络模拟..."
-cd /home/a_coin_fan/code/ndn-dev
+cd /home/a_coin_fan/code/ndn-dev-wsl
 
 echo "选择运行模式:"
 echo "  1. 简单模式 (pure_manual.py)"
@@ -68,3 +71,6 @@ case $choice in
 esac
 
 echo "=== 测试完成 ==="
+echo "using cat /tmp/consumer-app.log to view consumer logs"
+echo "using cat /tmp/producer-app.log to view producer logs"
+

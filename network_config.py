@@ -27,10 +27,10 @@ links = {
     # 链路名称: 配置参数
     'consumer-producer': {
         'nodes': ('consumer', 'producer'),
-        'bw': 30,           # 带宽 (Mbps)
-        'delay': '10ms',    # 延迟
-        'loss': 1,          # 丢包率 (%)
-        'max_queue_size': 1000,
+        'bw': 500,           # 带宽 (Mbps)
+        'delay': '0ms',    # 延迟
+        'loss': 0,          # 丢包率 (%)
+        'max_queue_size': 100,
         'use_htb': True,    # 使用 HTB 队列调度
         'jitter': None      # 抖动 (可选)
     },
@@ -68,8 +68,8 @@ links = {
 applications = {
     'producer': {
         'prefix': 'producer',
-        'dataset_id': 1,
-        'config_file': '/home/a_coin_fan/code/ndn-dev/producer/config.ini'
+        'config_file': '/home/a_coin_fan/code/ndn-dev-wsl/exp-proconfig.ini',
+        'directory': '/home/a_coin_fan/code/ndn-dev-wsl/experiments/1'
     },
     
     # 你可以添加更多应用
@@ -103,7 +103,8 @@ tests = [
     {
         'name': 'basic_test',
         'consumer': 'consumer',
-        'interest': '/producer/1/medium_test.txt',
+        'config': '/home/a_coin_fan/code/ndn-dev-wsl/exp-conconfig.ini',
+        'interest': '/producer/small_test.txt',
         'description': '基本的生产者-消费者测试'
     },
     

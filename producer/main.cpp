@@ -5,123 +5,91 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
-
 #include <iostream>
-#include <spdlog/sinks/basic_file_sink.h>
+
+#include "inipp.h"
 
 namespace ndn::chunks
 {
     namespace po = boost::program_options;
-    namespace pt = boost::property_tree;
 
-    static void
-    usage(std::ostream &os, std::string_view programName, const po::options_description &desc)
-    {
-        os << "Usage: " << programName << " [options]\n"
-           << "\n"
-           << "Publish data under the specified prefix.\n"
-           << "Note: this tool expects data from the standard input.\n"
-           << "Configuration is read from 'config.ini' file.\n"
-           << "\n"
-           << "Options:\n"
-           << "  --help, -h                   Print this help message and exit\n"
-           << "  --version, -V                Print program version and exit\n"
-           << "  --prefix, -p <prefix>        NDN name for the served content\n"
-           << "\n"
-           << "Configuration file parameters (config.ini):\n"
-           << "  [General]\n"
-           << "    freshness                  FreshnessPeriod of the published Data packets, in milliseconds\n"
-           << "    size                       Maximum chunk size, in bytes\n"
-           << "    naming-convention          Encoding convention to use for name components, either 'marker' or 'typed'\n"
-           << "    signing-info               Signing information\n"
-           << "    print-data-version         Print Data version to the standard output (true/false)\n"
-           << "    quiet                      Turn off all non-error output (true/false)\n"
-           << "    verbose                    Turn on verbose output (per Interest information) (true/false)\n"
-           << "  [Logging]\n"
-           << "    log-file                   Path to the log file\n"
-           << "    log-level                  Logging level (e.g., info, debug, error)\n"
-           << "\n"
-           << desc;
-    }
+    // declaration of helper functions
+    static bool get_bool(std::string const &value, std::string const &errorMsg = "");
 
-    static bool
-    readConfigFile(const std::string &filename, Producer::Options &opts, std::string &nameConv, std::string &signingStr, std::string &logFile, std::string &logLevel)
-    {
-        pt::ptree tree;
-        try
-        {
-            pt::read_ini(filename, tree);
-        }
-        catch (const pt::ini_parser_error &e)
-        {
-            std::cerr << "ERROR: Cannot open or parse config file: " << e.what() << "\n";
-            return false;
-        }
+    static int get_int(std::string const &value, std::string const &errorMsg = "");
 
-        try
-        {
-            opts.freshnessPeriod = time::milliseconds(tree.get<time::milliseconds::rep>("General.freshness", opts.freshnessPeriod.count()));
-            opts.maxSegmentSize = tree.get<size_t>("General.size", opts.maxSegmentSize);
-            nameConv = tree.get<std::string>("General.naming-convention", "");
-            signingStr = tree.get<std::string>("General.signing-info", "");
-            opts.wantShowVersion = tree.get<bool>("General.print-data-version", opts.wantShowVersion);
-            opts.isQuiet = tree.get<bool>("General.quiet", opts.isQuiet);
-            opts.isVerbose = tree.get<bool>("General.verbose", opts.isVerbose);
-            logFile = tree.get<std::string>("Logging.log-file", "logs/producer.log");
-            logLevel = tree.get<std::string>("Logging.log-level", "info");
-        }
-        catch (const pt::ptree_error &e)
-        {
-            std::cerr << "ERROR: Missing or invalid configuration parameter: " << e.what() << "\n";
-            return false;
-        }
+    static double get_double(std::string const &value, std::string const &errorMsg = "");
 
-        return true;
-    }
+    static long get_long(std::string const &value, std::string const &errorMsg = "");
+    // end of declaration
 
     static int
     main(int argc, char *argv[])
     {
-        auto m_logger = spdlog::basic_logger_mt("producer_logger", "logs/producer.log");
-        spdlog::set_default_logger(m_logger);
-        spdlog::set_level(spdlog::level::debug);
-        spdlog::flush_on(spdlog::level::debug);
-        spdlog::debug("Started producer");
+        // Initialize options and variables
         const std::string programName(argv[0]);
 
-        Producer::Options opts;
-        std::string prefix, nameConv, signingStr, logFile, logLevel, configPath="config.ini"; // 默认配置文件路径
-        uint64_t datasetId = 0; // 默认值为0
+        Producer::Options options;
+        std::string prefix, nameConv, signingInfo, configPath, fileDir; // 默认配置文件路径
 
-        po::options_description visibleDesc("Options");
-        visibleDesc.add_options()("help,h", "print this help message and exit")("prefix,p", po::value<std::string>(&prefix)->required(), "NDN name for the served content")
-        ("datasetId,d", po::value<uint64_t>(&datasetId)->required(), "Dataset ID for the producer")("config,c", po::value<std::string>(&configPath)->required(), "ConfigPath for the producer");
-
+        // Analyse command line options
+        po::options_description basicDesc("Options");
+        basicDesc.add_options()
+        ("help,h", "print this help message and exit")
+        ("prefix,p", po::value<std::string>(&prefix)->required(), "NDN name for the served content")
+        ("config,c", po::value<std::string>(&configPath)->required(), "ConfigPath for the producer")
+        ("directory,d", po::value<std::string>(&fileDir)->required(), "Directory of files to send (absolute path)");
+        
         po::variables_map vm;
-        try
+        po::store(po::command_line_parser(argc, argv).options(basicDesc).run(), vm);
+        po::notify(vm);
+
+        if (vm.count("help") > 0)
         {
-            po::store(po::parse_command_line(argc, argv, visibleDesc), vm);
-
-            if (vm.count("help") > 0)
-            {
-                usage(std::cout, programName, visibleDesc);
-                return 0;
-            }
-
-            po::notify(vm);
+            std::cout << "Usage: " << programName << " [options]\n";
+            std::cout << basicDesc;
+            return 0;
         }
-        catch (const po::error &e)
+
+        if (vm.count("prefix") == 0)
         {
-            std::cerr << "ERROR: " << e.what() << "\n";
+            std::cerr << "ERROR: --prefix is required\n";
             return 2;
         }
 
-        if (!readConfigFile(configPath, opts, nameConv, signingStr, logFile, logLevel))
+        if (vm.count("config") == 0)
         {
+            std::cerr << "ERROR: --config is required\n";
             return 2;
         }
-        spdlog::debug("Finished reading configuration file");
 
+        configPath = vm.count("config") ? vm["config"].as<std::string>() : "";
+
+        // Read from configuration (assert config is available)
+        inipp::Ini<char> ini;
+        std::ifstream configFile(configPath);
+
+        // Determine if the configuration file exists and can be opened
+        if (!configFile)
+        {
+            std::cerr << "ERROR: Could not open configuration file: " << configPath << "\n";
+            return 1;
+        }
+
+        // Extract sections from the configuration file
+        ini.parse(configFile);
+        auto &general = ini.sections["general"];
+
+        // Extract options from each section
+        // general options
+        options.freshnessPeriod = time::milliseconds(get_long(general["freshness"], "freshness"));
+        options.maxSegmentSize = get_int(general["segment-size"], "segment-size");
+        nameConv = general["naming-convention"];
+        signingInfo = general["signing-info"];
+        options.isQuiet = get_bool(general["quiet"], "quiet");
+        options.isVerbose = get_bool(general["verbose"], "verbose");
+
+        // checking configured options
         if (nameConv == "marker" || nameConv == "m" || nameConv == "1")
         {
             name::setConventionEncoding(name::Convention::MARKER);
@@ -136,13 +104,13 @@ namespace ndn::chunks
             return 2;
         }
 
-        if (opts.freshnessPeriod < 0_ms)
+        if (options.freshnessPeriod < 0_ms)
         {
             std::cerr << "ERROR: --freshness cannot be negative\n";
             return 2;
         }
 
-        if (opts.maxSegmentSize < 1 || opts.maxSegmentSize > MAX_NDN_PACKET_SIZE)
+        if (options.maxSegmentSize < 1 || options.maxSegmentSize > MAX_NDN_PACKET_SIZE)
         {
             std::cerr << "ERROR: --size must be between 1 and " << MAX_NDN_PACKET_SIZE << "\n";
             return 2;
@@ -150,7 +118,7 @@ namespace ndn::chunks
 
         try
         {
-            opts.signingInfo = security::SigningInfo(signingStr);
+            options.signingInfo = security::SigningInfo(signingInfo);
         }
         catch (const std::invalid_argument &e)
         {
@@ -158,22 +126,17 @@ namespace ndn::chunks
             return 2;
         }
 
-        if (opts.isQuiet && opts.isVerbose)
+        if (options.isQuiet && options.isVerbose)
         {
             std::cerr << "ERROR: cannot be quiet and verbose at the same time\n";
             return 2;
         }
 
-        // auto m_logger = spdlog::basic_logger_mt("producer_logger", logFile);
-        // spdlog::set_default_logger(m_logger);
-        spdlog::set_level(spdlog::level::from_str(logLevel));
-        spdlog::flush_on(spdlog::level::from_str(logLevel));
-
         try
         {
             Face face;
             KeyChain keyChain;
-            Producer producer(prefix, face, keyChain, opts, datasetId);
+            Producer producer(prefix, face, keyChain, options, fileDir);
             producer.run();
         }
         catch (const std::exception &e)
@@ -183,6 +146,74 @@ namespace ndn::chunks
         }
 
         return 0;
+    }
+
+    // helper functions
+    static bool get_bool(std::string const &value, std::string const &errorMsg)
+    {
+        if (value == "true")
+        {
+            return true;
+        }
+        else if (value == "false")
+        {
+            return false;
+        }
+        else
+        {
+            std::cerr << "ERROR: Invalid boolean value from producer option " << errorMsg << ": " << value << ", only allows true/false\n";
+            exit(1);
+        }
+    }
+
+    static long get_long(std::string const &value, std::string const &errorMsg)
+    {
+        if (value == "max")
+        {
+            return std::numeric_limits<long>::max();
+        }
+        try
+        {
+            return std::stol(value);
+        }
+        catch (const std::invalid_argument &)
+        {
+            std::cerr << "ERROR: Invalid long value from producer option " << errorMsg << ": " << value << "\n";
+            exit(1);
+        }
+    }
+
+    static int get_int(std::string const &value, std::string const &errorMsg)
+    {
+        if (value == "max")
+        {
+            return std::numeric_limits<int>::max();
+        }
+        try
+        {
+            return std::stoi(value);
+        }
+        catch (const std::invalid_argument &)
+        {
+            std::cerr << "ERROR: Invalid integer value from producer option " << errorMsg << ": " << value << "\n";
+            exit(1);
+        }
+    }
+
+    static double get_double(std::string const &value, std::string const &errorMsg)
+    {
+        if (value == "max")
+        {
+            return std::numeric_limits<double>::max();
+        }
+        try
+        {
+            return std::stod(value);
+        }
+        catch (const std::invalid_argument &)
+        {
+            std::cerr << "ERROR: Invalid double value from producer option " << errorMsg << ": " << value << "\n";
+        }
     }
 
 }

@@ -47,139 +47,119 @@
 #include <fstream>
 #include <iostream>
 
+#include "inipp.h"
+
 namespace ndn::get {
 
 namespace po = boost::program_options;
 
-static int
-main(int argc, char* argv[])
-{
-  const std::string programName(argv[0]);
+// declaration of helper functions
+static bool get_bool(std::string const& value, std::string const& errorMsg = "");
 
+static int get_int(std::string const& value, std::string const& errorMsg = "");
+
+static double get_double(std::string const& value, std::string const& errorMsg = "");
+
+static long get_long(std::string const& value, std::string const& errorMsg = "");
+// end of declaration
+
+static int main(int argc, char* argv[])
+{
+  // Initialize options and variables
   Options options;
-  std::string prefix, nameConv, pipelineType("cubic");
+  std::string prefix, nameConv, pipelineType, configPath;
   std::string cwndPath, rttPath;
   auto rttEstOptions = std::make_shared<util::RttEstimator::Options>();
-  rttEstOptions->k = 8; // increased from the ndn-cxx default of 4
-
+  const std::string programName(argv[0]);
+  
+  // Analyse command line options
   po::options_description basicDesc("Basic Options");
   basicDesc.add_options()
     ("help,h",      "print this help message and exit")
-    ("fresh,f",     po::bool_switch(&options.mustBeFresh),
-                    "only return fresh content (set MustBeFresh on all outgoing Interests)")
-    ("lifetime,l",  po::value<time::milliseconds::rep>()->default_value(options.interestLifetime.count()),
-                    "lifetime of expressed Interests, in milliseconds")
-    ("retries,r",   po::value<int>(&options.maxRetriesOnTimeoutOrNack)->default_value(options.maxRetriesOnTimeoutOrNack),
-                    "maximum number of retries in case of Nack or timeout (-1 = no limit)")
-    ("pipeline-type,p", po::value<std::string>(&pipelineType)->default_value(pipelineType),
-                        "type of Interest pipeline to use; valid values are: 'fixed', 'aimd', 'cubic'")
-    ("no-version-discovery,D", po::bool_switch(&options.disableVersionDiscovery),
-                               "skip version discovery even if the name does not end with a version component")
-    ("naming-convention,N", po::value<std::string>(&nameConv),
-                            "encoding convention to use for name components, either 'marker' or 'typed'")
-    ("quiet,q",     po::bool_switch(&options.isQuiet), "suppress all diagnostic output, except fatal errors")
-    ("verbose,v",   po::bool_switch(&options.isVerbose), "turn on verbose output (per segment information")
-    ("version,V",   "print program version and exit")
-    ;
-
-  po::options_description fixedPipeDesc("Fixed pipeline options");
-  fixedPipeDesc.add_options()
-    ("pipeline-size,s", po::value<size_t>(&options.maxPipelineSize)->default_value(options.maxPipelineSize),
-                        "size of the Interest pipeline")
-    ;
-
-  po::options_description adaptivePipeDesc("Adaptive pipeline options (AIMD & CUBIC)");
-  adaptivePipeDesc.add_options()
-    ("ignore-marks",  po::bool_switch(&options.ignoreCongMarks),
-                      "do not reduce the window after receiving a congestion mark")
-    ("disable-cwa",   po::bool_switch(&options.disableCwa),
-                      "disable Conservative Window Adaptation (reduce the window "
-                      "on each congestion event instead of at most once per RTT)")
-    ("init-cwnd",     po::value<double>(&options.initCwnd)->default_value(options.initCwnd),
-                      "initial congestion window in segments")
-    ("init-ssthresh", po::value<double>(&options.initSsthresh),
-                      "initial slow start threshold in segments (defaults to infinity)")
-    ("rto-alpha", po::value<double>(&rttEstOptions->alpha)->default_value(rttEstOptions->alpha),
-                  "alpha value for RTO calculation")
-    ("rto-beta",  po::value<double>(&rttEstOptions->beta)->default_value(rttEstOptions->beta),
-                  "beta value for RTO calculation")
-    ("rto-k",     po::value<int>(&rttEstOptions->k)->default_value(rttEstOptions->k),
-                  "k value for RTO calculation")
-    ("min-rto",   po::value<time::milliseconds::rep>()->default_value(
-                    time::duration_cast<time::milliseconds>(rttEstOptions->minRto).count()),
-                  "minimum RTO value, in milliseconds")
-    ("max-rto",   po::value<time::milliseconds::rep>()->default_value(
-                    time::duration_cast<time::milliseconds>(rttEstOptions->maxRto).count()),
-                  "maximum RTO value, in milliseconds")
-    ("log-cwnd",  po::value<std::string>(&cwndPath), "log file for congestion window stats")
-    ("log-rtt",   po::value<std::string>(&rttPath), "log file for round-trip time stats")
-    ;
-
-  po::options_description aimdPipeDesc("AIMD pipeline options");
-  aimdPipeDesc.add_options()
-    ("aimd-step", po::value<double>(&options.aiStep)->default_value(options.aiStep),
-                  "additive increase step")
-    ("aimd-beta", po::value<double>(&options.mdCoef)->default_value(options.mdCoef),
-                  "multiplicative decrease factor")
-    ("reset-cwnd-to-init", po::bool_switch(&options.resetCwndToInit),
-                           "after a congestion event, reset the window to the "
-                           "initial value instead of resetting to ssthresh")
-    ;
-
-  po::options_description cubicPipeDesc("CUBIC pipeline options");
-  cubicPipeDesc.add_options()
-    ("cubic-beta", po::value<double>(&options.cubicBeta), "window decrease factor (defaults to 0.7)")
-    ("fast-conv",  po::bool_switch(&options.enableFastConv), "enable fast convergence")
-    ;
-
-  po::options_description visibleDesc;
-  visibleDesc.add(basicDesc)
-             .add(fixedPipeDesc)
-             .add(adaptivePipeDesc)
-             .add(aimdPipeDesc)
-             .add(cubicPipeDesc);
-
-  po::options_description hiddenDesc;
-  hiddenDesc.add_options()
-    ("name", po::value<std::string>(&prefix), "NDN name of the requested content");
-
-  po::options_description optDesc;
-  optDesc.add(visibleDesc).add(hiddenDesc);
-
-  po::positional_options_description p;
-  p.add("name", -1);
-
+    ("config,c",    po::value<std::string>(&configPath),
+                    "path to the configuration file")
+    ("prefix,p",    po::value<std::string>(&prefix),
+                    "NDN name of the requested content")
+  ;
+  
   po::variables_map vm;
-  try {
-    po::store(po::command_line_parser(argc, argv).options(optDesc).positional(p).run(), vm);
-    po::notify(vm);
-  }
-  catch (const po::error& e) {
-    std::cerr << "ERROR: " << e.what() << "\n";
-    return 2;
-  }
-  catch (const boost::bad_any_cast& e) {
-    std::cerr << "ERROR: " << e.what() << "\n";
-    return 2;
-  }
+  po::store(po::command_line_parser(argc, argv).options(basicDesc).run(), vm);
+  po::notify(vm);
 
   if (vm.count("help") > 0) {
-    std::cout << "Usage: " << programName << " [options] ndn:/name\n";
-    std::cout << visibleDesc;
+    std::cout << "Usage: " << programName << " [options]\n";
+    std::cout << basicDesc;
     return 0;
   }
 
-  if (vm.count("version") > 0) {
-    std::cout << "ndnget " << tools::VERSION << "\n";
-    return 0;
-  }
-
-  if (prefix.empty()) {
-    std::cerr << "Usage: " << programName << " [options] ndn:/name\n";
-    std::cerr << visibleDesc;
+  if (vm.count("prefix") == 0) {
+    std::cerr << "ERROR: --prefix is required\n";
     return 2;
   }
 
+  if (vm.count("config") == 0) {
+    std::cerr << "ERROR: --config is required\n";
+    return 2;
+  }
+
+  configPath = vm.count("config") ? vm["config"].as<std::string>() : "";
+
+
+  // Read from configuration (assert config is available)
+  inipp::Ini<char> ini;
+  std::ifstream configFile(configPath);
+
+  // Determine if the configuration file exists and can be opened
+  if (!configFile) {
+    std::cerr << "ERROR: Could not open configuration file: " << configPath << "\n";
+    return 1;
+  }
+
+  // Extract sections from the configuration file
+  ini.parse(configFile);
+  auto& general = ini.sections["general"];
+  auto& pipeline = ini.sections["pipeline"];
+  auto& aimd = ini.sections["aimd"];
+  auto& cubic = ini.sections["cubic"];
+
+  // Extract options from each section
+  // general options
+  options.mustBeFresh = get_bool(general["fresh"], "fresh");
+  options.interestLifetime = time::milliseconds(get_long(general["lifetime"], "lifetime"));
+  options.maxRetriesOnTimeoutOrNack = get_int(general["retries"], "retries");
+  options.disableVersionDiscovery = get_bool(general["no-version-discovery"], "no-version-discovery");
+  nameConv = general["naming-convention"];
+  options.isQuiet = get_bool(general["quiet"], "quiet");
+  options.isVerbose = get_bool(general["verbose"], "verbose");
+
+  // pipeline options
+  pipelineType = pipeline["pipeline-type"];
+  options.maxPipelineSize = get_int(pipeline["pipeline-size"], "pipeline-size");
+  options.ignoreCongMarks = get_bool(pipeline["ignore-marks"], "ignore-marks");
+  options.disableCwa = get_bool(pipeline["disable-cwa"], "disable-cwa");
+  options.initCwnd = get_double(pipeline["init-cwnd"], "init-cwnd");
+  options.initSsthresh = get_double(pipeline["init-ssthresh"], "init-ssthresh");
+  rttEstOptions->alpha = get_double(pipeline["rto-alpha"], "rto-alpha");
+  rttEstOptions->beta = get_double(pipeline["rto-beta"], "rto-beta");
+  rttEstOptions->k = get_int(pipeline["rto-k"], "rto-k");
+  rttEstOptions->minRto = time::milliseconds(get_long(pipeline["min-rto"], "min-rto"));
+  rttEstOptions->maxRto = time::milliseconds(get_long(pipeline["max-rto"], "max-rto"));
+  cwndPath = pipeline["log-cwnd"];
+  rttPath = pipeline["log-rtt"];
+  options.rtoCheckInterval = time::milliseconds(get_long(pipeline["rto-check-interval"], "rto-check-interval"));
+  rttEstOptions->initialRto = time::milliseconds(get_long(pipeline["initial-rto"], "initial-rto"));
+  rttEstOptions->rtoBackoffMultiplier = get_double(pipeline["rto-backoff-multiplier"], "rto-backoff-multiplier");
+
+  // aimd options
+  options.aiStep = get_double(aimd["aimd-step"], "aimd-step");
+  options.mdCoef = get_double(aimd["aimd-beta"], "aimd-beta");
+  options.resetCwndToInit = get_bool(aimd["reset-cwnd-to-init"], "reset-cwnd-to-init");
+
+  // cubic options
+  options.cubicBeta = get_double(cubic["cubic-beta"], "cubic-beta");
+  options.enableFastConv = get_bool(cubic["fast-conv"], "fast-conv");
+
+  // checking configured options
   if (nameConv == "marker" || nameConv == "m" || nameConv == "1") {
     name::setConventionEncoding(name::Convention::MARKER);
   }
@@ -191,7 +171,6 @@ main(int argc, char* argv[])
     return 2;
   }
 
-  options.interestLifetime = time::milliseconds(vm["lifetime"].as<time::milliseconds::rep>());
   if (options.interestLifetime < 0_ms) {
     std::cerr << "ERROR: --lifetime cannot be negative\n";
     return 2;
@@ -217,18 +196,17 @@ main(int argc, char* argv[])
     return 2;
   }
 
-  rttEstOptions->minRto = time::milliseconds(vm["min-rto"].as<time::milliseconds::rep>());
   if (rttEstOptions->minRto < 0_ms) {
     std::cerr << "ERROR: --min-rto cannot be negative\n";
     return 2;
   }
 
-  rttEstOptions->maxRto = time::milliseconds(vm["max-rto"].as<time::milliseconds::rep>());
   if (rttEstOptions->maxRto < rttEstOptions->minRto) {
     std::cerr << "ERROR: --max-rto cannot be smaller than --min-rto\n";
     return 2;
   }
 
+  // main logic
   try {
     Face face;
     auto discover = std::make_unique<DiscoverVersion>(face, Name(prefix), options);
@@ -308,6 +286,57 @@ main(int argc, char* argv[])
   }
 
   return 0;
+}
+
+// helper functions
+static bool get_bool(std::string const& value, std::string const& errorMsg)
+{
+  if (value == "true") {
+    return true;
+  } else if (value == "false") {
+    return false;
+  } else {
+    std::cerr << "ERROR: Invalid boolean value from consumer option " << errorMsg << ": " << value << ", only allows true/false\n";
+    exit(1);
+  }
+}
+
+static long get_long(std::string const& value, std::string const& errorMsg)
+{
+  if (value == "max") {
+    return std::numeric_limits<long>::max();
+  }
+  try {
+    return std::stol(value);
+  } catch (const std::invalid_argument&) {
+    std::cerr << "ERROR: Invalid long value from consumer option " << errorMsg << ": " << value << "\n";
+    exit(1); 
+  }
+}
+
+static int get_int(std::string const& value, std::string const& errorMsg)
+{
+  if (value == "max") {
+    return std::numeric_limits<int>::max();
+  }
+  try {
+    return std::stoi(value);
+  } catch (const std::invalid_argument&) {
+    std::cerr << "ERROR: Invalid integer value from consumer option " << errorMsg << ": " << value << "\n";
+    exit(1); 
+  }
+}
+
+static double get_double(std::string const& value, std::string const& errorMsg)
+{
+  if (value == "max") {
+    return std::numeric_limits<double>::max();
+  }
+  try {
+    return std::stod(value);
+  } catch (const std::invalid_argument&) {
+    std::cerr << "ERROR: Invalid double value from consumer option " << errorMsg << ": " << value << "\n";
+  }
 }
 
 } // namespace ndn::get
