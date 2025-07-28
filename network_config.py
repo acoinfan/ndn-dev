@@ -7,109 +7,88 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # 节点配置
 nodes = {
-    'consumer': {
-        'ip': '10.0.0.1/24',
-        'type': 'consumer'
-    },
-    'producer': {
-        'ip': '10.0.0.2/24', 
-        'type': 'producer'
-    },
-    # 你可以添加更多节点
-    # 'relay1': {
-    #     'ip': '10.0.0.3/24',
-    #     'type': 'relay'
-    # },
-    # 'producer2': {
-    #     'ip': '10.0.0.4/24',
-    #     'type': 'producer'
-    # }
+    'consumer1': {'ip': '10.0.0.1/24', 'type': 'consumer'},
+    'producer1': {'ip': '10.0.0.2/24', 'type': 'producer'},
+    'consumer2': {'ip': '10.0.0.3/24', 'type': 'consumer'},
+    'producer2': {'ip': '10.0.0.4/24', 'type': 'producer'},
+    'consumer3': {'ip': '10.0.0.5/24', 'type': 'consumer'},
+    'producer3': {'ip': '10.0.0.6/24', 'type': 'producer'},
 }
 
 # 链路配置
 links = {
     # 链路名称: 配置参数
-    'consumer-producer': {
-        'nodes': ('consumer', 'producer'),
-        'bw': 500,           # 带宽 (Mbps)
-        'delay': '0ms',    # 延迟
-        'loss': 0,          # 丢包率 (%)
-        'max_queue_size': 100,
-        'use_htb': True,    # 使用 HTB 队列调度
-        'jitter': None      # 抖动 (可选)
+    'consumer1-producer1': {
+        'nodes': ('consumer1', 'producer1'),    # 链路连接的节点
+        'bw': 100,                              # 带宽 (Mbps)
+        'delay': '0ms',                         # 延迟
+        'loss': 0,                              # 丢包率 (%)
+        'max_queue_size': 100,                  # 最大队列大小 (字节)
+        'use_htb': True,                        # 使用 HTB 队列调度
+        'jitter': None                          # 抖动 (可选)
     },
-    
-    # 你可以添加更多链路
-    # 'consumer-relay1': {
-    #     'nodes': ('consumer', 'relay1'),
-    #     'bw': 100,
-    #     'delay': '5ms',
-    #     'loss': 0.5,
-    #     'max_queue_size': 2000,
-    #     'use_htb': True
-    # },
-    
-    # 'relay1-producer': {
-    #     'nodes': ('relay1', 'producer'),
-    #     'bw': 50,
-    #     'delay': '20ms',
-    #     'loss': 2,
-    #     'max_queue_size': 1500,
-    #     'use_htb': True
-    # },
-    
-    # 'consumer-producer2': {
-    #     'nodes': ('consumer', 'producer2'),
-    #     'bw': 20,
-    #     'delay': '50ms',
-    #     'loss': 5,
-    #     'max_queue_size': 500,
-    #     'use_htb': True
-    # }
+    'consumer2-producer2': {
+        'nodes': ('consumer2', 'producer2'),
+        'bw': 100,
+        'delay': '0ms',
+        'loss': 0,
+        'max_queue_size': 100,
+        'use_htb': True,
+        'jitter': None
+    },    
+    'consumer3-producer3': {
+        'nodes': ('consumer3', 'producer3'),
+        'bw': 100,
+        'delay': '0ms',
+        'loss': 0,
+        'max_queue_size': 100,
+        'use_htb': True,
+        'jitter': None
+    },
 }
 
 # 应用配置
 applications = {
-    'producer': {
-        'prefix': 'producer',
+    'producer1': {
+        'prefix': 'producer1',
         'config_file': os.path.join(PROJECT_ROOT, 'exp-proconfig.ini'),
         'directory': os.path.join(PROJECT_ROOT, 'experiments/1')
     },
-    
-    # 你可以添加更多应用
-    # 'producer2': {
-    #     'prefix': 'producer2',
-    #     'dataset_id': 2,
-    #     'config_file': os.path.join(PROJECT_ROOT, 'producer/config.ini')
-    # }
+    'producer2': {
+        'prefix': 'producer2',
+        'config_file': os.path.join(PROJECT_ROOT, 'exp-proconfig.ini'),
+        'directory': os.path.join(PROJECT_ROOT, 'experiments/1')
+    },
+    'producer3': {
+        'prefix': 'producer3',
+        'config_file': os.path.join(PROJECT_ROOT, 'exp-proconfig.ini'),
+        'directory': os.path.join(PROJECT_ROOT, 'experiments/1')
+    },
 }
 
 # 路由配置
 routes = {
     # 节点名称: [(前缀, 下一跳)]
-    'consumer': [
-        ('/producer', 'udp4://10.0.0.2:6363'),
-        # ('/producer2', 'udp4://10.0.0.4:6363')
-    ],
-    
-    'producer': [
-        ('/consumer', 'udp4://10.0.0.1:6363')
-    ],
-    
-    # 'relay1': [
-    #     ('/producer', 'udp4://10.0.0.2:6363'),
-    #     ('/consumer', 'udp4://10.0.0.1:6363')
-    # ]
+    'consumer1': [('/producer1', 'udp4://10.0.0.2:6363')],
+    'consumer2': [('/producer2', 'udp4://10.0.0.4:6363')],
+    'consumer3': [('/producer3', 'udp4://10.0.0.6:6363')],
+    'producer1': [('/consumer1', 'udp4://10.0.0.1:6363')],
+    'producer2': [('/consumer2', 'udp4://10.0.0.3:6363')],
+    'producer3': [('/consumer3', 'udp4://10.0.0.5:6363')],
 }
 
 # 测试配置
 tests = [
     {
-        'name': 'basic_test',
-        'consumer': 'consumer',
+        'name': 'multi_test',
+        'consumer': ['consumer1', 'consumer2', 'consumer3'],
         'config': os.path.join(PROJECT_ROOT, 'exp-conconfig.ini'),
-        'interest': os.path.join('/producer', 'small_test.txt'),
-        'description': '基本的生产者-消费者测试'
+        'interest': [
+            '/producer1/testfile_6442450.txt',
+            '/producer2/testfile_6442450.txt',
+            '/producer3/testfile_6442450.txt',
+        ],
+        'description': '3个consumer分别请求3个producer的同一文件'
     },
     
     # 你可以添加更多测试

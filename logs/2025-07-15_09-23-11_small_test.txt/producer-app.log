@@ -1,0 +1,39 @@
+Loading input ...
+Producer is ready for prefix: /producer
+Interest: /producer/small_test.txt/seg=0?Nonce=712429b8
+Segmentation file for prefix: /producer/small_test.txt
+File path: /home/dd/GanJinyu/ndn-dev/experiments/1/small_test.txt
+Loading input ...
+Published 2 Data packets
+Data: Name: /producer/small_test.txt/seg=0
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000 milliseconds, FinalBlockId: seg=1]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /producer/small_test.txt/seg=1?Nonce=4cdbe5e2
+Data: Name: /producer/small_test.txt/seg=1
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000 milliseconds, FinalBlockId: seg=1]
+Content: [4068 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /producer/small_test.txt/seg=2?Nonce=c4c40f2c
+Segmentation file for prefix: /producer/small_test.txt
+File path: /home/dd/GanJinyu/ndn-dev/experiments/1/small_test.txt
+Loading input ...
+Published 2 Data packets
+Interest cannot be satisfied, sending Nack
+Interest: /producer/small_test.txt/seg=3?Nonce=d556347e
+Interest cannot be satisfied, sending Nack
+Interest: /producer/small_test.txt/seg=4?Nonce=8c5b6f70
+Interest cannot be satisfied, sending Nack
+Interest: /producer/small_test.txt/seg=5?Nonce=addb2aa8
+Interest cannot be satisfied, sending Nack
+Interest: /producer/small_test.txt/seg=6?Nonce=347ddb37
+Interest cannot be satisfied, sending Nack
+Interest: /producer/small_test.txt/seg=7?Nonce=72f9b29b
+Interest cannot be satisfied, sending Nack
+Interest: /producer/small_test.txt/seg=8?Nonce=52b580b5
+Interest cannot be satisfied, sending Nack
+Interest: /producer/small_test.txt/seg=9?Nonce=17273201
+Interest cannot be satisfied, sending Nack
+ERROR: socket read error (End of file)
