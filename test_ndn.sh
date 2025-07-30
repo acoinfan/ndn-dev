@@ -25,21 +25,25 @@ sudo pkill -f nfd
 sudo pkill -f ndnput
 sudo pkill -f ndnget
 
+PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
+PRODUCER_BIN="${PROJECT_ROOT}/producer/bin/ndnput"
+CONSUMER_BIN="${PROJECT_ROOT}/consumer/bin/ndnget"
+
 # 重新编译应用（如果需要）
 echo "3. 检查应用程序..."
-if [ ! -f "/home/a_coin_fan/code/ndn-dev-wsl/producer/bin/ndnput" ]; then
+if [ ! -f "$PRODUCER_BIN" ]; then
     echo "编译生产者应用..."
-    cd /home/a_coin_fan/code/ndn-dev-wsl/producer && make
+    cd "${PROJECT_ROOT}/producer" && make
 fi
 
-if [ ! -f "/home/a_coin_fan/code/ndn-dev-wsl/consumer/bin/ndnget" ]; then
+if [ ! -f "$CONSUMER_BIN" ]; then
     echo "编译消费者应用..."
-    cd /home/a_coin_fan/code/ndn-dev-wsl/consumer && make
+    cd "${PROJECT_ROOT}/consumer" && make
 fi
 
 # 运行测试
 echo "4. 运行网络模拟..."
-cd /home/a_coin_fan/code/ndn-dev-wsl
+cd "$PROJECT_ROOT"
 
 echo "选择运行模式:"
 echo "  1. 简单模式 (pure_manual.py)"
