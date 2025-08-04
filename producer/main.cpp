@@ -1,5 +1,7 @@
 #include "producer.hpp"
 
+#include <ndn-cxx/transport/unix-transport.hpp>
+
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
@@ -134,7 +136,8 @@ namespace ndn::chunks
 
         try
         {
-            Face face;
+            auto transport = ndn::UnixTransport::create("unix:///run/nfd/producer1.sock");
+            Face face(transport);
             KeyChain keyChain;
             Producer producer(prefix, face, keyChain, options, fileDir);
             producer.run();

@@ -129,6 +129,8 @@ rib {{
         cmd = f"{env} nfdc route add {prefix} {nexthop}"
         result = self.cmd(cmd)
         print(f"✓ {self.name}: 添加路由 {prefix} -> {nexthop}")
+        print(f"  命令: {cmd}")
+        print(f"  结果: {result}")
         return result
     
     def get_nfd_status(self):
@@ -141,8 +143,7 @@ rib {{
         """启动生产者应用"""
         os.makedirs(log_dir, exist_ok=True)
         log_path = os.path.join(log_dir, f"{self.name}.log")
-        env = f"NDN_CLIENT_TRANSPORT=unix:///run/nfd/{self.name}.sock"
-        cmd = f"{env} {PRODUCER_BIN} --prefix {prefix} --config {config_file} -d {directory} > {log_path} 2>&1"
+        cmd = f"{PRODUCER_BIN} --prefix {prefix} --config {config_file} -d {directory} > {log_path} 2>&1"
         proc = self.popen(cmd, shell=True)
         self.app_processes.append(proc)
         print(f"✓ 生产者应用启动在 {self.name}: {prefix}")
@@ -152,8 +153,7 @@ rib {{
         """启动消费者应用"""
         os.makedirs(log_dir, exist_ok=True)
         log_path = os.path.join(log_dir, f"{self.name}.log")
-        env = f"NDN_CLIENT_TRANSPORT=unix:///run/nfd/{self.name}.sock"
-        cmd = f"{env} {CONSUMER_BIN} --prefix {interest_name} --config {config_file} > {log_path} 2>&1"
+        cmd = f"{CONSUMER_BIN} --prefix {interest_name} --config {config_file} > {log_path} 2>&1"
         return self.cmd(cmd)
     
     def cleanup(self):
@@ -484,7 +484,7 @@ def main():
         net = setup_ndn_environment(net, hosts, config, log_dir)
         
         # 等待系统稳定
-        sleep(5)
+        sleep(10)
         
         # 运行测试
         run_tests(hosts, config, log_dir)

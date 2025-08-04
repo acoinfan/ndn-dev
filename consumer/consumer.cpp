@@ -81,12 +81,35 @@ Consumer::handleData(const Data& data)
 void
 Consumer::writeInOrderData()
 {
+  // Time tracking Part1
+  static std::chrono::microseconds total_io_time{0};
+  static size_t call_count = 0;
+  
+  auto start = std::chrono::steady_clock::now();
+  // 
+
+  // Original Logic
   for (auto it = m_bufferedData.begin();
        it != m_bufferedData.end() && it->first == m_nextToPrint;
        it = m_bufferedData.erase(it), ++m_nextToPrint) {
     const Block& content = it->second->getContent();
     m_outputStream.write(reinterpret_cast<const char*>(content.value()), content.value_size());
   }
+  // End of Original Logic
+
+  // Time tracking Part2
+  auto end = std::chrono::steady_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  
+  total_io_time += duration;
+  call_count++;
+  
+  if (call_count % 100 == 0) {
+    std::cerr << "I/O stats: " << call_count << " calls, " 
+              << total_io_time.count() << " μs total, "
+              << total_io_time.count() / call_count << " μs avg" << std::endl;
+  }
+  //
 }
 
 } // namespace ndn::get
