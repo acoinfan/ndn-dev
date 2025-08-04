@@ -4,9 +4,6 @@
 
 echo "=== NDN 网络模拟器测试 ==="
 
-echo "0, cleaning old logs..."
-sudo rm /tmp/consumer-app.log
-sudo rm /tmp/producer-app.log
 # 检查依赖
 echo "1. 检查依赖..."
 if ! command -v nfd &> /dev/null; then
@@ -45,36 +42,8 @@ fi
 echo "4. 运行网络模拟..."
 cd "$PROJECT_ROOT"
 
-echo "选择运行模式:"
-echo "  1. 简单模式 (pure_manual.py)"
-echo "  2. 高级模式 (advanced_ndn_simulator.py)"
-echo "  3. 自定义配置模式"
-
-read -p "请选择 [1-3]: " choice
-
-case $choice in
-    1)
-        echo "运行简单模式..."
-        sudo python3 pure_manual.py
-        ;;
-    2)
-        echo "运行高级模式..."
-        sudo python3 advanced_ndn_simulator.py
-        ;;
-    3)
-        echo "运行自定义配置模式..."
-        echo "可用配置文件:"
-        ls -la *.py | grep config
-        read -p "请输入配置文件名: " config_file
-        sudo python3 advanced_ndn_simulator.py $config_file
-        ;;
-    *)
-        echo "默认运行简单模式..."
-        sudo python3 pure_manual.py
-        ;;
-esac
+sudo python3 old_simulator.py
 
 echo "=== 测试完成 ==="
-echo "using cat /tmp/consumer-app.log to view consumer logs"
-echo "using cat /tmp/producer-app.log to view producer logs"
+
 

@@ -30,3 +30,36 @@ chunk-interest
 
 
 producer - consumer: one file(many segments)
+
+
+
+logs
+    2025-8-10_xxxx
+        producer0.log
+        producer1.log
+        producer10.log
+        consumer0-1.log
+        consumer0-1_rtt.log
+        consumer0-1_cwnd.log
+
+
+
+client0
+    producer0     10.0.0.0 -- ok0 (cpp -> ok0 -> python (等待所有的producer都返回ok信号) -> /tmp/ndn/start -> cpp: 将所有的client所属的consumer一起启动)
+    consumer0-1   10.0.0.1        (cpp -> ok0 -> cpp: 需要接受client0数据的consumer全部启动)
+    c0-2          10.0.0.2
+
+    c0-10         10.0.0.10
+
+client1
+    producer1     10.0.1.1 -- ok1
+    consumer1-0   10.0.1.0
+    c1-2          10.0.1.2
+
+
+    c1-10         10.0.1.10
+
+client2
+    producer2     10.0.2.2 -- ok2
+    consumer2-0   10.0.2.0
+    c2-1          10.0.2.1

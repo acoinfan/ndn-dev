@@ -39,6 +39,7 @@
 
 #include <ndn-cxx/security/validator-null.hpp>
 #include <ndn-cxx/util/rtt-estimator.hpp>
+#include <ndn-cxx/transport/unix-transport.hpp>
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
@@ -67,7 +68,7 @@ static int main(int argc, char* argv[])
 {
   // Initialize options and variables
   Options options;
-  std::string prefix, nameConv, pipelineType, configPath;
+  std::string prefix, nameConv, pipelineType, configPath, m_name;
   std::string cwndPath, rttPath;
   auto rttEstOptions = std::make_shared<util::RttEstimator::Options>();
   const std::string programName(argv[0]);
@@ -208,7 +209,8 @@ static int main(int argc, char* argv[])
 
   // main logic
   try {
-    Face face;
+    auto transport = ndn::UnixTransport::create("unix:///run/nfd/consumer1.sock");
+    Face face(transport);
     auto discover = std::make_unique<DiscoverVersion>(face, Name(prefix), options);
     std::unique_ptr<PipelineInterests> pipeline;
     std::unique_ptr<StatisticsCollector> statsCollector;
@@ -266,7 +268,8 @@ static int main(int argc, char* argv[])
       return 2;
     }
 
-    Consumer consumer(security::getAcceptAllValidator());
+    std::ofstream outputStream("/dev/null");
+    Consumer consumer(security::getAcceptAllValidator(), outputStream);
     BOOST_ASSERT(discover != nullptr);
     BOOST_ASSERT(pipeline != nullptr);
     consumer.run(std::move(discover), std::move(pipeline));
