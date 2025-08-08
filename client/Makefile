@@ -1,11 +1,14 @@
-# Makefile for NDN Consumer
+# Makefile for NDN Client with Async Components
 # Author: GitHub Copilot
 
 # Compiler settings
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -g
 LDFLAGS = 
-LIBS = -lndn-cxx -lboost_program_options -lboost_system -lboost_thread -lpthread
+LIBS = -lndn-cxx -lboost_program_options -lboost_system -lboost_thread -lpthread -lfmt
+
+# Include directories
+INCLUDES = -I.
 
 # Directories
 SRCDIR = .
@@ -16,12 +19,28 @@ BINDIR = bin
 TARGET = ndnclient
 BINPATH = $(BINDIR)/$(TARGET)
 
-# Source files
-SOURCES = $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCDIR)/core/*.cpp)
-OBJECTS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
+# Source files (explicitly list to ensure all are included)
+SOURCES = main.cpp \
+          consumer.cpp \
+          async-consumer.cpp \
+          async-producer.cpp \
+          discover-version.cpp \
+          data-fetcher.cpp \
+          pipeline-interests.cpp \
+          pipeline-interests-fixed.cpp \
+          pipeline-interests-aimd.cpp \
+          pipeline-interests-cubic.cpp \
+          pipeline-interests-adaptive.cpp \
+          statistics-collector.cpp \
+          producer.cpp \
+          core/version.cpp
+
+# Generate object file paths
+OBJECTS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SOURCES))
 
 # Header files for dependency tracking
-HEADERS = $(wildcard $(SRCDIR)/*.hpp)
+HEADERS = $(wildcard $(SRCDIR)/*.hpp) \
+          $(wildcard $(SRCDIR)/core/*.hpp)
 
 # Default target
 all: $(BINPATH)
@@ -42,7 +61,8 @@ $(BINPATH): $(OBJECTS) | $(BINDIR)
 # Compile source files to object files
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS) | $(OBJDIR)
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+	@echo "Compiled $<"
 
 # Clean build files
 clean:

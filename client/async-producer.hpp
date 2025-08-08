@@ -7,8 +7,7 @@
 #include <ndn-cxx/security/validator-null.hpp>
 #include <ndn-cxx/util/rtt-estimator.hpp>
 #include <thread>
-#include <spdlog/spdlog.h>
-#include <spdlog/sinks/basic_file_sink.h>
+
 #include <ndn-cxx/transport/unix-transport.hpp>
 #include <atomic>
 #include <fstream>
