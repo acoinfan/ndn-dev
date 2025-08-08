@@ -1,0 +1,18 @@
+I/O stats: 100 calls, 68 μs total, 0 μs avg
+I/O stats: 200 calls, 133 μs total, 0 μs avg
+I/O stats: 300 calls, 203 μs total, 0 μs avg
+I/O stats: 400 calls, 222 μs total, 0 μs avg
+I/O stats: 500 calls, 285 μs total, 0 μs avg
+I/O stats: 600 calls, 366 μs total, 0 μs avg
+I/O stats: 700 calls, 413 μs total, 0 μs avg
+
+
+All segments have been received.
+Time elapsed: 0.604361 seconds
+Segments received: 797
+Transferred size: 6525.33 kB
+Goodput: 86.376616 Mbit/s
+Congestion marks: 10 (caused 3 window decreases)
+Timeouts: 3 (caused 0 window decreases)
+Retransmitted segments: 3 (0.375%), skipped: 0
+RTT min/avg/max = 7.574/106.290/220.157 ms

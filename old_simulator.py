@@ -147,6 +147,7 @@ rib {{
         proc = self.popen(cmd, shell=True)
         self.app_processes.append(proc)
         print(f"✓ 生产者应用启动在 {self.name}: {prefix}")
+        print("command:", cmd)
         return proc
     
     def start_consumer(self, config_file, interest_name, log_dir):
@@ -154,6 +155,7 @@ rib {{
         os.makedirs(log_dir, exist_ok=True)
         log_path = os.path.join(log_dir, f"{self.name}.log")
         cmd = f"{CONSUMER_BIN} --prefix {interest_name} --config {config_file} > {log_path} 2>&1"
+        print("command:", cmd)
         return self.cmd(cmd)
     
     def cleanup(self):
