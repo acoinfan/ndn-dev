@@ -17,8 +17,7 @@ import shutil
 import threading
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-PRODUCER_BIN = os.path.join(PROJECT_ROOT, "producer/bin/ndnput")
-CONSUMER_BIN = os.path.join(PROJECT_ROOT, "consumer/bin/ndnget")
+CLIENT_BIN = os.path.join(PROJECT_ROOT, "client/bin/ndnclient")
 
 class NDNHost(Host):
     """扩展的 Host 类，支持 NDN 功能"""
@@ -138,23 +137,14 @@ rib {{
         env = f"NDN_CLIENT_TRANSPORT=unix:///run/nfd/{self.name}.sock"
         cmd = f"{env} nfd-status"
         return self.cmd(cmd)
-    
-    def start_producer(self, prefix, config_file, directory, log_dir):
+
+    def start_producer(self, config_file, transfer_file, id, nodes_count, directory):
         """启动生产者应用"""
-        os.makedirs(log_dir, exist_ok=True)
-        log_path = os.path.join(log_dir, f"{self.name}.log")
-        cmd = f"{PRODUCER_BIN} --prefix {prefix} --config {config_file} -d {directory} > {log_path} 2>&1"
+        cmd = f"{CLIENT_BIN} --c {config_file} --f {transfer_file} --i {id} --n {nodes_count} --d {directory}"
         proc = self.popen(cmd, shell=True)
         self.app_processes.append(proc)
-        print(f"✓ 生产者应用启动在 {self.name}: {prefix}")
+        print(f"✓ 生产者应用启动在 {self.name}: {id}")
         return proc
-    
-    def start_consumer(self, config_file, interest_name, log_dir):
-        """启动消费者应用"""
-        os.makedirs(log_dir, exist_ok=True)
-        log_path = os.path.join(log_dir, f"{self.name}.log")
-        cmd = f"{CONSUMER_BIN} --prefix {interest_name} --config {config_file} > {log_path} 2>&1"
-        return self.cmd(cmd)
     
     def cleanup(self):
         """清理进程"""
@@ -163,11 +153,62 @@ rib {{
         for proc in self.app_processes:
             proc.terminate()
 
-def load_config(config_file='network_config.py'):
-    """加载网络配置"""
-    spec = importlib.util.spec_from_file_location("network_config", config_file)
-    config = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(config)
+def create_network_config(nodes = 10, bw = 100, delay = '0ms', loss = 0, max_queue_size = 10000000, file_name = "testfile_6442450.txt"):
+    """创建网络配置"""
+    config = {
+        'nodes': {},
+        'links': {},
+        'applications': {},
+        'routes': {},
+    }
+
+    # 自动生成 nodes 部分
+    for i in range(nodes):
+        # 生成 producer
+        config['nodes'][f'producer{i}'] = {'ip': f'10.0.{i}.{i}/16', 'type': 'producer'}
+        # 生成 consumer（每个 client 对其他 client 的请求）
+        for j in range(nodes):
+            if i != j:
+                config['nodes'][f'consumer{i}-{j}'] = {'ip': f'10.0.{i}.{j}/16', 'type': 'consumer'}
+
+    # 自动生成 links 部分
+    for i in range(nodes):
+        for j in range(nodes):
+            if i != j:
+                consumer_name = f'consumer{i}-{j}'
+                producer_name = f'producer{j}'
+                link_name = f'{consumer_name}-{producer_name}'
+                config['links'][link_name] = {
+                    'nodes': (consumer_name, producer_name),
+                    'bw': bw,
+                    'delay': delay,
+                    'loss': loss,
+                    'max_queue_size': max_queue_size,
+                    'use_htb': True,
+                    'jitter': None
+                }
+
+    # 自动生成 applications 部分
+    for i in range(nodes):
+        config['applications'][f'producer{i}'] = {
+            'config_file': os.path.join(PROJECT_ROOT, 'exp-clientconfig.ini'),
+            'transfer_file': file_name,
+            'id': i,
+            'nodes_count': nodes,
+            'directory': os.path.join(PROJECT_ROOT, 'experiments')
+        }
+
+    # 自动生成 routes 部分
+    for i in range(nodes):
+        for j in range(nodes):
+            if i != j:
+                consumer_name = f'consumer{i}-{j}'
+                producer_name = f'producer{j}'
+                producer_ip = config['nodes'][producer_name]['ip'].split('/')[0]
+                config['routes'][consumer_name] = [
+                    (f'/producer{j}', f'udp4://{producer_ip}:6363')
+                ]
+
     return config
 
 def create_topology_from_config(config):
@@ -213,7 +254,14 @@ def create_topology_from_config(config):
     
     return net, hosts
 
-def setup_ndn_environment(net, hosts, config, log_dir):
+def setup_log_path(config):
+    start_time_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    first_app = next(iter(config['applications'].values()))
+    file_name = first_app['transfer_file']
+    log_dir = os.path.join("logs", f"{start_time_str}_{file_name}")
+    return log_dir
+
+def setup_ndn_environment(net, hosts, config):
     """设置 NDN 环境"""
     
     print("### 启动网络 ###")
@@ -230,269 +278,76 @@ def setup_ndn_environment(net, hosts, config, log_dir):
             node.add_route(prefix, nexthop)
     
     print("### 启动应用程序 ###")
+    threads = []
+    ok_dir = "/tmp/ndn"
+    os.makedirs(ok_dir, exist_ok=True)
+    ok_file = [os.path.join(ok_dir, f"{app_config['id']}.ok") for node_name, app_config in config.applications.items() if node_name in hosts]
+
     for node_name, app_config in config.applications.items():
         if node_name in hosts:
             node = hosts[node_name]
-            node.start_producer(
-                prefix=app_config['prefix'],
-                config_file=app_config['config_file'],
-                directory=app_config['directory'],
-                log_dir=log_dir
+            thread = threading.Thread(
+                target=node.start_producer,
+                kwargs={
+                    'config_file': app_config['config_file'],
+                    'transfer_file': app_config['transfer_file'],
+                    'id': app_config['id'],
+                    'nodes_count': app_config['nodes_count'],
+                    'directory': app_config['directory']
+                }
             )
-    
+        threads.append(thread)
+        thread.start()
+
+    import time
+    while True:
+        if all(os.path.exists(ok) for ok in ok_file):
+            break
+        time.sleep(1)
+
+    with open(os.path.join(ok_dir, "all.ok"), 'w') as f:
+        f.write("all producers started\n")
     return net
 
-def run_tests(hosts, config, log_dir):
-    """运行测试"""
-    
-    print("### 运行测试 ###")
-    
-    total_bw = 0.0
-    total_delay = 0.0
-    total_time = 0.0
-    total_bytes = 0
-    test_count = 0
-    
-    for test in config.tests:
-        print(f"\n--- 测试: {test['name']} ---")
-        print(f"描述: {test['description']}")
 
-        # 支持test['consumer'] 为字符串或列表
-        consumers = test['consumer']
-        if isinstance(consumers, str):
-            consumers = [consumers]
-        
-        # 支持test['interest'] 为字符串或列表
-        interests = test['interest']
-        if not isinstance(interests, list):
-            interests = [interests] * len(consumers)
-        
-        threads = []
-        results = {}
-        start_times = {}
-        end_times = {}
+def log_movement(log_dir):
+    import glob
 
-        def consumer_task(consumer_name, interest_name):
-            consumer = hosts[consumer_name]
-            print(f"消费者 {consumer_name} 请求: {interest_name}")
-            import time
-            start_times[consumer_name] = time.time()
-            result = consumer.start_consumer(test['config'], interest_name, log_dir)
-            end_times[consumer_name] = time.time()
-            results[consumer_name] = result
-        
-        # 启动所有 consumer 线程
-        for idx, consumer_name in enumerate(consumers):
-            thread = threading.Thread(target=consumer_task, args=(consumer_name, interests[idx]))
-            threads.append(thread)
-            thread.start()
+    log_files = glob.glob('/tmp/ndn/*.log')
+    for log_file in log_files:
+        fname = os.path.basename(log_file)
+        target_path = os.path.join(log_dir, fname)
+        shutil.move(log_file, target_path)
 
-        # 等待所有 consumer 完成
-        for thread in threads:
-            thread.join()
-
-        # 针对每个 consumer 进行统计和输出
-        for consumer_name in consumers:
-            transfer_time = end_times[consumer_name] - start_times[consumer_name]
-            result = results[consumer_name]
-            print(f"\n--- {consumer_name} 完成 ---")
-            print(f"传输时间：{transfer_time:.2f} 秒")
-
-            # 获取链路参数
-            bw = None
-            delay = None
-            for link_name, link_config in config.links.items():
-                if consumer_name in link_config['nodes']:
-                    bw = link_config['bw']
-                    delay = link_config['delay']
-                    break
-
-            # 分析结果并提取传输信息
-            bytes_transferred = 0
-            segments_received = 0
-            max_segment_number = 0
-
-            if "ERROR" in result:
-                print(f"❌ 测试失败:")
-                print(result)
-            else:
-                print(f"✓ 测试成功")
-            
-            # 调试输出：显示完整的consumer输出
-            print(f"  --- Consumer 完整输出 (调试用) ---")
-            for i, line in enumerate(result.split('\n')):
-                if line.strip():
-                    print(f"  [{i}] {line}")
-            print(f"  --- 输出结束 ---")
-                
-            # 提取传输统计信息
-            for line in result.split('\n'):
-                if any(keyword in line for keyword in ['Published', 'Received', 'segments', 'bytes']):
-                    print(f"  {line}")
-                
-                # 提取segment号码 - 从 "Received segment #206" 格式中提取
-                if 'received segment #' in line.lower():
-                    import re
-                    segment_match = re.search(r'segment\s*#(\d+)', line, re.IGNORECASE)
-                    if segment_match:
-                        segment_num = int(segment_match.group(1))
-                        max_segment_number = max(max_segment_number, segment_num)
-                
-                # 提取字节数 - 改进的正则表达式
-                if 'bytes' in line.lower():
-                    import re
-                    bytes_patterns = [
-                        r'(\d+)\s*bytes',
-                        r'bytes:\s*(\d+)',
-                        r'received\s+(\d+)',
-                        r'transferred\s+(\d+)',
-                        r'size\s*:\s*(\d+)'
-                    ]
-                    for pattern in bytes_patterns:
-                        bytes_match = re.search(pattern, line, re.IGNORECASE)
-                        if bytes_match:
-                            bytes_transferred = int(bytes_match.group(1))
-                            break
-                
-                # 提取段数 - 改进的正则表达式
-                if 'segment' in line.lower() and 'received segment #' not in line.lower():
-                    import re
-                    segment_patterns = [
-                        r'(\d+)\s*segments?',
-                        r'segments?\s*:\s*(\d+)',
-                        r'received\s+(\d+)\s+segments?',
-                        r'total\s+segments?\s*:\s*(\d+)',
-                        r'segments?\s+received\s*:\s*(\d+)'
-                    ]
-                    for pattern in segment_patterns:
-                        segments_match = re.search(pattern, line, re.IGNORECASE)
-                        if segments_match:
-                            segments_received = int(segments_match.group(1))
-                            break
-            
-            # 如果找到了segment号码，计算总段数（segment从0开始，所以+1）
-            if max_segment_number > 0:
-                calculated_segments = max_segment_number + 1
-                print(f"  最大段号: #{max_segment_number}")
-                print(f"  计算的段数: {calculated_segments} (基于最大段号+1)")
-                segments_received = max(segments_received, calculated_segments)
-            
-            print(f"  链路带宽: {bw} Mbps")
-            print(f"  链路延迟: {delay}")
-            print(f"  传输时间: {transfer_time:.2f} 秒")
-            
-            if segments_received > 0:
-                print(f"  接收段数: {segments_received}")
-                
-                segment_size = 8192  # NDN默认段大小
-                for line in result.split('\n'):
-                    if 'segment size' in line.lower() or 'payload size' in line.lower():
-                        import re
-                        size_match = re.search(r'(\d+)', line)
-                        if size_match:
-                            segment_size = int(size_match.group(1))
-                            break
-                
-                calculated_bytes = segments_received * segment_size
-                print(f"  段大小: {segment_size} 字节")
-                print(f"  计算数据量: {calculated_bytes} 字节 ({segments_received} × {segment_size})")
-                
-                if transfer_time > 0:
-                    segment_based_bw = calculated_bytes * 8 / transfer_time / 1e6
-                    print(f"  基于段的传输带宽: {segment_based_bw:.2f} Mbps")
-                    if bw and bw > 0:
-                        utilization = (segment_based_bw / bw) * 100
-                        print(f"  带宽利用率: {utilization:.1f}%")
-            
-            if bytes_transferred > 0 and transfer_time > 0:
-                reported_bw = bytes_transferred * 8 / transfer_time / 1e6
-                print(f"  报告的传输带宽: {reported_bw:.2f} Mbps")
-                print(f"  报告的数据量: {bytes_transferred} 字节")
-            
-            total_bw += bw if bw else 0
-            total_delay += float(delay.replace('ms','')) if delay else 0
-            total_time += transfer_time
-            
-            # 优先使用基于段的数据量，否则使用报告的字节数
-            if segments_received > 0:
-                segment_size = 8192  # 默认NDN段大小
-                calculated_bytes = segments_received * segment_size
-                total_bytes += calculated_bytes
-            else:
-                total_bytes += bytes_transferred
-                
-            test_count += 1
-            sleep(2)  # 测试间隔
-        
-    if test_count > 0:
-        print("\n=== 测试统计 ===")
-        print(f'time: {total_time:.2f}')
-        print(f"总传输数据量: {total_bytes} 字节")
-        if total_bytes > 0 and total_time > 0:
-            print(f"总体平均传输速率: {total_bytes * 8 / total_time / 1e6:.2f} Mbps")
-
-def show_network_status(hosts):
-    """显示网络状态"""
-    
-    print("\n### 网络状态 ###")
-    
-    for name, host in hosts.items():
-        print(f"\n--- {name} ---")
-        status = host.get_nfd_status()
-        
-        # 显示关键统计信息
-        print("统计信息:")
-        for line in status.split('\n'):
-            if any(keyword in line.lower() for keyword in ['interests', 'data', 'nacks', 'uptime']):
-                print(f"  {line.strip()}")
-        
-        # 显示路由表
-        print("路由表:")
-        fib_lines = status.split('\n')
-        in_fib = False
-        for line in fib_lines:
-            if 'FIB:' in line:
-                in_fib = True
-            elif in_fib and line.startswith('  /'):
-                print(f"  {line.strip()}")
-            elif in_fib and not line.startswith('  '):
-                break
-
-def main():
-    if len(sys.argv) > 1:
-        config_file = sys.argv[1]
-    else:
-        config_file = 'network_config.py'
-    
+def main():  
     setLogLevel('info')
     
     try:
-        # 加载配置
-        print(f"### 加载配置文件: {config_file} ###")
-        config = load_config(config_file)
+        # 创建网络拓扑
+        print("### 创建网络配置 ###")
+        config = create_network_config(
+            nodes=10,                           # 节点数量
+            bw=100,                             # 带宽 (Mbps)   
+            delay='0ms',                        # 延迟
+            loss=0,                             # 丢包率 (%)
+            max_queue_size=10000000,            # 最大队列大小 (字节)
+            file_name="testfile_6442450.txt",   # 请求的文件名
+        )
         
-        # 创建拓扑
-        print("### 创建网络拓扑 ###")
+        # 读取网络拓扑
+        print("### 读取网络拓扑 ###")
         net, hosts = create_topology_from_config(config)
 
         # 创建logs目录
-        start_time_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        file_name = os.path.basename(str(config.tests[0]['interest'][0]))
-        log_dir = os.path.join("logs", f"{start_time_str}_{file_name}")
-        
+        log_dir = setup_log_path(config)
+
         # 设置 NDN 环境
-        net = setup_ndn_environment(net, hosts, config, log_dir)
-        
-        # 等待系统稳定
-        sleep(10)
-        
-        # 运行测试
-        run_tests(hosts, config, log_dir)
-        
-        # 显示状态
-        show_network_status(hosts)
+        net = setup_ndn_environment(net, hosts, config)
     
         CLI(net)
+
+        # 移动日志文件
+        log_movement(log_dir)
     except Exception as e:
         print(f"错误: {e}")
         import traceback
@@ -506,11 +361,5 @@ def main():
         except:
             pass
 
-        # 移动日志文件到指定目录
-        for fname in ['cwnd.log', 'rtt.log']:
-            if os.path.exists(fname):
-                target_path = os.path.join(log_dir, fname)
-                shutil.move(fname, target_path)
-                
 if __name__ == '__main__':
     main()
