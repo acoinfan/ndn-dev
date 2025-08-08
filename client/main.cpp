@@ -29,7 +29,6 @@
  * @author Chavoosh Ghasemi
  */
 
-#include "consumer.hpp"
 #include "async-consumer.hpp"
 #include "async-producer.hpp"
 #include "discover-version.hpp"
@@ -51,7 +50,6 @@
 #include <iostream>
 #include <cstdio>
 
-#include "producer.hpp"
 #include "inipp.h"
 
 namespace ndn::get
@@ -85,11 +83,18 @@ namespace ndn::get
 
     // Analyse command line options
     po::options_description basicDesc("Basic Options");
-    basicDesc.add_options()("help,h", "print this help message and exit")("config,c", po::value<std::string>(&configPath),
-                                                                          "path to the configuration file")("filename,f", po::value<std::string>(&fileName),
-                                                                                                            "file name of the requested content")("id,i", po::value<int>(&id),
-                                                                                                                                                  "the unique ID of this consumer node")("nodes,n", po::value<int>(&totalNodes),
-                                                                                                                                                                                         "the total number of consumer nodes in the experiment")("directory,d", po::value<std::string>(&fileDir)->required(), "Directory of files to store and send (absolute path)");
+    basicDesc.add_options()
+    ("help,h", "print this help message and exit")
+    ("config,c", po::value<std::string>(&configPath),
+                    "path to the configuration file")
+    ("filename,f", po::value<std::string>(&fileName),
+                    "file name of the requested content")
+    ("id,i", po::value<int>(&id),
+                    "the unique ID of this consumer node")
+    ("nodes,n", po::value<int>(&totalNodes),
+                    "the total number of consumer nodes in the experiment")
+    ("directory,d", po::value<std::string>(&fileDir)->required(),
+                    "Directory of files to store and send (absolute path)");
 
     po::variables_map vm;
     po::store(po::command_line_parser(argc, argv).options(basicDesc).run(), vm);
@@ -158,8 +163,8 @@ namespace ndn::get
     auto &cubic = ini.sections["cubic"];
     auto &producer = ini.sections["producer"];
 
-    // Extract options from each section\
-  // general options
+    // Extract options from each section
+    // general options
     nameConv = general["naming-convention"];
     consumerOptions.isQuiet = get_bool(general["quiet"], clientPrefix, logFile, "quiet");
     consumerOptions.isVerbose = get_bool(general["verbose"], clientPrefix, logFile, "verbose");
@@ -418,6 +423,7 @@ namespace ndn::get
     catch (const std::invalid_argument &)
     {
       os << clientPrefix << " ERROR: Invalid double value from consumer option " << errorMsg << ": " << value << "\n";
+      return 0.0; // Return default value on error
     }
   }
 

@@ -17,7 +17,6 @@
 #include <ndn-cxx/transport/unix-transport.hpp>
 #include <atomic>
 #include <fstream>
-#include "consumer.hpp"
 
 namespace ndn::get
 {

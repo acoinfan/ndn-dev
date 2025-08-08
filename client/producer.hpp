@@ -4,15 +4,16 @@ This file is based on the part of ndn-tools chunks
 #ifndef IMAgg_Producer_HPP
 #define IMAgg_Producer_HPP
 
+#include "core/common.hpp"
+
+#include <ndn-cxx/data.hpp>
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/security/key-chain.hpp>
+
+#include <filesystem>
 #include <fstream>
 
-#ifdef UNIT_TEST
-#define PUBLIC_WITH_TESTS_ELSE_PRIVATE public
-#else
-#define PUBLIC_WITH_TESTS_ELSE_PRIVATE private
-#endif
+// Remove duplicate macro definition - it's already defined in core/common.hpp
 
 namespace ndn::chunks
 {
