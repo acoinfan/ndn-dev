@@ -75,6 +75,7 @@
         "scope": "cpp",
         "source_location": "cpp",
         "format": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "filesystem": "cpp"
     }
 }

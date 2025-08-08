@@ -30,6 +30,8 @@
  */
 
 #include "consumer.hpp"
+#include "async-consumer.hpp"
+#include "async-producer.hpp"
 #include "discover-version.hpp"
 #include "pipeline-interests-aimd.hpp"
 #include "pipeline-interests-cubic.hpp"
@@ -47,375 +49,381 @@
 
 #include <fstream>
 #include <iostream>
+#include <cstdio>
 
 #include "producer.hpp"
 #include "inipp.h"
 
-namespace ndn::get {
-
-namespace po = boost::program_options;
-
-// declaration of helper functions
-static bool get_bool(std::string const& value, std::string const& errorMsg = "");
-
-static int get_int(std::string const& value, std::string const& errorMsg = "");
-
-static double get_double(std::string const& value, std::string const& errorMsg = "");
-
-static long get_long(std::string const& value, std::string const& errorMsg = "");
-// end of declaration
-
-static int main(int argc, char* argv[])
+namespace ndn::get
 {
-  // Initialize options and variables
-  Options consumerOptions;
-  ndn::chunks::Producer::Options producerOptions;
 
-  std::string fileName, nameConv, pipelineType, configPath, fileDir, signingInfo; // fileName is the file to be fetched and sent
-  int id, totalNodes;
-  std::string cwndPath, rttPath;
-  util::RttEstimator::Options rttEstOptions;
-  const std::string programName(argv[0]);
-  
-  // Analyse command line options
-  po::options_description basicDesc("Basic Options");
-  basicDesc.add_options()
-    ("help,h",      "print this help message and exit")
-    ("config,c", po::value<std::string>(&configPath),
-                    "path to the configuration file")
-    ("filename,f",  po::value<std::string>(&fileName),
-                    "file name of the requested content")
-    ("id,i",        po::value<int>(&id),
-                    "the unique ID of this consumer node")
-    ("nodes,n",     po::value<int>(&totalNodes),
-                    "the total number of consumer nodes in the experiment")
-    ("directory,d", po::value<std::string>(&fileDir)->required(), "Directory of files to store and send (absolute path)");
-  
-  po::variables_map vm;
-  po::store(po::command_line_parser(argc, argv).options(basicDesc).run(), vm);
-  po::notify(vm);
+  namespace po = boost::program_options;
 
-  if (vm.count("help") > 0) {
-    std::cout << "Usage: " << programName << " [options]\n";
-    std::cout << basicDesc;
-    return 0;
-  }
+  // declaration of helper functions
+  static bool get_bool(std::string const &value, std::string const &clientPrefix, std::ofstream &os, std::string const &errorMsg = "");
 
-  if (vm.count("config") == 0) {
-    std::cerr << "ERROR: --config is required\n";
-    return 2;
-  }
+  static int get_int(std::string const &value, std::string const &clientPrefix, std::ofstream &os, std::string const &errorMsg = "");
 
-  if (vm.count("filename") == 0) {
-    std::cerr << "ERROR: --filename is required\n";
-    return 2;
-  }
+  static double get_double(std::string const &value, std::string const &clientPrefix, std::ofstream &os, std::string const &errorMsg = "");
 
-  if (vm.count("id") == 0) {
-    std::cerr << "ERROR: --id is required\n";
-    return 2;
-  }
+  static long get_long(std::string const &value, std::string const &clientPrefix, std::ofstream &os, std::string const &errorMsg = "");
+  // end of declaration
 
-  if (vm.count("nodes") == 0) {
-    std::cerr << "ERROR: --nodes is required\n";
-    return 2;
-  }
-
-  if (vm.count("directory") == 0) {
-    std::cerr << "ERROR: --directory is required\n";
-    return 2;
-  }
-
-  fileDir = vm.count("directory") ? vm["directory"].as<std::string>() : "";
-  configPath = vm.count("conconfig") ? vm["conconfig"].as<std::string>() : "";
-
-
-  // Read from configuration (assert config is available)
-  inipp::Ini<char> ini;
-  std::ifstream configFile(configPath);
-
-  // Determine if the configuration file exists and can be opened
-  if (!configFile) {
-    std::cerr << "ERROR: Could not open configuration file: " << configPath << "\n";
-    return 1;
-  }
-
-
-  // Extract sections from the config (consumer-configuration)
-  ini.parse(configFile);
-  auto& consumer = ini.sections["consumer"];
-  auto& pipeline = ini.sections["pipeline"];
-  auto& aimd = ini.sections["aimd"];
-  auto& cubic = ini.sections["cubic"];
-  auto& producer = ini.sections["producer"];
-
-  // Extract options from each section
-  // consumer options
-  consumerOptions.mustBeFresh = get_bool(consumer["fresh"], "fresh");
-  consumerOptions.interestLifetime = time::milliseconds(get_long(consumer["lifetime"], "lifetime"));
-  consumerOptions.maxRetriesOnTimeoutOrNack = get_int(consumer["retries"], "retries");
-  consumerOptions.disableVersionDiscovery = get_bool(consumer["no-version-discovery"], "no-version-discovery");
-  nameConv = consumer["naming-convention"];
-  consumerOptions.isQuiet = get_bool(consumer["quiet"], "quiet");
-  consumerOptions.isVerbose = get_bool(consumer["verbose"], "verbose");
-
-  // pipeline options
-  pipelineType = pipeline["pipeline-type"];
-  consumerOptions.maxPipelineSize = get_int(pipeline["pipeline-size"], "pipeline-size");
-  consumerOptions.ignoreCongMarks = get_bool(pipeline["ignore-marks"], "ignore-marks");
-  consumerOptions.disableCwa = get_bool(pipeline["disable-cwa"], "disable-cwa");
-  consumerOptions.initCwnd = get_double(pipeline["init-cwnd"], "init-cwnd");
-  consumerOptions.initSsthresh = get_double(pipeline["init-ssthresh"], "init-ssthresh");
-  rttEstOptions.alpha = get_double(pipeline["rto-alpha"], "rto-alpha");
-  rttEstOptions.beta = get_double(pipeline["rto-beta"], "rto-beta");
-  rttEstOptions.k = get_int(pipeline["rto-k"], "rto-k");
-  rttEstOptions.minRto = time::milliseconds(get_long(pipeline["min-rto"], "min-rto"));
-  rttEstOptions.maxRto = time::milliseconds(get_long(pipeline["max-rto"], "max-rto"));
-  cwndPath = pipeline["log-cwnd"];
-  rttPath = pipeline["log-rtt"];
-  consumerOptions.rtoCheckInterval = time::milliseconds(get_long(pipeline["rto-check-interval"], "rto-check-interval"));
-  rttEstOptions.initialRto = time::milliseconds(get_long(pipeline["initial-rto"], "initial-rto"));
-  rttEstOptions.rtoBackoffMultiplier = get_double(pipeline["rto-backoff-multiplier"], "rto-backoff-multiplier");
-
-  // aimd options
-  consumerOptions.aiStep = get_double(aimd["aimd-step"], "aimd-step");
-  consumerOptions.mdCoef = get_double(aimd["aimd-beta"], "aimd-beta");
-  consumerOptions.resetCwndToInit = get_bool(aimd["reset-cwnd-to-init"], "reset-cwnd-to-init");
-
-  // cubic options
-  consumerOptions.cubicBeta = get_double(cubic["cubic-beta"], "cubic-beta");
-  consumerOptions.enableFastConv = get_bool(cubic["fast-conv"], "fast-conv");
-
-  // producer options
-  producerOptions.freshnessPeriod = time::milliseconds(get_long(producer["freshness"], "freshness"));
-  producerOptions.maxSegmentSize = get_int(producer["segment-size"], "segment-size");
-  signingInfo = producer["signing-info"];
-  producerOptions.isQuiet = get_bool(producer["quiet"], "quiet");
-  producerOptions.isVerbose = get_bool(producer["verbose"], "verbose");
-
-  // checking configured options
-  if (nameConv != producer["naming-convention"]) {
-    std::cerr << "ERROR: naming convention in consumer (" << nameConv
-              << ") does not match producer (" << producer["naming-convention"] << ")\n";
-    return 2;
-  }
-
-  if (nameConv == "marker" || nameConv == "m" || nameConv == "1") {
-    name::setConventionEncoding(name::Convention::MARKER);
-  }
-  else if (nameConv == "typed" || nameConv == "t" || nameConv == "2") {
-    name::setConventionEncoding(name::Convention::TYPED);
-  }
-  else if (!nameConv.empty()) {
-    std::cerr << "ERROR: '" << nameConv << "' is not a valid naming convention\n";
-    return 2;
-  }
-
-  // checking consumer options
-  if (consumerOptions.interestLifetime < 0_ms) {
-    std::cerr << "ERROR: --lifetime cannot be negative\n";
-    return 2;
-  }
-
-  if (consumerOptions.maxRetriesOnTimeoutOrNack < -1 || consumerOptions.maxRetriesOnTimeoutOrNack > 1024) {
-    std::cerr << "ERROR: --retries must be between -1 and 1024\n";
-    return 2;
-  }
-
-  if (consumerOptions.isQuiet && consumerOptions.isVerbose) {
-    std::cerr << "ERROR: consumer cannot be quiet and verbose at the same time\n";
-    return 2;
-  }
-
-  if (consumerOptions.maxPipelineSize < 1 || consumerOptions.maxPipelineSize > 1024) {
-    std::cerr << "ERROR: --pipeline-size must be between 1 and 1024\n";
-    return 2;
-  }
-
-  if (rttEstOptions.k < 0) {
-    std::cerr << "ERROR: --rto-k cannot be negative\n";
-    return 2;
-  }
-
-  if (rttEstOptions.minRto < 0_ms) {
-    std::cerr << "ERROR: --min-rto cannot be negative\n";
-    return 2;
-  }
-
-  if (rttEstOptions.maxRto < rttEstOptions.minRto) {
-    std::cerr << "ERROR: --max-rto cannot be smaller than --min-rto\n";
-    return 2;
-  }
-
-  // checking producer options
-  if (producerOptions.freshnessPeriod < 0_ms)
+  static int main(int argc, char *argv[])
   {
-      std::cerr << "ERROR: --freshness cannot be negative\n";
+    // Initialize options and variables
+    Options consumerOptions;
+    AsyncConsumerOptions asyncConsumerOptions;
+
+    ndn::chunks::Producer::Options producerOptions;
+    util::RttEstimator::Options rttEstOptions;
+
+    std::string fileName, nameConv, pipelineType, configPath, fileDir, signingInfo; // fileName is the file to be fetched and sent
+    int id, totalNodes;
+    std::string cwndPath, rttPath, signalFile = "/tmp/ndn/all.ok"; // signal file path
+    const std::string programName(argv[0]);
+
+    // Analyse command line options
+    po::options_description basicDesc("Basic Options");
+    basicDesc.add_options()("help,h", "print this help message and exit")("config,c", po::value<std::string>(&configPath),
+                                                                          "path to the configuration file")("filename,f", po::value<std::string>(&fileName),
+                                                                                                            "file name of the requested content")("id,i", po::value<int>(&id),
+                                                                                                                                                  "the unique ID of this consumer node")("nodes,n", po::value<int>(&totalNodes),
+                                                                                                                                                                                         "the total number of consumer nodes in the experiment")("directory,d", po::value<std::string>(&fileDir)->required(), "Directory of files to store and send (absolute path)");
+
+    po::variables_map vm;
+    po::store(po::command_line_parser(argc, argv).options(basicDesc).run(), vm);
+    po::notify(vm);
+
+    if (vm.count("help") > 0)
+    {
+      std::cout << "Usage: " << programName << " [options]\n";
+      std::cout << basicDesc;
+      return 0;
+    }
+
+    std::string clientPrefix = "/ndn/client" + std::to_string(id);
+    std::ofstream logFile(clientPrefix + ".log");
+
+    if (vm.count("config") == 0)
+    {
+      logFile << clientPrefix << " ERROR: --config is required\n";
       return 2;
-  }
+    }
 
-  if (producerOptions.maxSegmentSize < 1 || producerOptions.maxSegmentSize > MAX_NDN_PACKET_SIZE)
-  {
-      std::cerr << "ERROR: --size must be between 1 and " << MAX_NDN_PACKET_SIZE << "\n";
+    if (vm.count("filename") == 0)
+    {
+      logFile << clientPrefix << " ERROR: --filename is required\n";
       return 2;
-  }
+    }
 
-  try
-  {
+    if (vm.count("id") == 0)
+    {
+      logFile << clientPrefix << " ERROR: --id is required\n";
+      return 2;
+    }
+
+    if (vm.count("nodes") == 0)
+    {
+      logFile << clientPrefix << " ERROR: --nodes is required\n";
+      return 2;
+    }
+
+    if (vm.count("directory") == 0)
+    {
+      logFile << clientPrefix << " ERROR: --directory is required\n";
+      return 2;
+    }
+
+    fileDir = vm.count("directory") ? vm["directory"].as<std::string>() : "";
+    configPath = vm.count("config") ? vm["config"].as<std::string>() : "";
+
+    // Read from configuration (assert config is available)
+    inipp::Ini<char> ini;
+    std::ifstream configFile(configPath);
+
+    // Determine if the configuration file exists and can be opened
+    if (!configFile)
+    {
+      logFile << clientPrefix << " ERROR: Could not open configuration file: " << configPath << "\n";
+      return 1;
+    }
+
+    // Extract sections from the config (consumer-configuration)
+    ini.parse(configFile);
+    auto &general = ini.sections["general"];
+    auto &consumer = ini.sections["consumer"];
+    auto &pipeline = ini.sections["pipeline"];
+    auto &aimd = ini.sections["aimd"];
+    auto &cubic = ini.sections["cubic"];
+    auto &producer = ini.sections["producer"];
+
+    // Extract options from each section\
+  // general options
+    nameConv = general["naming-convention"];
+    consumerOptions.isQuiet = get_bool(general["quiet"], clientPrefix, logFile, "quiet");
+    consumerOptions.isVerbose = get_bool(general["verbose"], clientPrefix, logFile, "verbose");
+    asyncConsumerOptions.cwndLoggingEnabled = get_bool(general["log-cwnd"], clientPrefix, logFile, "log-cwnd");
+    asyncConsumerOptions.rttLoggingEnabled = get_bool(general["log-rtt"], clientPrefix, logFile, "log-rtt");
+    producerOptions.isQuiet = consumerOptions.isQuiet;
+    producerOptions.isVerbose = consumerOptions.isVerbose;
+
+    // consumer options
+    consumerOptions.mustBeFresh = get_bool(consumer["fresh"], clientPrefix, logFile, "fresh");
+    consumerOptions.interestLifetime = time::milliseconds(get_long(consumer["lifetime"], clientPrefix, logFile, "lifetime"));
+    consumerOptions.maxRetriesOnTimeoutOrNack = get_int(consumer["retries"], clientPrefix, logFile, "retries");
+    consumerOptions.disableVersionDiscovery = get_bool(consumer["no-version-discovery"], clientPrefix, logFile, "no-version-discovery");
+    asyncConsumerOptions.isSaveFile = get_bool(consumer["save-to-dir"], clientPrefix, logFile, "save-to-dir");
+
+    // producer options
+    producerOptions.freshnessPeriod = time::milliseconds(get_long(producer["freshness"], clientPrefix, logFile, "freshness"));
+    producerOptions.maxSegmentSize = get_int(producer["segment-size"], clientPrefix, logFile, "segment-size");
+    signingInfo = producer["signing-info"];
+
+    // pipeline options
+    pipelineType = pipeline["pipeline-type"];
+    consumerOptions.maxPipelineSize = get_int(pipeline["pipeline-size"], clientPrefix, logFile, "pipeline-size");
+    consumerOptions.ignoreCongMarks = get_bool(pipeline["ignore-marks"], clientPrefix, logFile, "ignore-marks");
+    consumerOptions.disableCwa = get_bool(pipeline["disable-cwa"], clientPrefix, logFile, "disable-cwa");
+    consumerOptions.initCwnd = get_double(pipeline["init-cwnd"], clientPrefix, logFile, "init-cwnd");
+    consumerOptions.initSsthresh = get_double(pipeline["init-ssthresh"], clientPrefix, logFile, "init-ssthresh");
+    rttEstOptions.alpha = get_double(pipeline["rto-alpha"], clientPrefix, logFile, "rto-alpha");
+    rttEstOptions.beta = get_double(pipeline["rto-beta"], clientPrefix, logFile, "rto-beta");
+    rttEstOptions.k = get_int(pipeline["rto-k"], clientPrefix, logFile, "rto-k");
+    rttEstOptions.minRto = time::milliseconds(get_long(pipeline["min-rto"], clientPrefix, logFile, "min-rto"));
+    rttEstOptions.maxRto = time::milliseconds(get_long(pipeline["max-rto"], clientPrefix, logFile, "max-rto"));
+    consumerOptions.rtoCheckInterval = time::milliseconds(get_long(pipeline["rto-check-interval"], clientPrefix, logFile, "rto-check-interval"));
+    rttEstOptions.initialRto = time::milliseconds(get_long(pipeline["initial-rto"], clientPrefix, logFile, "initial-rto"));
+    rttEstOptions.rtoBackoffMultiplier = get_double(pipeline["rto-backoff-multiplier"], clientPrefix, logFile, "rto-backoff-multiplier");
+
+    // aimd options
+    consumerOptions.aiStep = get_double(aimd["aimd-step"], clientPrefix, logFile, "aimd-step");
+    consumerOptions.mdCoef = get_double(aimd["aimd-beta"], clientPrefix, logFile, "aimd-beta");
+    consumerOptions.resetCwndToInit = get_bool(aimd["reset-cwnd-to-init"], clientPrefix, logFile, "reset-cwnd-to-init");
+
+    // cubic options
+    consumerOptions.cubicBeta = get_double(cubic["cubic-beta"], clientPrefix, logFile, "cubic-beta");
+    consumerOptions.enableFastConv = get_bool(cubic["fast-conv"], clientPrefix, logFile, "fast-conv");
+
+    // checking configured options
+    if (nameConv == "marker" || nameConv == "m" || nameConv == "1")
+    {
+      name::setConventionEncoding(name::Convention::MARKER);
+    }
+    else if (nameConv == "typed" || nameConv == "t" || nameConv == "2")
+    {
+      name::setConventionEncoding(name::Convention::TYPED);
+    }
+    else if (!nameConv.empty())
+    {
+      logFile << clientPrefix << " ERROR: '" << nameConv << "' is not a valid naming convention\n";
+      return 2;
+    }
+
+    // checking consumer options
+    if (consumerOptions.interestLifetime < 0_ms)
+    {
+      logFile << clientPrefix << " ERROR: --lifetime cannot be negative\n";
+      return 2;
+    }
+
+    if (consumerOptions.maxRetriesOnTimeoutOrNack < -1 || consumerOptions.maxRetriesOnTimeoutOrNack > 1024)
+    {
+      logFile << clientPrefix << " ERROR: --retries must be between -1 and 1024\n";
+      return 2;
+    }
+
+    if (consumerOptions.isQuiet && consumerOptions.isVerbose)
+    {
+      logFile << clientPrefix << " ERROR: consumer and producer cannot be quiet and verbose at the same time\n";
+      return 2;
+    }
+
+    if (consumerOptions.maxPipelineSize < 1 || consumerOptions.maxPipelineSize > 1024)
+    {
+      logFile << clientPrefix << " ERROR: --pipeline-size must be between 1 and 1024\n";
+      return 2;
+    }
+
+    if (rttEstOptions.k < 0)
+    {
+      logFile << clientPrefix << " ERROR: --rto-k cannot be negative\n";
+      return 2;
+    }
+
+    if (rttEstOptions.minRto < 0_ms)
+    {
+      logFile << clientPrefix << " ERROR: --min-rto cannot be negative\n";
+      return 2;
+    }
+
+    if (rttEstOptions.maxRto < rttEstOptions.minRto)
+    {
+      logFile << clientPrefix << " ERROR: --max-rto cannot be smaller than --min-rto\n";
+      return 2;
+    }
+
+    // checking producer options
+    if (producerOptions.freshnessPeriod < 0_ms)
+    {
+      logFile << clientPrefix << " ERROR: --freshness cannot be negative\n";
+      return 2;
+    }
+
+    if (producerOptions.maxSegmentSize < 1 || producerOptions.maxSegmentSize > MAX_NDN_PACKET_SIZE)
+    {
+      logFile << clientPrefix << " ERROR: --size must be between 1 and " << MAX_NDN_PACKET_SIZE << "\n";
+      return 2;
+    }
+
+    try
+    {
       producerOptions.signingInfo = security::SigningInfo(signingInfo);
-  }
-  catch (const std::invalid_argument &e)
-  {
-      std::cerr << "ERROR: " << e.what() << "\n";
-      return 2;
-  }
-
-  if (producerOptions.isQuiet && producerOptions.isVerbose)
-  {
-      std::cerr << "ERROR: producer cannot be quiet and verbose at the same time\n";
-      return 2;
-  }
-
-  // main logic
-  try {
-    auto transport = ndn::UnixTransport::create("unix:///run/nfd/consumer1.sock");
-    Face face(transport);
-    auto discover = std::make_unique<DiscoverVersion>(face, Name(prefix), options);
-    std::unique_ptr<PipelineInterests> pipeline;
-    std::unique_ptr<StatisticsCollector> statsCollector;
-    std::unique_ptr<RttEstimatorWithStats> rttEstimator;
-    std::ofstream statsFileCwnd;
-    std::ofstream statsFileRtt;
-
-    // print configuration of pipeline
-    if (pipelineType == "fixed") {
-      pipeline = std::make_unique<PipelineInterestsFixed>(face, options);
     }
-    else if (pipelineType == "aimd" || pipelineType == "cubic") {
-      if (options.isVerbose) {
-        using namespace ndn::time;
-        std::cerr << "RTT estimator parameters:\n"
-                  << "\tAlpha = " << rttEstOptions.alpha << "\n"
-                  << "\tBeta = " << rttEstOptions.beta << "\n"
-                  << "\tK = " << rttEstOptions.k << "\n"
-                  << "\tInitial RTO = " << duration_cast<milliseconds>(rttEstOptions.initialRto) << "\n"
-                  << "\tMin RTO = " << duration_cast<milliseconds>(rttEstOptions.minRto) << "\n"
-                  << "\tMax RTO = " << duration_cast<milliseconds>(rttEstOptions.maxRto) << "\n"
-                  << "\tBackoff multiplier = " << rttEstOptions.rtoBackoffMultiplier << "\n";
-      }
-      rttEstimator = std::make_unique<RttEstimatorWithStats>(std::move(rttEstOptions));
+    catch (const std::invalid_argument &e)
+    {
+      logFile << clientPrefix << " ERROR: " << e.what() << "\n";
+      return 2;
+    }
 
-      std::unique_ptr<PipelineInterestsAdaptive> adaptivePipeline;
-      if (pipelineType == "aimd") {
-        adaptivePipeline = std::make_unique<PipelineInterestsAimd>(face, *rttEstimator, options);
+    // setting AsyncConsumerOptions
+    asyncConsumerOptions.fileDir = fileDir;
+    asyncConsumerOptions.fileName = fileName;
+    asyncConsumerOptions.pipelineType = pipelineType;
+    asyncConsumerOptions.signalFile = signalFile;
+
+    // remove the signal file if it exists
+    std::string m_signal = "/tmp/ndn/" + std::to_string(id) + ".ok";
+    std::remove(signalFile.c_str()); // rm /tmp/ndn/all.ok
+    std::remove(m_signal.c_str());   // rm /tmp/ndn/<id>.ok
+
+    // main logic
+    try
+    {
+      std::unique_ptr<ndn::chunks::AsyncProducer> asyncProducer;
+      std::vector<std::unique_ptr<AsyncConsumer>> asyncConsumers;
+
+      // Create the async producer and consumers
+      for (int targetProducer = 0; targetProducer < totalNodes; ++targetProducer)
+      {
+        asyncConsumers.push_back(std::make_unique<AsyncConsumer>(id, targetProducer, asyncConsumerOptions, consumerOptions, rttEstOptions));
       }
-      else {
-        adaptivePipeline = std::make_unique<PipelineInterestsCubic>(face, *rttEstimator, options);
+      asyncProducer = std::make_unique<ndn::chunks::AsyncProducer>(id, fileDir, producerOptions);
+
+      // Start the async producer
+      asyncProducer->start();
+
+      // Start the async consumers
+      for (auto &consumer : asyncConsumers)
+      {
+        consumer->start();
       }
 
-      if (!cwndPath.empty() || !rttPath.empty()) {
-        if (!cwndPath.empty()) {
-          statsFileCwnd.open(cwndPath);
-          if (statsFileCwnd.fail()) {
-            std::cerr << "ERROR: failed to open '" << cwndPath << "'\n";
-            return 4;
-          }
+      // Wait for the async consumers to finish
+      logFile << clientPrefix << " Waiting for all consumers to complete..." << std::endl;
+
+      int successCount = 0;
+      int failureCount = 0;
+
+      for (auto &consumer : asyncConsumers)
+      {
+        consumer->join(); // 等待该Consumer完成
+        int exitCode = consumer->getExitCode();
+
+        if (exitCode == 0)
+        {
+          successCount++;
         }
-        if (!rttPath.empty()) {
-          statsFileRtt.open(rttPath);
-          if (statsFileRtt.fail()) {
-            std::cerr << "ERROR: failed to open '" << rttPath << "'\n";
-            return 4;
-          }
+        else
+        {
+          failureCount++;
+          logFile << clientPrefix << " Consumer failed with exit code: " << exitCode << std::endl;
         }
-        statsCollector = std::make_unique<StatisticsCollector>(*adaptivePipeline, statsFileCwnd, statsFileRtt);
       }
 
-      pipeline = std::move(adaptivePipeline);
+      logFile << clientPrefix << " SUMMARY: Success=" << successCount
+              << ", Failed=" << failureCount
+              << ", Total=" << (successCount + failureCount) << std::endl;
+      return 0;
     }
-    else {
-      std::cerr << "ERROR: '" << pipelineType << "' is not a valid pipeline type\n";
-      return 2;
+    catch (const std::exception &e)
+    {
+      logFile << clientPrefix << " ERROR: " << e.what() << "\n";
+      return 1;
     }
-
-    std::ofstream outputStream("/dev/null");
-    Consumer consumer(security::getAcceptAllValidator(), outputStream);
-    BOOST_ASSERT(discover != nullptr);
-    BOOST_ASSERT(pipeline != nullptr);
-    consumer.run(std::move(discover), std::move(pipeline));
-    face.processEvents();
-  }
-  catch (const Consumer::ApplicationNackError& e) {
-    std::cerr << "ERROR: " << e.what() << "\n";
-    return 3;
-  }
-  catch (const Consumer::DataValidationError& e) {
-    std::cerr << "ERROR: " << e.what() << "\n";
-    return 5;
-  }
-  catch (const std::exception& e) {
-    std::cerr << "ERROR: " << e.what() << "\n";
-    return 1;
   }
 
-  return 0;
-}
+  // helper functions
+  static bool get_bool(std::string const &value, std::string const &clientPrefix, std::ofstream &os, std::string const &errorMsg)
+  {
+    if (value == "true")
+    {
+      return true;
+    }
+    else if (value == "false")
+    {
+      return false;
+    }
+    else
+    {
+      os << clientPrefix << " ERROR: Invalid boolean value from consumer option " << errorMsg << ": " << value << ", only allows true/false\n";
+      exit(1);
+    }
+  }
 
-// helper functions
-static bool get_bool(std::string const& value, std::string const& errorMsg)
-{
-  if (value == "true") {
-    return true;
-  } else if (value == "false") {
-    return false;
-  } else {
-    std::cerr << "ERROR: Invalid boolean value from consumer option " << errorMsg << ": " << value << ", only allows true/false\n";
-    exit(1);
+  static long get_long(std::string const &value, std::string const &clientPrefix, std::ofstream &os, std::string const &errorMsg)
+  {
+    if (value == "max")
+    {
+      return std::numeric_limits<long>::max();
+    }
+    try
+    {
+      return std::stol(value);
+    }
+    catch (const std::invalid_argument &)
+    {
+      os << clientPrefix << " ERROR: Invalid long value from consumer option " << errorMsg << ": " << value << "\n";
+      exit(1);
+    }
   }
-}
 
-static long get_long(std::string const& value, std::string const& errorMsg)
-{
-  if (value == "max") {
-    return std::numeric_limits<long>::max();
+  static int get_int(std::string const &value, std::string const &clientPrefix, std::ofstream &os, std::string const &errorMsg)
+  {
+    if (value == "max")
+    {
+      return std::numeric_limits<int>::max();
+    }
+    try
+    {
+      return std::stoi(value);
+    }
+    catch (const std::invalid_argument &)
+    {
+      os << clientPrefix << " ERROR: Invalid integer value from consumer option " << errorMsg << ": " << value << "\n";
+      exit(1);
+    }
   }
-  try {
-    return std::stol(value);
-  } catch (const std::invalid_argument&) {
-    std::cerr << "ERROR: Invalid long value from consumer option " << errorMsg << ": " << value << "\n";
-    exit(1); 
-  }
-}
 
-static int get_int(std::string const& value, std::string const& errorMsg)
-{
-  if (value == "max") {
-    return std::numeric_limits<int>::max();
+  static double get_double(std::string const &value, std::string const &clientPrefix, std::ofstream &os, std::string const &errorMsg)
+  {
+    if (value == "max")
+    {
+      return std::numeric_limits<double>::max();
+    }
+    try
+    {
+      return std::stod(value);
+    }
+    catch (const std::invalid_argument &)
+    {
+      os << clientPrefix << " ERROR: Invalid double value from consumer option " << errorMsg << ": " << value << "\n";
+    }
   }
-  try {
-    return std::stoi(value);
-  } catch (const std::invalid_argument&) {
-    std::cerr << "ERROR: Invalid integer value from consumer option " << errorMsg << ": " << value << "\n";
-    exit(1); 
-  }
-}
-
-static double get_double(std::string const& value, std::string const& errorMsg)
-{
-  if (value == "max") {
-    return std::numeric_limits<double>::max();
-  }
-  try {
-    return std::stod(value);
-  } catch (const std::invalid_argument&) {
-    std::cerr << "ERROR: Invalid double value from consumer option " << errorMsg << ": " << value << "\n";
-  }
-}
 
 } // namespace ndn::get
 
-int
-main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
   return ndn::get::main(argc, argv);
 }
