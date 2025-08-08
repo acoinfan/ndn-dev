@@ -311,6 +311,10 @@ namespace ndn::get
       // Create the async producer and consumers
       for (int targetProducer = 0; targetProducer < totalNodes; ++targetProducer)
       {
+        if (targetProducer == id)
+        {
+          continue; // Skip self
+        }
         asyncConsumers.push_back(std::make_unique<AsyncConsumer>(id, targetProducer, asyncConsumerOptions, consumerOptions, rttEstOptions));
       }
       asyncProducer = std::make_unique<ndn::chunks::AsyncProducer>(id, fileDir, producerOptions);

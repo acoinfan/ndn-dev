@@ -6,7 +6,7 @@ namespace ndn::chunks
     AsyncProducer::AsyncProducer(int producerId, const std::string &fileDir, const ndn::chunks::Producer::Options &options)
         : producerId(producerId), fileDir(fileDir), options(options)
     {
-        prefix = "producer" + std::to_string(producerId);
+        prefix = "pro" + std::to_string(producerId);
     }
 
     void AsyncProducer::start()

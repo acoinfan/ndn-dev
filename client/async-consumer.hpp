@@ -12,8 +12,6 @@
 #include <ndn-cxx/security/validator-null.hpp>
 #include <ndn-cxx/util/rtt-estimator.hpp>
 #include <thread>
-#include <spdlog/spdlog.h>
-#include <spdlog/sinks/basic_file_sink.h>
 #include <ndn-cxx/transport/unix-transport.hpp>
 #include <atomic>
 #include <fstream>
@@ -43,7 +41,7 @@ namespace ndn::get
         const Options& options;
         const util::RttEstimator::Options rttEstOptions;
         
-        const std::chrono::duration<int64_t, std::nano> waitTimeout{30}; // default wait timeout in seconds
+        const std::chrono::seconds waitTimeout{30}; // default wait timeout in seconds
   
         public:
         AsyncConsumer(int consumerId, int producerId, const AsyncConsumerOptions &asyncOptions, const Options &options, const util::RttEstimator::Options &rttEstOptions);

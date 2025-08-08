@@ -51,7 +51,7 @@ class DataFetcher;
 class PipelineInterestsFixed final : public PipelineInterests
 {
 public:
-  PipelineInterestsFixed(Face& face, const Options& opts);
+  PipelineInterestsFixed(Face& face, const Options& opts, std::ofstream& logFile);
 
   ~PipelineInterestsFixed() final;
 

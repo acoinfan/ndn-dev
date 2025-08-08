@@ -59,7 +59,7 @@ public:
    * Configures the pipelining service without specifying the retrieval namespace.
    * After construction, the method run() must be called in order to start the pipeline.
    */
-  PipelineInterests(Face& face, const Options& opts);
+  PipelineInterests(Face& face, const Options& opts, std::ofstream& logFile);
 
   virtual
   ~PipelineInterests();
@@ -82,6 +82,9 @@ public:
    */
   void
   cancel();
+ 
+  // get goodputs and other statistics (added by a_coin_fan)
+  void getStatistics() const;
 
 protected:
   time::steady_clock::time_point
@@ -159,6 +162,7 @@ protected:
   const Options& m_options;
   Face& m_face;
   Name m_prefix;
+  std::ofstream& m_logFile;  // added by a_coin_fan
 
 PUBLIC_WITH_TESTS_ELSE_PROTECTED:
   bool m_hasFinalBlockId = false; ///< true if the last segment number is known

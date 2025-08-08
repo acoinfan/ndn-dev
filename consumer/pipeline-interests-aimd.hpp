@@ -39,7 +39,7 @@ namespace ndn::get {
 class PipelineInterestsAimd final : public PipelineInterestsAdaptive
 {
 public:
-  PipelineInterestsAimd(Face& face, RttEstimatorWithStats& rttEstimator, const Options& opts);
+  PipelineInterestsAimd(Face& face, RttEstimatorWithStats& rttEstimator, const Options& opts, std::ofstream& logFile);
 
 private:
   void

@@ -27,19 +27,20 @@
 
 #include <cmath>
 #include <iostream>
+#include <fstream>
 
 namespace ndn::get {
 
 constexpr double CUBIC_C = 0.4;
 
 PipelineInterestsCubic::PipelineInterestsCubic(Face& face, RttEstimatorWithStats& rttEstimator,
-                                               const Options& opts)
-  : PipelineInterestsAdaptive(face, rttEstimator, opts)
+                                               const Options& opts, std::ofstream& logFile)
+  : PipelineInterestsAdaptive(face, rttEstimator, opts, logFile)
   , m_lastDecrease(time::steady_clock::now())
 {
   if (m_options.isVerbose) {
     printOptions();
-    std::cerr << "\tCubic beta = " << m_options.cubicBeta << "\n"
+    m_logFile << "\tCubic beta = " << m_options.cubicBeta << "\n"
               << "\tFast convergence = " << (m_options.enableFastConv ? "yes" : "no") << "\n";
   }
 }

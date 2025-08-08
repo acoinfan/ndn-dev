@@ -17,32 +17,30 @@ if ! command -v nfdc &> /dev/null; then
 fi
 
 # 清理之前的进程
-echo "2. 清理之前的进程..."
+echo "2. 清理之前的进程及文件..."
 sudo pkill -f nfd
-sudo pkill -f ndnput
-sudo pkill -f ndnget
+sudo pkill -f ndnclient
+
+sudo rm -rf /tmp/ndn/*
+sudo rm -rf /tmp/*-nfd.conf
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
-PRODUCER_BIN="${PROJECT_ROOT}/producer/bin/ndnput"
-CONSUMER_BIN="${PROJECT_ROOT}/consumer/bin/ndnget"
+CLIENT_BIN="${PROJECT_ROOT}/client/bin/ndnclient"
+
 
 # 重新编译应用（如果需要）
 echo "3. 检查应用程序..."
-if [ ! -f "$PRODUCER_BIN" ]; then
-    echo "编译生产者应用..."
-    cd "${PROJECT_ROOT}/producer" && make
+if [ ! -f "$CLIENT_BIN" ]; then
+    echo "编译客户端应用..."
+    cd "${PROJECT_ROOT}/client" && make -j$(nproc)
 fi
 
-if [ ! -f "$CONSUMER_BIN" ]; then
-    echo "编译消费者应用..."
-    cd "${PROJECT_ROOT}/consumer" && make
-fi
 
 # 运行测试
 echo "4. 运行网络模拟..."
 cd "$PROJECT_ROOT"
 
-sudo python3 old_simulator.py
+sudo python3 ndn-simulator.py
 
 echo "=== 测试完成 ==="
 

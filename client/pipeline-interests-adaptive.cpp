@@ -32,13 +32,15 @@
 #include <boost/lexical_cast.hpp>
 #include <iomanip>
 #include <iostream>
+#include <fstream>
 
 namespace ndn::get {
 
 PipelineInterestsAdaptive::PipelineInterestsAdaptive(Face& face,
                                                      RttEstimatorWithStats& rttEstimator,
-                                                     const Options& opts)
-  : PipelineInterests(face, opts)
+                                                     const Options& opts, 
+                                                     std::ofstream& logFile)
+  : PipelineInterests(face, opts, logFile)
   , m_cwnd(m_options.initCwnd)
   , m_ssthresh(m_options.initSsthresh)
   , m_rttEstimator(rttEstimator)
@@ -119,7 +121,7 @@ PipelineInterestsAdaptive::sendInterest(uint64_t segNo, bool isRetransmission)
     return;
 
   if (m_options.isVerbose) {
-    std::cerr << (isRetransmission ? "Retransmitting" : "Requesting")
+    m_logFile << (isRetransmission ? "Retransmitting" : "Requesting")
               << " segment #" << segNo << "\n";
   }
 
@@ -136,7 +138,7 @@ PipelineInterestsAdaptive::sendInterest(uint64_t segNo, bool isRetransmission)
       }
 
       if (m_options.isVerbose) {
-        std::cerr << "# of retries for segment #" << segNo
+        m_logFile << "# of retries for segment #" << segNo
                   << " is " << m_retxCount[segNo] << "\n";
       }
     }
@@ -223,7 +225,7 @@ PipelineInterestsAdaptive::handleData(const Interest& interest, const Data& data
   SegmentInfo& segInfo = segIt->second;
   time::nanoseconds rtt = time::steady_clock::now() - segInfo.timeSent;
   if (m_options.isVerbose) {
-    std::cerr << "Received segment #" << recvSegNo
+    m_logFile << "Received segment #" << recvSegNo
               << ", rtt=" << rtt.count() / 1e6 << "ms"
               << ", rto=" << segInfo.rto.count() / 1e6 << "ms\n";
   }
@@ -297,7 +299,7 @@ PipelineInterestsAdaptive::handleNack(const Interest& interest, const lp::Nack& 
     return;
 
   if (m_options.isVerbose)
-    std::cerr << "Received Nack with reason " << nack.getReason()
+    m_logFile << "Received Nack with reason " << nack.getReason()
               << " for Interest " << interest << "\n";
 
   uint64_t segNo = getSegmentFromPacket(interest);
@@ -346,7 +348,7 @@ PipelineInterestsAdaptive::recordTimeout(uint64_t segNo)
     m_nLossDecr++;
 
     if (m_options.isVerbose) {
-      std::cerr << "Packet loss event, new cwnd = " << m_cwnd
+      m_logFile << "Packet loss event, new cwnd = " << m_cwnd
                 << ", ssthresh = " << m_ssthresh << "\n";
     }
   }
@@ -406,7 +408,7 @@ void
 PipelineInterestsAdaptive::printOptions() const
 {
   PipelineInterests::printOptions();
-  std::cerr
+  m_logFile
       << "\tInitial congestion window size = " << m_options.initCwnd << "\n"
       << "\tInitial slow start threshold = " << m_options.initSsthresh << "\n"
       << "\tAdditive increase step = " << m_options.aiStep << "\n"
@@ -422,7 +424,7 @@ void
 PipelineInterestsAdaptive::printSummary() const
 {
   PipelineInterests::printSummary();
-  std::cerr << "Congestion marks: " << m_nCongMarks << " (caused " << m_nMarkDecr << " window decreases)\n"
+  m_logFile << "Congestion marks: " << m_nCongMarks << " (caused " << m_nMarkDecr << " window decreases)\n"
             << "Timeouts: " << m_nTimeouts << " (caused " << m_nLossDecr << " window decreases)\n"
             << "Retransmitted segments: " << m_nRetransmitted
             << " (" << (m_nSent == 0 ? 0 : (m_nRetransmitted * 100.0 / m_nSent)) << "%)"
@@ -431,10 +433,10 @@ PipelineInterestsAdaptive::printSummary() const
 
   if (m_rttEstimator.getMinRtt() == time::nanoseconds::max() ||
       m_rttEstimator.getMaxRtt() == time::nanoseconds::min()) {
-    std::cerr << "stats unavailable\n";
+    m_logFile << "stats unavailable\n";
   }
   else {
-    std::cerr << "min/avg/max = " << std::fixed << std::setprecision(3)
+    m_logFile << "min/avg/max = " << std::fixed << std::setprecision(3)
               << m_rttEstimator.getMinRtt().count() / 1e6 << "/"
               << m_rttEstimator.getAvgRtt().count() / 1e6 << "/"
               << m_rttEstimator.getMaxRtt().count() / 1e6 << " ms\n";
