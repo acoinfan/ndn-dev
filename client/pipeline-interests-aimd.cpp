@@ -33,8 +33,8 @@
 namespace ndn::get {
 
 PipelineInterestsAimd::PipelineInterestsAimd(Face& face, RttEstimatorWithStats& rttEstimator,
-                                             const Options& opts)
-  : PipelineInterestsAdaptive(face, rttEstimator, opts)
+                                             const Options& opts, std::ofstream& logFile)
+  : PipelineInterestsAdaptive(face, rttEstimator, opts, logFile)
 {
   if (m_options.isVerbose) {
     printOptions();

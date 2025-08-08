@@ -85,7 +85,7 @@ public:
    * Configures the pipelining service without specifying the retrieval namespace. After this
    * configuration the method run must be called to start the Pipeline.
    */
-  PipelineInterestsAdaptive(Face& face, RttEstimatorWithStats& rttEstimator, const Options& opts);
+  PipelineInterestsAdaptive(Face& face, RttEstimatorWithStats& rttEstimator, const Options& opts, std::ofstream& logFile);
 
   ~PipelineInterestsAdaptive() override;
 

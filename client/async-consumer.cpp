@@ -5,7 +5,7 @@ namespace ndn::get
   AsyncConsumer::AsyncConsumer(int consumerId, int producerId, const AsyncConsumerOptions &asyncOptions, const Options &options, const util::RttEstimator::Options &rttEstOptions)
       : consumerId(consumerId), producerId(producerId), asyncOptions(asyncOptions), options(options), rttEstOptions(rttEstOptions)
   {
-    prefix = "consumer" + std::to_string(consumerId) + "-" + std::to_string(producerId);
+    prefix = "con" + std::to_string(consumerId) + "-" + std::to_string(producerId);
   }
 
   void AsyncConsumer::start()
@@ -41,12 +41,12 @@ namespace ndn::get
       // Build the socket for the consumer
       waitForProducer(logFile);
 
-      std::string socketPath = "unix:///run/nfd/consumer" + std::to_string(consumerId) + ".sock";
+      std::string socketPath = "unix:///run/nfd/con" + std::to_string(consumerId) + "-" + std::to_string(producerId) + ".sock";
       auto transport = ndn::UnixTransport::create(socketPath);
       Face face(transport);
 
       // Create the interest prefix (eg. /producer1/file.txt)
-      std::string interestPrefix = "/producer" + std::to_string(producerId) + "/" + asyncOptions.fileName;
+      std::string interestPrefix = "/pro" + std::to_string(producerId) + "/" + asyncOptions.fileName;
       auto discover = std::make_unique<DiscoverVersion>(face, Name(interestPrefix), options);
       std::unique_ptr<PipelineInterests> pipeline;
       std::unique_ptr<StatisticsCollector> statsCollector;
@@ -58,7 +58,7 @@ namespace ndn::get
       // Handle the pipeline type
       if (asyncOptions.pipelineType == "fixed")
       {
-        pipeline = std::make_unique<PipelineInterestsFixed>(face, options);
+        pipeline = std::make_unique<PipelineInterestsFixed>(face, options, logFile);
       }
       else if (asyncOptions.pipelineType == "aimd" || asyncOptions.pipelineType == "cubic")
       {
@@ -79,11 +79,11 @@ namespace ndn::get
         std::unique_ptr<PipelineInterestsAdaptive> adaptivePipeline;
         if (asyncOptions.pipelineType == "aimd")
         {
-          adaptivePipeline = std::make_unique<PipelineInterestsAimd>(face, *rttEstimator, options);
+          adaptivePipeline = std::make_unique<PipelineInterestsAimd>(face, *rttEstimator, options, logFile); 
         }
         else
         {
-          adaptivePipeline = std::make_unique<PipelineInterestsCubic>(face, *rttEstimator, options);
+          adaptivePipeline = std::make_unique<PipelineInterestsCubic>(face, *rttEstimator, options, logFile);  
         }
 
         // Determine whether to log cwnd and RTT

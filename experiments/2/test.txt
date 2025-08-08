@@ -1,8 +1,0 @@
-Hello, this is a test file for NDN transmission!
-This file contains multiple lines of text to test the segmentation functionality.
-Line 3: Testing data transmission over NDN.
-Line 4: This should be split into multiple segments if large enough.
-Line 5: Each segment will be transmitted separately.
-Line 6: The consumer should be able to retrieve all segments.
-Line 7: And reassemble them into the original file.
-Line 8: This completes our test data.

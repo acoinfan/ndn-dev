@@ -35,12 +35,14 @@
 #include <boost/asio/post.hpp>
 
 #include <iostream>
+#include <fstream>
 
 namespace ndn::get {
 
-PipelineInterests::PipelineInterests(Face& face, const Options& opts)
+PipelineInterests::PipelineInterests(Face& face, const Options& opts, std::ofstream& logFile)
   : m_options(opts)
   , m_face(face)
+  , m_logFile(logFile)
 {
 }
 
@@ -112,7 +114,7 @@ PipelineInterests::onFailure(const std::string& reason)
 void
 PipelineInterests::printOptions() const
 {
-  std::cerr << "Pipeline parameters:\n"
+  m_logFile << "Pipeline parameters:\n"
             << "\tRequest fresh content = " << (m_options.mustBeFresh ? "yes" : "no") << "\n"
             << "\tInterest lifetime = " << m_options.interestLifetime << "\n"
             << "\tMax retries on timeout or Nack = " <<
@@ -127,7 +129,7 @@ PipelineInterests::printSummary() const
   duration<double, seconds::period> timeElapsed = steady_clock::now() - getStartTime();
   double throughput = 8 * m_receivedSize / timeElapsed.count();
 
-  std::cerr << "\n\nAll segments have been received.\n"
+  m_logFile << "\n\nAll segments have been received.\n"
             << "Time elapsed: " << timeElapsed << "\n"
             << "Segments received: " << m_nReceived << "\n"
             << "Transferred size: " << m_receivedSize / 1e3 << " kB" << "\n"

@@ -31,17 +31,18 @@
 #include "data-fetcher.hpp"
 
 #include <iostream>
+#include <fstream>
 
 namespace ndn::get {
 
-PipelineInterestsFixed::PipelineInterestsFixed(Face& face, const Options& opts)
-  : PipelineInterests(face, opts)
+PipelineInterestsFixed::PipelineInterestsFixed(Face& face, const Options& opts, std::ofstream& logFile)
+  : PipelineInterests(face, opts, logFile)
 {
   m_segmentFetchers.resize(m_options.maxPipelineSize);
 
   if (m_options.isVerbose) {
     printOptions();
-    std::cerr << "\tPipeline size = " << m_options.maxPipelineSize << "\n";
+    m_logFile << "\tPipeline size = " << m_options.maxPipelineSize << "\n";
   }
 }
 
@@ -80,7 +81,7 @@ PipelineInterestsFixed::fetchNextSegment(std::size_t pipeNo)
 
   // send interest for next segment
   if (m_options.isVerbose)
-    std::cerr << "Requesting segment #" << nextSegmentNo << "\n";
+    m_logFile << "Requesting segment #" << nextSegmentNo << "\n";
 
   auto interest = Interest()
                   .setName(Name(m_prefix).appendSegment(nextSegmentNo))
@@ -128,7 +129,7 @@ PipelineInterestsFixed::handleData(const Interest& interest, const Data& data, s
   BOOST_ASSERT(data.getName().equals(interest.getName()));
 
   if (m_options.isVerbose)
-    std::cerr << "Received segment #" << getSegmentFromPacket(data) << "\n";
+    m_logFile << "Received segment #" << getSegmentFromPacket(data) << "\n";
 
   onData(data);
 
