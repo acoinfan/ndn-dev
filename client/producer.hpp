@@ -35,7 +35,7 @@ namespace ndn::chunks
          *               version number, the current system time is used as version number.
          */
         Producer(const Name &prefix, Face &face, KeyChain &keyChain,
-                 const Options &opts, std::string fileDir);
+                 const Options &opts, std::string fileDir, std::ofstream& logFile);
 
         /**
          * @brief Run the producer.
@@ -73,6 +73,7 @@ namespace ndn::chunks
         std::unordered_map<std::string, uint64_t> m_nSentSegments;
         bool isini = false;
         std::string m_fileDir;
+        std::ofstream& m_logFile; // log file for producer
     };
 } // namespace ndn::chunks
 

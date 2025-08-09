@@ -7,18 +7,18 @@
 namespace ndn::chunks
 {
     Producer::Producer(const Name &prefix, Face &face, KeyChain &keyChain,
-                       const Options &opts, std::string fileDir)
-        : m_face(face), m_keyChain(keyChain), m_options(opts), m_prefix(prefix), m_fileDir(fileDir)
+                       const Options &opts, std::string fileDir, std::ofstream& logFile)
+        : m_face(face), m_keyChain(keyChain), m_options(opts), m_prefix(prefix), m_fileDir(fileDir), m_logFile(logFile)
     {
         if (!m_options.isQuiet)
         {
-            std::cerr << "Loading input ...\n";
+            m_logFile << "Loading input ...\n";
         }
 
         // 注册前缀到ndn网络
         m_face.registerPrefix(m_prefix, nullptr, [this](const Name &prefix, const auto &reason)
                               {
-            std::cerr << "ERROR: Failed to register prefix '" << prefix.toUri() << "'(" << boost::lexical_cast<std::string>(reason) << ")" << std::endl;
+            m_logFile << "ERROR: Failed to register prefix '" << prefix.toUri() << "'(" << boost::lexical_cast<std::string>(reason) << ")" << std::endl;
             m_face.shutdown(); });
         // 设置Interest过滤器，处理分段请求
         face.setInterestFilter(m_prefix, [this](const auto &, const auto &interest)
@@ -26,7 +26,7 @@ namespace ndn::chunks
 
         if (!m_options.isQuiet)
         {                     
-        std::cerr << "Producer is ready for prefix: " << m_prefix.toUri() << "\n";
+        m_logFile << "Producer is ready for prefix: " << m_prefix.toUri() << "\n";
         }
     }
 
@@ -41,7 +41,7 @@ namespace ndn::chunks
     {
         if (m_options.isVerbose)
         {
-            std::cerr << "Interest: " << interest << "\n";
+            m_logFile << "Interest: " << interest << "\n";
         }
 
         // 获取前缀
@@ -81,7 +81,7 @@ namespace ndn::chunks
         {
             if (m_options.isVerbose)
             {
-                std::cerr << "Data: " << *data << "\n";;
+                m_logFile << "Data: " << *data << "\n";;
             }
             // 将Data包发送到网络
             m_face.put(*data);
@@ -106,7 +106,7 @@ namespace ndn::chunks
         {
             if (m_options.isVerbose)
             {
-                std::cerr << "Interest cannot be satisfied, sending Nack\n";
+                m_logFile << "Interest cannot be satisfied, sending Nack\n";
             }
             m_face.put(lp::Nack(interest));
         }
@@ -117,7 +117,7 @@ namespace ndn::chunks
 
     {
         const Name &prefix = interest.getName().getPrefix(-1);
-        std::cerr << "Segmentation file for prefix: " << prefix.toUri() << "\n";
+        m_logFile << "Segmentation file for prefix: " << prefix.toUri() << "\n";
         std::string prefixstr = prefix.toUri();
         std::string filePathStr;
         if (prefix.size() >= 2)
@@ -126,7 +126,7 @@ namespace ndn::chunks
             Name filePath = prefix.getSubName(1);
             filePathStr = filePath.toUri();
             filePathStr = m_fileDir + filePathStr;
-            std::cerr << "File path: " << filePathStr << "\n";
+            m_logFile << "File path: " << filePathStr << "\n";
         }
         else
         {
@@ -137,14 +137,14 @@ namespace ndn::chunks
 
         if (!m_options.isQuiet)
         {
-            std::cerr << "Loading input ...\n";
+            m_logFile << "Loading input ...\n";
         }
         Segmenter segmenter(m_keyChain, m_options.signingInfo);
         // All the data packets are segmented and stored in m_store
         m_store[prefixstr] = segmenter.segment(*is, prefix, m_options.maxSegmentSize, m_options.freshnessPeriod);
         if (!m_options.isQuiet)
         {
-            std::cerr << "Published " << m_store[prefixstr].size() << " Data packet" << (m_store[prefixstr].size() > 1 ? "s" : "")
+            m_logFile << "Published " << m_store[prefixstr].size() << " Data packet" << (m_store[prefixstr].size() > 1 ? "s" : "")
                       << "\n";
         }
     }

@@ -166,17 +166,17 @@ def create_network_config(nodes = 10, bw = 100, delay = '0ms', loss = 0, max_que
     # 自动生成 nodes 部分
     for i in range(nodes):
         # 生成 producer
-        config['nodes'][f'pro{i}'] = {'ip': f'10.0.{i}.{i}/16', 'type': 'producer'}
+        config['nodes'][f'pro{i}'] = {'ip': f'10.{i}.{i}.0', 'type': 'producer'}
         # 生成 consumer（每个 client 对其他 client 的请求）
         for j in range(nodes):
             if i != j:
-                config['nodes'][f'con{i}-{j}'] = {'ip': f'10.0.{i}.{j}/16', 'type': 'consumer'}
+                config['nodes'][f'con{i}to{j}'] = {'ip': f'10.{i}.{j}.0', 'type': 'consumer'}
 
     # 自动生成 links 部分
     for i in range(nodes):
         for j in range(nodes):
             if i != j:
-                consumer_name = f'con{i}-{j}'
+                consumer_name = f'con{i}to{j}'
                 producer_name = f'pro{j}'
                 link_name = f'{consumer_name}-{producer_name}'
                 config['links'][link_name] = {
@@ -203,11 +203,10 @@ def create_network_config(nodes = 10, bw = 100, delay = '0ms', loss = 0, max_que
     for i in range(nodes):
         for j in range(nodes):
             if i != j:
-                consumer_name = f'con{i}-{j}'
+                consumer_name = f'con{i}to{j}'
                 producer_name = f'pro{j}'
-                producer_ip = config['nodes'][producer_name]['ip'].split('/')[0]
                 config['routes'][consumer_name] = [
-                    (f'/pro{j}', f'udp4://{producer_ip}:6363')
+                    (f'/pro{j}', f'udp4://10.{j}.{j}.0:6363')
                 ]
 
     return config
@@ -278,7 +277,8 @@ def setup_ndn_environment(net, hosts, config):
         node = hosts[node_name]
         for prefix, nexthop in routes:
             node.add_route(prefix, nexthop)
-    
+    sleep(10)
+
     print("### 启动应用程序 ###")
     threads = []
     ok_dir = "/tmp/ndn"
@@ -328,12 +328,12 @@ def main():
         # 创建网络拓扑
         print("### 创建网络配置 ###")
         config = create_network_config(
-            nodes=5,                           # 节点数量
+            nodes=2,                           # 节点数量
             bw=100,                             # 带宽 (Mbps)   
             delay='0ms',                        # 延迟
             loss=0,                             # 丢包率 (%)
             max_queue_size=10000000,            # 最大队列大小 (字节)
-            file_name="testfile_6442450.txt",   # 请求的文件名
+            file_name="small_test.txt",   # 请求的文件名
         )
         
         # 读取网络拓扑

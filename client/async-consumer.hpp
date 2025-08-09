@@ -35,7 +35,7 @@ namespace ndn::get
         int consumerId, producerId;
         std::thread consumerThread;
         std::atomic<int> exitCode{-1};
-        std::string prefix; // consumer0-1
+        std::string prefix; // con0to1
 
         const AsyncConsumerOptions& asyncOptions;
         const Options& options;
