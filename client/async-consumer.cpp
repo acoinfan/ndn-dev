@@ -5,7 +5,7 @@ namespace ndn::get
   AsyncConsumer::AsyncConsumer(int consumerId, int producerId, const AsyncConsumerOptions &asyncOptions, const Options &options, const util::RttEstimator::Options &rttEstOptions)
       : consumerId(consumerId), producerId(producerId), asyncOptions(asyncOptions), options(options), rttEstOptions(rttEstOptions)
   {
-    prefix = "con" + std::to_string(consumerId) + "-" + std::to_string(producerId);
+    prefix = "con" + std::to_string(consumerId) + "to" + std::to_string(producerId);
   }
 
   void AsyncConsumer::start()
@@ -41,7 +41,7 @@ namespace ndn::get
       // Build the socket for the consumer
       waitForProducer(logFile);
 
-      std::string socketPath = "unix:///run/nfd/con" + std::to_string(consumerId) + "-" + std::to_string(producerId) + ".sock";
+      std::string socketPath = "unix:///run/nfd/" + prefix + ".sock";
       auto transport = ndn::UnixTransport::create(socketPath);
       Face face(transport);
 
@@ -95,7 +95,7 @@ namespace ndn::get
             statsFileCwnd.open(cwndPath);
             if (statsFileCwnd.fail())
             {
-              logFile << prefix << " ERROR: failed to open '" << cwndPath << "'\n";
+              logFile << prefix << " ERROR: failed to open '" << cwndPath << std::endl;
               return 4;
             }
           }
@@ -106,7 +106,7 @@ namespace ndn::get
             statsFileRtt.open(rttPath);
             if (statsFileRtt.fail())
             {
-              logFile << prefix << " ERROR: failed to open '" << rttPath << "'\n";
+              logFile << prefix << " ERROR: failed to open '" << rttPath << std::endl;
               return 4;
             }
           }
@@ -117,7 +117,7 @@ namespace ndn::get
       }
       else
       {
-        logFile << prefix << " ERROR: '" << asyncOptions.pipelineType << "' is not a valid pipeline type\n";
+        logFile << prefix << " ERROR: '" << asyncOptions.pipelineType << "' is not a valid pipeline type" << std::endl;
         return 2;
       }
 
@@ -127,11 +127,11 @@ namespace ndn::get
       {
         // fileDir must be absolute path
         // will save file to /<fileDir>/<producerId>-<fileName>
-        std::string outputPath = asyncOptions.fileDir + "/" + std::to_string(producerId) + "-" + asyncOptions.fileName;
+        std::string outputPath = asyncOptions.fileDir + "/" + prefix + "-" + asyncOptions.fileName;
         outputStream.open(outputPath);
         if (outputStream.fail())
         {
-          logFile << prefix << " ERROR: failed to open '" << outputPath << "'\n";
+          logFile << prefix << " ERROR: failed to open '" << outputPath << std::endl;
           return 4;
         }
       }
@@ -141,7 +141,7 @@ namespace ndn::get
         outputStream.open("/dev/null");
         if (outputStream.fail())
         {
-          logFile << prefix << " ERROR: failed to open '/dev/null'\n";
+          logFile << prefix << " ERROR: failed to open '/dev/null'" << std::endl;
           return 4;
         }
       }
@@ -151,23 +151,23 @@ namespace ndn::get
       BOOST_ASSERT(pipeline != nullptr);
       consumer.run(std::move(discover), std::move(pipeline));
       face.processEvents();
-
+      logFile << std::flush;
       return 0;
     }
     // handling errors
     catch (const Consumer::ApplicationNackError &e)
     {
-      logFile << prefix << " ERROR: " << e.what() << "\n";
+      logFile << prefix << " ERROR: " << e.what() << std::endl;
       return 3;
     }
     catch (const Consumer::DataValidationError &e)
     {
-      logFile << prefix << " ERROR: " << e.what() << "\n";
+      logFile << prefix << " ERROR: " << e.what() << std::endl;
       return 5;
     }
     catch (const std::exception &e)
     {
-      logFile << prefix << " ERROR: " << e.what() << "\n";
+      logFile << prefix << " ERROR: " << e.what() << std::endl;
       return 1;
     }
   }

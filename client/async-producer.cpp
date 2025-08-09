@@ -43,7 +43,7 @@ namespace ndn::chunks
             auto transport = ndn::UnixTransport::create(socketPath);
             Face face(transport);
             KeyChain keyChain;
-            Producer producer(prefix, face, keyChain, options, fileDir);
+            Producer producer(prefix, face, keyChain, options, fileDir, logFile);
 
             sendConsumerSignal();
             if (options.isVerbose)
@@ -52,11 +52,12 @@ namespace ndn::chunks
             }
 
             producer.run();
+            logFile << std::flush;
             return 0;
         }
         catch (const std::exception &e)
         {
-            logFile << prefix << " ERROR: " << e.what() << "\n";
+            logFile << prefix << " ERROR: " << e.what() << std::endl;
             return 1;
         }
         return 0;
@@ -69,7 +70,7 @@ namespace ndn::chunks
         std::ofstream signalFile(signalFilePath);
         if (signalFile.is_open())
         {
-            signalFile << prefix << " is ready!";
+            signalFile << prefix << " is ready!" << std::endl;
             signalFile.close();
         }
         else
