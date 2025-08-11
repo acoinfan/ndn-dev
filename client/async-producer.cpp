@@ -1,9 +1,9 @@
 #include "async-producer.hpp"
 
-namespace ndn::chunks
+namespace ndn::serve
 {
 
-    AsyncProducer::AsyncProducer(int producerId, const std::string &fileDir, const ndn::chunks::Producer::Options &options)
+    AsyncProducer::AsyncProducer(int producerId, const std::string &fileDir, const ndn::serve::Producer::Options &options)
         : producerId(producerId), fileDir(fileDir), options(options)
     {
         prefix = "pro" + std::to_string(producerId);
@@ -43,7 +43,18 @@ namespace ndn::chunks
             auto transport = ndn::UnixTransport::create(socketPath);
             Face face(transport);
             KeyChain keyChain;
-            Producer producer(prefix, face, keyChain, options, fileDir, logFile);
+
+            // for temporary test
+            std::string filePath = "/home/a_coin_fan/code/ndn-dev/experiments/testfile_6442450.txt";
+            std::string fileName = "testfile_6442450.txt";
+            std::ifstream inputFile(filePath);
+            if (!inputFile)
+            {
+                logFile << prefix << " ERROR: Failed to open input file: " << filePath << std::endl;
+                return 1;
+            }
+
+            Producer producer(prefix, face, keyChain, fileName, inputFile, logFile, options);
 
             sendConsumerSignal();
             if (options.isVerbose)

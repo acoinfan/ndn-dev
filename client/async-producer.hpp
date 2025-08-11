@@ -13,7 +13,7 @@
 #include <fstream>
 #include <filesystem>
 
-namespace ndn::chunks
+namespace ndn::serve
 {
     class AsyncProducer
     {
@@ -24,10 +24,10 @@ namespace ndn::chunks
         std::atomic<int> exitCode{-1};
         std::string prefix; // producer0
 
-        const ndn::chunks::Producer::Options& options;
+        const ndn::serve::Producer::Options& options;
 
     public:
-        AsyncProducer(int producerId, const std::string& fileDir, const ndn::chunks::Producer::Options& options);
+        AsyncProducer(int producerId, const std::string& fileDir, const ndn::serve::Producer::Options& options);
 
         void start();
 

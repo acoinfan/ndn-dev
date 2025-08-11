@@ -1,80 +1,104 @@
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
-This file is based on the part of ndn-tools chunks
-*/
-#ifndef IMAgg_Producer_HPP
-#define IMAgg_Producer_HPP
+ * Copyright (c) 2016-2025, Regents of the University of California,
+ *                          Colorado State University,
+ *                          University Pierre & Marie Curie, Sorbonne University.
+ *
+ * This file is part of ndn-tools (Named Data Networking Essential Tools).
+ * See AUTHORS.md for complete list of ndn-tools authors and contributors.
+ *
+ * ndn-tools is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * ndn-tools is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * ndn-tools, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * See AUTHORS.md for complete list of ndn-cxx authors and contributors.
+ *
+ * @author Wentao Shang
+ * @author Steve DiBenedetto
+ * @author Andrea Tosatto
+ * @author Davide Pesavento
+ * @author Klaus Schneider
+ */
+
+#ifndef NDN_TOOLS_SERVE_PRODUCER_HPP
+#define NDN_TOOLS_SERVE_PRODUCER_HPP
 
 #include "core/common.hpp"
 
-#include <ndn-cxx/data.hpp>
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/security/key-chain.hpp>
 
-#include <filesystem>
-#include <fstream>
+#include <vector>
 
-// Remove duplicate macro definition - it's already defined in core/common.hpp
+namespace ndn::serve {
 
-namespace ndn::chunks
+/**
+ * @brief Segmented & versioned data publisher.
+ *
+ * Packetizes and publishes data from an input stream as `/prefix/<version>/<segment number>`.
+ * Unless another value is provided, the current time is used as the version number.
+ * The packet store always has at least one item, even when the input is empty.
+ */
+class Producer : noncopyable
 {
-    class Producer : noncopyable
-    {
-    public:
-        struct Options
-        {
-            security::SigningInfo signingInfo;
-            time::milliseconds freshnessPeriod;
-            size_t maxSegmentSize;
-            bool isQuiet;
-            bool isVerbose;
-        };
+public:
+  struct Options
+  {
+    security::SigningInfo signingInfo;
+    time::milliseconds freshnessPeriod = 10_s;
+    size_t maxSegmentSize = 8000;
+    bool isQuiet = false;
+    bool isVerbose = false;
+    bool wantShowVersion = true;
+  };
 
-        /**
-         * @brief Create the producer.
-         * @param prefix prefix used to publish data; if the last component is not a valid
-         *               version number, the current system time is used as version number.
-         */
-        Producer(const Name &prefix, Face &face, KeyChain &keyChain,
-                 const Options &opts, std::string fileDir, std::ofstream& logFile);
+  /**
+   * @brief Create the producer.
+   * @param prefix prefix used to publish data; if the last component is not a valid
+   *               version number, the current system time is used as version number.
+   */
+  Producer(const Name& prefix, Face& face, KeyChain& keyChain, std::string fileName, std::istream& is, std::ofstream& logFile,
+           const Options& opts);
 
-        /**
-         * @brief Run the producer.
-         */
-        void
-        run();
+  /**
+   * @brief Run the producer.
+   */
+  void
+  run();
 
-        /**
-         * @brief Segment the input stream and store the segments.
-         * @param chunknumber the chunk number of the input stream
-         * @param interest the Interest packet
-         */
-        void
-        segmentationFile(const Interest &interest);
+private:
+  /**
+   * @brief Respond with a metadata packet containing the versioned content name.
+   */
+  void
+  processDiscoveryInterest(const Interest& interest);
 
-    private:
-        /**
-         * @brief Respond with the requested segment of content.
-         */
-        void
-        processSegmentInterest(const Interest &interest);
+  /**
+   * @brief Respond with the requested segment of content.
+   */
+  void
+  processSegmentInterest(const Interest& interest);
 
-        /**
-         * @brief Get the agg tree structure
-         */
-        void
-        processInitializaionInterest(const Interest &interest);
-        PUBLIC_WITH_TESTS_ELSE_PRIVATE : std::unordered_map<std::string, std::vector<std::shared_ptr<Data>>> m_store;
+PUBLIC_WITH_TESTS_ELSE_PRIVATE:
+  std::vector<std::shared_ptr<Data>> m_store;
 
-    private:
-        Name m_prefix;
-        Face &m_face;
-        KeyChain &m_keyChain;
-        const Options m_options;
-        std::unordered_map<std::string, uint64_t> m_nSentSegments;
-        bool isini = false;
-        std::string m_fileDir;
-        std::ofstream& m_logFile; // log file for producer
-    };
-} // namespace ndn::chunks
+private:
+  Name m_prefix;
+  Name m_versionedPrefix;
+  Face& m_face;
+  KeyChain& m_keyChain;
+  const Options m_options;
+  std::ofstream& m_logFile; // log file for producer
+  std::string m_fileName; // TO DO
+};
 
-#endif // IMAgg_Producer_HPP
+} // namespace ndn::serve
+
+#endif // NDN_TOOLS_SERVE_PRODUCER_HPP

@@ -1,161 +1,168 @@
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * Copyright (c) 2016-2025, Regents of the University of California,
+ *                          Colorado State University,
+ *                          University Pierre & Marie Curie, Sorbonne University.
+ *
+ * This file is part of ndn-tools (Named Data Networking Essential Tools).
+ * See AUTHORS.md for complete list of ndn-tools authors and contributors.
+ *
+ * ndn-tools is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * ndn-tools is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * ndn-tools, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * See AUTHORS.md for complete list of ndn-cxx authors and contributors.
+ *
+ * @author Wentao Shang
+ * @author Steve DiBenedetto
+ * @author Andrea Tosatto
+ * @author Davide Pesavento
+ * @author Klaus Schneider
+ * @author Chavoosh Ghasemi
+ */
+
 #include "producer.hpp"
 
 #include <ndn-cxx/metadata-object.hpp>
 #include <ndn-cxx/util/segmenter.hpp>
+
 #include <iostream>
-#include <boost/lexical_cast.hpp>
-namespace ndn::chunks
+#include <fstream>
+
+namespace ndn::serve {
+
+Producer::Producer(const Name& prefix, Face& face, KeyChain& keyChain, std::string fileName, std::istream& is, std::ofstream& logFile,
+                   const Options& opts)
+  : m_face(face)
+  , m_keyChain(keyChain)
+  , m_options(opts)
+  , m_logFile(logFile)
+  , m_fileName(fileName)
 {
-    Producer::Producer(const Name &prefix, Face &face, KeyChain &keyChain,
-                       const Options &opts, std::string fileDir, std::ofstream& logFile)
-        : m_face(face), m_keyChain(keyChain), m_options(opts), m_prefix(prefix), m_fileDir(fileDir), m_logFile(logFile)
-    {
-        if (!m_options.isQuiet)
-        {
-            m_logFile << "Loading input ...\n";
-        }
+  if (!prefix.empty() && prefix[-1].isVersion()) {
+    // DEBUG:
+    m_prefix = prefix.getPrefix(-1);
+    m_versionedPrefix = prefix;
+    m_logFile << "Calling branch 1: " << m_versionedPrefix << std::endl;
+  }
+  else {
+    m_prefix = prefix;
+    m_versionedPrefix = Name(m_prefix).append("/" + m_fileName);
+    // m_versionedPrefix = Name(m_prefix).appendVersion();
+    m_logFile << "Calling branch 2: " << m_versionedPrefix << std::endl;
+  }
 
-        // 注册前缀到ndn网络
-        m_face.registerPrefix(m_prefix, nullptr, [this](const Name &prefix, const auto &reason)
-                              {
-            m_logFile << "ERROR: Failed to register prefix '" << prefix.toUri() << "'(" << boost::lexical_cast<std::string>(reason) << ")" << std::endl;
-            m_face.shutdown(); });
-        // 设置Interest过滤器，处理分段请求
-        face.setInterestFilter(m_prefix, [this](const auto &, const auto &interest)
-                               { processSegmentInterest(interest); });
+  if (!m_options.isQuiet) {
+    m_logFile << "Loading input ..." << std::endl;
+  }
+  Segmenter segmenter(m_keyChain, m_options.signingInfo);
+  m_store = segmenter.segment(is, m_versionedPrefix, m_options.maxSegmentSize, m_options.freshnessPeriod);
 
-        if (!m_options.isQuiet)
-        {                     
-        m_logFile << "Producer is ready for prefix: " << m_prefix.toUri() << "\n";
-        }
+  // register m_prefix without Interest handler
+  m_face.registerPrefix(m_prefix, nullptr, [this] (const Name& prefix, const auto& reason) {
+    m_logFile << "ERROR: Failed to register prefix '" << prefix << "' (" << reason << ")" << std::endl;
+    m_face.shutdown();
+  });
+
+  // match Interests whose name starts with m_versionedPrefix
+  face.setInterestFilter(m_versionedPrefix, [this] (const auto&, const auto& interest) {
+    processSegmentInterest(interest);
+  });
+
+  // match Interests whose name is exactly m_prefix
+  face.setInterestFilter(InterestFilter(m_prefix, ""), [this] (const auto&, const auto& interest) {
+    processSegmentInterest(interest);
+  });
+
+  // match discovery Interests
+  auto discoveryName = MetadataObject::makeDiscoveryInterest(m_prefix).getName();
+  face.setInterestFilter(discoveryName, [this] (const auto&, const auto& interest) {
+    processDiscoveryInterest(interest);
+  });
+
+  if (m_options.wantShowVersion) {
+    m_logFile << m_versionedPrefix[-1] << "\n";
+  }
+  if (!m_options.isQuiet) {
+    m_logFile << "Published " << m_store.size() << " Data packet" << (m_store.size() > 1 ? "s" : "")
+              << " with prefix " << m_versionedPrefix << std::endl;
+  }
+}
+
+void
+Producer::run()
+{
+  m_face.processEvents();
+}
+
+void
+Producer::processDiscoveryInterest(const Interest& interest)
+{
+  if (m_options.isVerbose)
+    m_logFile << "Discovery Interest: " << interest << std::endl;
+
+  if (!interest.getCanBePrefix()) {
+    if (m_options.isVerbose) {
+      m_logFile << "Discovery Interest lacks CanBePrefix, sending Nack" << std::endl;
     }
+    m_face.put(lp::Nack(interest));
+    return;
+  }
 
-    void
-    Producer::run()
-    {
-        m_face.processEvents();
+  MetadataObject mobject;
+  mobject.setVersionedName(m_versionedPrefix);
+
+  // make a metadata packet based on the received discovery Interest name
+  auto mdata = mobject.makeData(interest.getName(), m_keyChain, m_options.signingInfo);
+
+  if (m_options.isVerbose)
+    m_logFile << "Sending metadata: " << mdata << std::endl;
+
+  m_face.put(mdata);
+}
+
+void
+Producer::processSegmentInterest(const Interest& interest)
+{
+  BOOST_ASSERT(!m_store.empty());
+
+  if (m_options.isVerbose)
+    m_logFile << "Interest: " << interest << std::endl;
+
+  const Name& name = interest.getName();
+  std::shared_ptr<Data> data;
+
+  if (name.size() == m_versionedPrefix.size() + 1 && name[-1].isSegment()) {
+    const auto segmentNo = static_cast<size_t>(interest.getName()[-1].toSegment());
+    // specific segment retrieval
+    if (segmentNo < m_store.size()) {
+      data = m_store[segmentNo];
     }
+  }
+  else if (interest.matchesData(*m_store[0])) {
+    // unspecified version or segment number, return first segment
+    data = m_store[0];
+  }
 
-    void
-    Producer::processSegmentInterest(const Interest &interest)
-    {
-        if (m_options.isVerbose)
-        {
-            m_logFile << "Received Interest: " << interest << "\n";
-        }
-
-        // 获取前缀 -> 原本的interest Prefix: /pro1/small_test.txt/seg=0?Nonce=3b01f110
-        const Name &prefix = interest.getName().getPrefix(-1); 
-        // prefix(str) = /pro1/small_test.txt
-        std::string prefixstr = prefix.toUri();
-
-        // 未分段，则分段 m_store是一个buffer matrix，他的第一个维度是
-        if (m_store[prefixstr].empty())
-        {
-            if (m_options.isVerbose)
-            {
-                m_logFile << "(call from outer Function) Segmentation file for prefix: " << prefixstr << "\n";
-            }
-            segmentationFile(interest);
-        }
-        BOOST_ASSERT(!m_store[prefixstr].empty());
-
-        std::shared_ptr<Data> data;
-
-        // 指定segment: 请求对应segment
-        // interest.getName().get(-1) = /seg=0?Nonce=3b01f110, isSegment()将会返回true
-        if (interest.getName().get(-1).isSegment())
-        {
-            // 获取segment号
-            const auto segmentNo = static_cast<size_t>(interest.getName()[-1].toSegment());
-            // specific segment retrieval
-            if (segmentNo < m_store[prefixstr].size())
-            {
-                // 取出data
-                data = m_store[prefixstr][segmentNo];
-                // 增加"已发送计数"
-                m_nSentSegments[prefixstr]++;
-            }
-        }
-        // 不指定segment: 返回第一个segment
-        else if (interest.matchesData(*m_store[prefixstr][0]))
-        {
-
-            // unspecified version or segment number, return first segment
-            data = m_store[prefixstr][0];
-            m_nSentSegments[prefixstr] = 1;
-        }
-
-        // 检测data
-        if (data != nullptr)
-        {
-            if (m_options.isVerbose)
-            {
-                m_logFile << "Data: " << *data << "\n";;
-            }
-            // 将Data包发送到网络
-            m_face.put(*data);
-
-            // check all the segments are sent (目前先删除做测试, 逻辑待修改)
-            // const Name &dataName = data->getName();
-            // if (dataName[-1].isSegment())
-            // {
-            //     uint64_t sentSegments = m_nSentSegments[prefixstr];
-            //     auto it = m_store.find(prefixstr);
-            //     if (it != m_store.end())
-            //     {
-            //         size_t totalSegments = it->second.size();
-            //         if (sentSegments == totalSegments)
-            //         {
-            //             m_store.erase(prefixstr);
-            //         }
-            //     }
-            // }
-        }
-        else
-        {
-            if (m_options.isVerbose)
-            {
-                m_logFile << "Interest cannot be satisfied, sending Nack\n";
-            }
-            m_face.put(lp::Nack(interest));
-        }
+  if (data != nullptr) {
+    if (m_options.isVerbose) {
+      m_logFile << "Data: " << *data << std::endl;
     }
-
-    void
-    Producer::segmentationFile(const Interest &interest)
-    {
-        const Name &prefix = interest.getName().getPrefix(-1);
-        m_logFile << "(call from segmentationFile Function) Segmentation file for prefix: " << prefix.toUri() << "\n";
-        std::string prefixstr = prefix.toUri();
-        std::string filePathStr;
-        if (prefix.size() >= 2)
-        {
-            // 提取文件名（从第1个组件开始，跳过前缀）
-            Name filePath = prefix.getSubName(1);
-            filePathStr = filePath.toUri();
-            filePathStr = m_fileDir + filePathStr;
-            m_logFile << "File path: " << filePathStr << "\n";
-        }
-        else
-        {
-            return;
-        }
-
-        std::unique_ptr<std::istream> is = std::make_unique<std::ifstream>(filePathStr, std::ios::binary);
-
-        if (!m_options.isQuiet)
-        {
-            m_logFile << "Loading input ...\n";
-        }
-        Segmenter segmenter(m_keyChain, m_options.signingInfo);
-        // All the data packets are segmented and stored in m_store
-        m_store[prefixstr] = segmenter.segment(*is, prefix, m_options.maxSegmentSize, m_options.freshnessPeriod);
-        if (!m_options.isQuiet)
-        {
-            m_logFile << "Published " << m_store[prefixstr].size() << " Data packet" << (m_store[prefixstr].size() > 1 ? "s" : "")
-                      << "\n";
-        }
+    m_face.put(*data);
+  }
+  else {
+    if (m_options.isVerbose) {
+      m_logFile << "Interest cannot be satisfied, sending Nack" << std::endl;
     }
+    m_face.put(lp::Nack(interest));
+  }
+}
 
-} // namespace ndn::chunks
+} // namespace ndn::serve

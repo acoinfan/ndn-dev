@@ -73,7 +73,7 @@ namespace ndn::get
     Options consumerOptions;
     AsyncConsumerOptions asyncConsumerOptions;
 
-    ndn::chunks::Producer::Options producerOptions;
+    ndn::serve::Producer::Options producerOptions;
     util::RttEstimator::Options rttEstOptions;
 
     std::string fileName, nameConv, pipelineType, configPath, fileDir, signingInfo; // fileName is the file to be fetched and sent
@@ -305,11 +305,11 @@ namespace ndn::get
     // main logic
     try
     {
-      std::unique_ptr<ndn::chunks::AsyncProducer> asyncProducer;
+      std::unique_ptr<ndn::serve::AsyncProducer> asyncProducer;
       std::vector<std::unique_ptr<AsyncConsumer>> asyncConsumers;
 
       // Create the async producer and consumers
-      asyncProducer = std::make_unique<ndn::chunks::AsyncProducer>(id, fileDir, producerOptions);
+      asyncProducer = std::make_unique<ndn::serve::AsyncProducer>(id, fileDir, producerOptions);
       for (int targetProducer = 0; targetProducer < totalNodes; ++targetProducer)
       {
         if (targetProducer == id)

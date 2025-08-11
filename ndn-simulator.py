@@ -166,11 +166,11 @@ def create_network_config(nodes = 10, bw = 100, delay = '0ms', loss = 0, max_que
     # 自动生成 nodes 部分
     for i in range(nodes):
         # 生成 producer
-        config['nodes'][f'pro{i}'] = {'ip': f'10.{i}.{i}.1/8', 'type': 'producer'}
+        config['nodes'][f'pro{i}'] = {'ip': f'10.0.{i}.{i}/16', 'type': 'producer'}
         # 生成 consumer（每个 client 对其他 client 的请求）
         for j in range(nodes):
             if i != j:
-                config['nodes'][f'con{i}to{j}'] = {'ip': f'10.{i}.{j}.1/8', 'type': 'consumer'}
+                config['nodes'][f'con{i}to{j}'] = {'ip': f'10.0.{i}.{j}/16', 'type': 'consumer'}
 
     # 自动生成 links 部分
     for i in range(nodes):
@@ -260,6 +260,7 @@ def setup_log_path(config):
     first_app = next(iter(config['applications'].values()))
     file_name = first_app['transfer_file']
     log_dir = os.path.join("logs", f"{start_time_str}_{file_name}")
+    os.makedirs(log_dir, exist_ok=True)
     return log_dir
 
 def setup_ndn_environment(net, hosts, config):
@@ -278,7 +279,7 @@ def setup_ndn_environment(net, hosts, config):
         node = hosts[node_name]
         for prefix, nexthop in routes:
             node.add_route(prefix, nexthop)
-    sleep(10)
+            sleep(1)
 
     print("### 启动应用程序 ###")
     threads = []
@@ -293,12 +294,12 @@ def setup_ndn_environment(net, hosts, config):
             node = hosts[node_name]
 
             # TO DO
-            if node_name == "pro0" :
-                app_config['transfer_file'] = "small_test0.txt"
-            elif node_name == "pro1" :
-                app_config['transfer_file'] = "small_test1.txt"
-            elif node_name == "pro2" :
-                app_config['transfer_file'] = "small_test2.txt"
+            # if node_name == "pro0" :
+            #     app_config['transfer_file'] = "small_test0.txt"
+            # elif node_name == "pro1" :
+            #     app_config['transfer_file'] = "small_test1.txt"
+            # elif node_name == "pro2" :
+            #     app_config['transfer_file'] = "small_test2.txt"
 
             thread = threading.Thread(
                 target=node.start_producer,
@@ -341,12 +342,12 @@ def main():
         # 创建网络拓扑
         print("### 创建网络配置 ###")
         config = create_network_config(
-            nodes=3,                           # 节点数量
+            nodes=2,                           # 节点数量
             bw=100,                             # 带宽 (Mbps)   
             delay='0ms',                        # 延迟
             loss=0,                             # 丢包率 (%)
             max_queue_size=10000,            # 最大队列大小 (字节)
-            file_name="small_test.txt",   # 请求的文件名
+            file_name="testfile_6442450.txt",   # 请求的文件名
         )
         
         # 读取网络拓扑
@@ -363,8 +364,8 @@ def main():
         input("Press Enter to stop")
 
         CLI(net)  # 启动 CLI 以便手动操作网络
-
-        # 移动日志文件
+        log_movement(log_dir)  # 移动日志文件到指定目录
+        
     except Exception as e:
         print(f"错误: {e}")
         import traceback
