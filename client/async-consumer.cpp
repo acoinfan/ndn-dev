@@ -146,6 +146,11 @@ namespace ndn::get
         }
       }
 
+      if (options.isVerbose)
+      {
+        logFile << "try to fetch" << interestPrefix << std::endl;
+      }
+      
       Consumer consumer(security::getAcceptAllValidator(), outputStream);
       BOOST_ASSERT(discover != nullptr);
       BOOST_ASSERT(pipeline != nullptr);

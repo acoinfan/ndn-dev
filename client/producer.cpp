@@ -41,16 +41,21 @@ namespace ndn::chunks
     {
         if (m_options.isVerbose)
         {
-            m_logFile << "Interest: " << interest << "\n";
+            m_logFile << "Received Interest: " << interest << "\n";
         }
 
-        // 获取前缀
-        const Name &prefix = interest.getName().getPrefix(-1);
+        // 获取前缀 -> 原本的interest Prefix: /pro1/small_test.txt/seg=0?Nonce=3b01f110
+        const Name &prefix = interest.getName().getPrefix(-1); 
+        // prefix(str) = /pro1/small_test.txt
         std::string prefixstr = prefix.toUri();
 
-        // 未分段，则分段
+        // 未分段，则分段 m_store是一个buffer matrix，他的第一个维度是
         if (m_store[prefixstr].empty())
         {
+            if (m_options.isVerbose)
+            {
+                m_logFile << "(call from outer Function) Segmentation file for prefix: " << prefixstr << "\n";
+            }
             segmentationFile(interest);
         }
         BOOST_ASSERT(!m_store[prefixstr].empty());
@@ -58,13 +63,17 @@ namespace ndn::chunks
         std::shared_ptr<Data> data;
 
         // 指定segment: 请求对应segment
+        // interest.getName().get(-1) = /seg=0?Nonce=3b01f110, isSegment()将会返回true
         if (interest.getName().get(-1).isSegment())
         {
+            // 获取segment号
             const auto segmentNo = static_cast<size_t>(interest.getName()[-1].toSegment());
             // specific segment retrieval
             if (segmentNo < m_store[prefixstr].size())
             {
+                // 取出data
                 data = m_store[prefixstr][segmentNo];
+                // 增加"已发送计数"
                 m_nSentSegments[prefixstr]++;
             }
         }
@@ -77,6 +86,7 @@ namespace ndn::chunks
             m_nSentSegments[prefixstr] = 1;
         }
 
+        // 检测data
         if (data != nullptr)
         {
             if (m_options.isVerbose)
@@ -86,21 +96,21 @@ namespace ndn::chunks
             // 将Data包发送到网络
             m_face.put(*data);
 
-            // check all the segments are sent
-            const Name &dataName = data->getName();
-            if (dataName[-1].isSegment())
-            {
-                uint64_t sentSegments = m_nSentSegments[prefixstr];
-                auto it = m_store.find(prefixstr);
-                if (it != m_store.end())
-                {
-                    size_t totalSegments = it->second.size();
-                    if (sentSegments == totalSegments)
-                    {
-                        m_store.erase(prefixstr);
-                    }
-                }
-            }
+            // check all the segments are sent (目前先删除做测试, 逻辑待修改)
+            // const Name &dataName = data->getName();
+            // if (dataName[-1].isSegment())
+            // {
+            //     uint64_t sentSegments = m_nSentSegments[prefixstr];
+            //     auto it = m_store.find(prefixstr);
+            //     if (it != m_store.end())
+            //     {
+            //         size_t totalSegments = it->second.size();
+            //         if (sentSegments == totalSegments)
+            //         {
+            //             m_store.erase(prefixstr);
+            //         }
+            //     }
+            // }
         }
         else
         {
@@ -114,10 +124,9 @@ namespace ndn::chunks
 
     void
     Producer::segmentationFile(const Interest &interest)
-
     {
         const Name &prefix = interest.getName().getPrefix(-1);
-        m_logFile << "Segmentation file for prefix: " << prefix.toUri() << "\n";
+        m_logFile << "(call from segmentationFile Function) Segmentation file for prefix: " << prefix.toUri() << "\n";
         std::string prefixstr = prefix.toUri();
         std::string filePathStr;
         if (prefix.size() >= 2)
