@@ -140,7 +140,7 @@ rib {{
 
     def start_producer(self, config_file, transfer_file, id, nodes_count, directory):
         """启动生产者应用"""
-        cmd = f"{CLIENT_BIN} -c {config_file} -f {transfer_file} -i {id} -n {nodes_count} -d {directory}"
+        cmd = f"{CLIENT_BIN} -c {config_file} -f {transfer_file} -i {id} -n {nodes_count} -d {directory} 2>&1 | tee /tmp/ndn/{id}.log"
         proc = self.popen(cmd, shell=True)
         self.app_processes.append(proc)
         print(f"✓ 生产者应用启动在 {self.name}: {id}")
@@ -154,7 +154,7 @@ rib {{
         for proc in self.app_processes:
             proc.terminate()
 
-def create_network_config(nodes = 10, bw = 100, delay = '0ms', loss = 0, max_queue_size = 10000000, file_name = "testfile_6442450.txt"):
+def create_network_config(nodes = 10, bw = 100, delay = '0ms', loss = 0, max_queue_size = 10000, file_name = "testfile_6442450.txt"):
     """创建网络配置"""
     config = {
         'nodes': {},
@@ -166,11 +166,11 @@ def create_network_config(nodes = 10, bw = 100, delay = '0ms', loss = 0, max_que
     # 自动生成 nodes 部分
     for i in range(nodes):
         # 生成 producer
-        config['nodes'][f'pro{i}'] = {'ip': f'10.{i}.{i}.0', 'type': 'producer'}
+        config['nodes'][f'pro{i}'] = {'ip': f'10.{i}.{i}.1/8', 'type': 'producer'}
         # 生成 consumer（每个 client 对其他 client 的请求）
         for j in range(nodes):
             if i != j:
-                config['nodes'][f'con{i}to{j}'] = {'ip': f'10.{i}.{j}.0', 'type': 'consumer'}
+                config['nodes'][f'con{i}to{j}'] = {'ip': f'10.{i}.{j}.1/8', 'type': 'consumer'}
 
     # 自动生成 links 部分
     for i in range(nodes):
@@ -205,8 +205,9 @@ def create_network_config(nodes = 10, bw = 100, delay = '0ms', loss = 0, max_que
             if i != j:
                 consumer_name = f'con{i}to{j}'
                 producer_name = f'pro{j}'
+                producer_ip = config['nodes'][producer_name]['ip'].split('/')[0]  # 获取 IP 地址
                 config['routes'][consumer_name] = [
-                    (f'/pro{j}', f'udp4://10.{j}.{j}.0:6363')
+                    (f'/pro{j}', f'udp4://{producer_ip}:6363')
                 ]
 
     return config
@@ -270,7 +271,7 @@ def setup_ndn_environment(net, hosts, config):
     print("### 启动 NFD ###")
     for host in hosts.values():
         host.start_nfd()
-    sleep(10)
+        sleep(1)
 
     print("### 配置路由 ###")
     for node_name, routes in config['routes'].items():
@@ -285,9 +286,20 @@ def setup_ndn_environment(net, hosts, config):
     os.makedirs(ok_dir, exist_ok=True)
     ok_file = [os.path.join(ok_dir, f"pro{app_config['id']}.ok") for node_name, app_config in config['applications'].items() if node_name in hosts]
 
+    print(ok_file)
+
     for node_name, app_config in config['applications'].items():
         if node_name in hosts:
             node = hosts[node_name]
+
+            # TO DO
+            if node_name == "pro0" :
+                app_config['transfer_file'] = "small_test0.txt"
+            elif node_name == "pro1" :
+                app_config['transfer_file'] = "small_test1.txt"
+            elif node_name == "pro2" :
+                app_config['transfer_file'] = "small_test2.txt"
+
             thread = threading.Thread(
                 target=node.start_producer,
                 kwargs={
@@ -307,6 +319,7 @@ def setup_ndn_environment(net, hosts, config):
             break
         time.sleep(1)
 
+    time.sleep(5)
     with open(os.path.join(ok_dir, "all.ok"), 'w') as f:
         f.write("all producers started\n")
     return net
@@ -328,11 +341,11 @@ def main():
         # 创建网络拓扑
         print("### 创建网络配置 ###")
         config = create_network_config(
-            nodes=2,                           # 节点数量
+            nodes=3,                           # 节点数量
             bw=100,                             # 带宽 (Mbps)   
             delay='0ms',                        # 延迟
             loss=0,                             # 丢包率 (%)
-            max_queue_size=10000000,            # 最大队列大小 (字节)
+            max_queue_size=10000,            # 最大队列大小 (字节)
             file_name="small_test.txt",   # 请求的文件名
         )
         
@@ -345,11 +358,13 @@ def main():
 
         # 设置 NDN 环境
         net = setup_ndn_environment(net, hosts, config)
-    
-        CLI(net)
+
+        print("testing")
+        input("Press Enter to stop")
+
+        CLI(net)  # 启动 CLI 以便手动操作网络
 
         # 移动日志文件
-        log_movement(log_dir)
     except Exception as e:
         print(f"错误: {e}")
         import traceback

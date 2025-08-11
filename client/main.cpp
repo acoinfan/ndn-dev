@@ -107,8 +107,8 @@ namespace ndn::get
       return 0;
     }
 
-    std::string clientPrefix = "/ndn/client" + std::to_string(id);
-    std::ofstream logFile(clientPrefix + ".log");
+    std::string clientPrefix = "client" + std::to_string(id);
+    std::ofstream logFile("/tmp/ndn/" + clientPrefix + ".log");
 
     if (vm.count("config") == 0)
     {
@@ -309,6 +309,7 @@ namespace ndn::get
       std::vector<std::unique_ptr<AsyncConsumer>> asyncConsumers;
 
       // Create the async producer and consumers
+      asyncProducer = std::make_unique<ndn::chunks::AsyncProducer>(id, fileDir, producerOptions);
       for (int targetProducer = 0; targetProducer < totalNodes; ++targetProducer)
       {
         if (targetProducer == id)
@@ -317,7 +318,6 @@ namespace ndn::get
         }
         asyncConsumers.push_back(std::make_unique<AsyncConsumer>(id, targetProducer, asyncConsumerOptions, consumerOptions, rttEstOptions));
       }
-      asyncProducer = std::make_unique<ndn::chunks::AsyncProducer>(id, fileDir, producerOptions);
 
       // Start the async producer
       asyncProducer->start();
@@ -353,6 +353,8 @@ namespace ndn::get
       logFile << clientPrefix << " SUMMARY: Success=" << successCount
               << ", Failed=" << failureCount
               << ", Total=" << (successCount + failureCount) << std::endl;
+      
+      asyncProducer->join(); // 等待Producer完成
       return 0;
     }
     catch (const std::exception &e)
