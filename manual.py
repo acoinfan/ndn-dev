@@ -65,7 +65,9 @@ face_system {{
     port 6363
     enable_v4 yes
     enable_v6 no
-    mcast no
+    mcast yes
+    mcast_group 224.0.23.170
+    mcast_port 56363
   }}
 }}
 
