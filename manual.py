@@ -173,7 +173,7 @@ if os.path.isfile(CLIENT_BIN):
             f'cd /home/a_coin_fan/code/ndn-dev/client && export NDN_CLIENT_TRANSPORT="unix:///run/nfd/{cname}.sock"; '
             f'{CLIENT_BIN} --config /home/a_coin_fan/code/ndn-dev/exp-clientconfig.ini '
             f'--directory /home/a_coin_fan/code/ndn-dev/experiments '
-            f'--filename small_test.txt '
+            f'--filename testfile_6442450.txt '
             f'--id {idx} '
             f'--nodes 3 > /tmp/ndn/client{idx}.log 2>&1 &'
         )

@@ -159,7 +159,7 @@ rib {{
                     self.dump_face_route_logs(dest_dir)
                 except Exception:
                     pass
-                time.sleep(interval)
+                sleep(interval)
         t = threading.Thread(target=_loop, daemon=True)
         self._face_log_thread = t
         t.start()

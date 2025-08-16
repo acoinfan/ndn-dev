@@ -73,7 +73,7 @@ namespace ndn::get
     Options consumerOptions;
     AsyncConsumerOptions asyncConsumerOptions;
 
-    ndn::chunks::Producer::Options producerOptions;
+    ndn::serve::Producer::Options producerOptions;
     util::RttEstimator::Options rttEstOptions;
 
     std::string fileName, nameConv, pipelineType, configPath, fileDir, signingInfo; // fileName is the file to be fetched and sent
@@ -166,6 +166,8 @@ namespace ndn::get
     // Extract options from each section
     // general options
     nameConv = general["naming-convention"];
+    consumerOptions.disableVersionDiscovery = get_bool(general["no-version-discovery"], clientPrefix, logFile, "no-version-discovery");
+    producerOptions.disableVersionDiscovery = get_bool(general["no-version-discovery"], clientPrefix, logFile, "no-version-discovery");
     consumerOptions.isQuiet = get_bool(general["quiet"], clientPrefix, logFile, "quiet");
     consumerOptions.isVerbose = get_bool(general["verbose"], clientPrefix, logFile, "verbose");
     asyncConsumerOptions.cwndLoggingEnabled = get_bool(general["log-cwnd"], clientPrefix, logFile, "log-cwnd");
@@ -177,7 +179,6 @@ namespace ndn::get
     consumerOptions.mustBeFresh = get_bool(consumer["fresh"], clientPrefix, logFile, "fresh");
     consumerOptions.interestLifetime = time::milliseconds(get_long(consumer["lifetime"], clientPrefix, logFile, "lifetime"));
     consumerOptions.maxRetriesOnTimeoutOrNack = get_int(consumer["retries"], clientPrefix, logFile, "retries");
-    consumerOptions.disableVersionDiscovery = get_bool(consumer["no-version-discovery"], clientPrefix, logFile, "no-version-discovery");
     asyncConsumerOptions.isSaveFile = get_bool(consumer["save-to-dir"], clientPrefix, logFile, "save-to-dir");
 
     // producer options
@@ -305,11 +306,11 @@ namespace ndn::get
     // main logic
     try
     {
-      std::unique_ptr<ndn::chunks::AsyncProducer> asyncProducer;
+      std::unique_ptr<ndn::serve::AsyncProducer> asyncProducer;
       std::vector<std::unique_ptr<AsyncConsumer>> asyncConsumers;
 
       // Create the async producer and consumers
-      asyncProducer = std::make_unique<ndn::chunks::AsyncProducer>(id, fileDir, producerOptions);
+      asyncProducer = std::make_unique<ndn::serve::AsyncProducer>(id, fileDir, producerOptions);
       for (int targetProducer = 0; targetProducer < totalNodes; ++targetProducer)
       {
         if (targetProducer == id)

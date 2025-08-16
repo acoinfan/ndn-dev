@@ -1,9 +1,9 @@
 #include "async-producer.hpp"
 
-namespace ndn::chunks
+namespace ndn::serve
 {
 
-    AsyncProducer::AsyncProducer(int producerId, const std::string &fileDir, const ndn::chunks::Producer::Options &options)
+    AsyncProducer::AsyncProducer(int producerId, const std::string &fileDir, const ndn::serve::Producer::Options &options)
         : producerId(producerId), fileDir(fileDir), options(options)
     {
         prefix = "pro" + std::to_string(producerId);
@@ -39,16 +39,16 @@ namespace ndn::chunks
         std::ofstream logFile(logFilePath);
         try
         {
-            #ifdef MODE_OLD
-                std::string socketPath = "unix:///run/nfd/" + prefix + ".sock";
-            #else
+            #ifdef MODE_NEW
                 std::string socketPath = "unix:///run/nfd/client" + std::to_string(producerId) + ".sock";
+            #else
+                std::string socketPath = "unix:///run/nfd/" + prefix + ".sock";
             #endif
             
             auto transport = ndn::UnixTransport::create(socketPath);
             Face face(transport);
             KeyChain keyChain;
-            Producer producer(prefix, face, keyChain, options, fileDir, logFile);
+            Producer producer(prefix, face, keyChain, fileDir, logFile, options);
 
             sendConsumerSignal();
             if (options.isVerbose)

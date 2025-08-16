@@ -2,15 +2,13 @@
 # Author: GitHub Copilot
 
 # Compiler settings
-MODE ?= old
-
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -g
 LDFLAGS = 
 LIBS = -lndn-cxx -lboost_program_options -lboost_system -lboost_thread -lpthread -lfmt
 
-ifeq ($(MODE),old)
-    CXXFLAGS += -DMODE_OLD
+ifeq ($(MODE),new)
+    CXXFLAGS += -DMODE_NEW
 endif
 
 # Include directories
