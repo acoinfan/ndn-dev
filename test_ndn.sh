@@ -40,7 +40,7 @@ fi
 echo "4. 运行网络模拟..."
 cd "$PROJECT_ROOT"
 
-sudo python3 ndn-simulator.py
+sudo python3 manual.py
 
 echo "=== 测试完成 ==="
 

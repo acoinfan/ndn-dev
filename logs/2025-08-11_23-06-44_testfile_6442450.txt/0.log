@@ -1,0 +1,10 @@
+I/O stats: 100 calls, 100 μs total, 1 μs avg
+I/O stats: 200 calls, 193 μs total, 0 μs avg
+Received congestion mark, value = 1, new cwnd = 154
+I/O stats: 300 calls, 294 μs total, 0 μs avg
+I/O stats: 400 calls, 384 μs total, 0 μs avg
+I/O stats: 500 calls, 464 μs total, 0 μs avg
+I/O stats: 600 calls, 565 μs total, 0 μs avg
+Received congestion mark, value = 1, new cwnd = 77.9903
+I/O stats: 700 calls, 672 μs total, 0 μs avg
+Received congestion mark, value = 1, new cwnd = 39.951

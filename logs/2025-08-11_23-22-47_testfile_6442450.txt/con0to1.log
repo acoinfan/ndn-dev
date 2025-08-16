@@ -1,0 +1,1628 @@
+con0to1 waiting for producer ready signal: /tmp/ndn/all.ok
+con0to1 received producer ready signal!
+RTT estimator parameters:
+	Alpha = 0.125
+	Beta = 0.25
+	K = 8
+	Initial RTO = 1000 milliseconds
+	Min RTO = 200 milliseconds
+	Max RTO = 60000 milliseconds
+	Backoff multiplier = 2
+Pipeline parameters:
+	Request fresh content = no
+	Interest lifetime = 4000 milliseconds
+	Max retries on timeout or Nack = 5
+	Initial congestion window size = 1
+	Initial slow start threshold = 1.79769e+308
+	Additive increase step = 1
+	Multiplicative decrease factor = 0.5
+	RTO check interval = 10 milliseconds
+	React to congestion marks = yes
+	Conservative window adaptation = yes
+	Resetting window to ssthresh upon loss event
+try to fetch/pro1/testfile_6442450.txt
+Requesting segment #0
+Received segment #0, rtt=7.37176ms, rto=1000ms
+Requesting segment #1
+Requesting segment #2
+Received segment #1, rtt=1.01874ms, rto=200ms
+Requesting segment #3
+Requesting segment #4
+Received segment #2, rtt=1.54785ms, rto=200ms
+Requesting segment #5
+Requesting segment #6
+Received segment #3, rtt=1.19949ms, rto=200ms
+Requesting segment #7
+Requesting segment #8
+Received segment #4, rtt=1.87814ms, rto=200ms
+Requesting segment #9
+Requesting segment #10
+Received segment #5, rtt=2.05499ms, rto=200ms
+Requesting segment #11
+Requesting segment #12
+Received segment #6, rtt=2.82624ms, rto=200ms
+Requesting segment #13
+Requesting segment #14
+Received segment #7, rtt=2.7059ms, rto=200ms
+Requesting segment #15
+Requesting segment #16
+Received segment #8, rtt=3.38738ms, rto=200ms
+Requesting segment #17
+Requesting segment #18
+Received segment #9, rtt=3.40046ms, rto=200ms
+Requesting segment #19
+Requesting segment #20
+Received segment #10, rtt=4.10888ms, rto=200ms
+Requesting segment #21
+Requesting segment #22
+Received segment #11, rtt=4.09657ms, rto=200ms
+Requesting segment #23
+Requesting segment #24
+Received segment #12, rtt=4.98758ms, rto=200ms
+Requesting segment #25
+Requesting segment #26
+Received segment #13, rtt=4.7225ms, rto=200ms
+Requesting segment #27
+Requesting segment #28
+Received segment #14, rtt=5.45269ms, rto=200ms
+Requesting segment #29
+Requesting segment #30
+Received segment #15, rtt=5.5291ms, rto=200ms
+Requesting segment #31
+Requesting segment #32
+Received segment #16, rtt=6.21708ms, rto=200ms
+Requesting segment #33
+Requesting segment #34
+Received segment #17, rtt=6.24241ms, rto=200ms
+Requesting segment #35
+Requesting segment #36
+Received segment #18, rtt=7.1422ms, rto=200ms
+Requesting segment #37
+Requesting segment #38
+Received segment #19, rtt=7.01081ms, rto=200ms
+Requesting segment #39
+Requesting segment #40
+Received segment #20, rtt=7.64145ms, rto=200ms
+Requesting segment #41
+Requesting segment #42
+Received segment #21, rtt=7.66617ms, rto=200ms
+Requesting segment #43
+Requesting segment #44
+Received segment #22, rtt=8.37099ms, rto=200ms
+Requesting segment #45
+Requesting segment #46
+Received segment #23, rtt=8.58854ms, rto=200ms
+Requesting segment #47
+Requesting segment #48
+Received segment #24, rtt=9.11161ms, rto=200ms
+Requesting segment #49
+Requesting segment #50
+Received segment #25, rtt=9.05381ms, rto=200ms
+Requesting segment #51
+Requesting segment #52
+Received segment #26, rtt=9.60145ms, rto=200ms
+Requesting segment #53
+Requesting segment #54
+Received segment #27, rtt=9.94322ms, rto=200ms
+Requesting segment #55
+Requesting segment #56
+Received segment #28, rtt=10.4549ms, rto=200ms
+Requesting segment #57
+Requesting segment #58
+Received segment #29, rtt=10.4311ms, rto=200ms
+Requesting segment #59
+Requesting segment #60
+Received segment #30, rtt=11.2093ms, rto=200ms
+Requesting segment #61
+Requesting segment #62
+Received segment #31, rtt=11.3023ms, rto=200ms
+Requesting segment #63
+Requesting segment #64
+Received segment #32, rtt=11.926ms, rto=200ms
+Requesting segment #65
+Requesting segment #66
+Received segment #33, rtt=11.9529ms, rto=200ms
+Requesting segment #67
+Requesting segment #68
+Received segment #34, rtt=12.6546ms, rto=200ms
+Requesting segment #69
+Requesting segment #70
+Received segment #35, rtt=12.5997ms, rto=200ms
+Requesting segment #71
+Requesting segment #72
+Received segment #36, rtt=13.294ms, rto=200ms
+Requesting segment #73
+Requesting segment #74
+Received segment #37, rtt=13.0823ms, rto=200ms
+Requesting segment #75
+Requesting segment #76
+Received segment #38, rtt=13.775ms, rto=200ms
+Requesting segment #77
+Requesting segment #78
+Received segment #39, rtt=13.9363ms, rto=200ms
+Requesting segment #79
+Requesting segment #80
+Received segment #40, rtt=14.8633ms, rto=200ms
+Requesting segment #81
+Requesting segment #82
+Received segment #41, rtt=14.8491ms, rto=200ms
+Requesting segment #83
+Requesting segment #84
+Received segment #42, rtt=15.7221ms, rto=200ms
+Requesting segment #85
+Requesting segment #86
+Received segment #43, rtt=15.4905ms, rto=200ms
+Requesting segment #87
+Requesting segment #88
+Received segment #44, rtt=16.2841ms, rto=200ms
+Requesting segment #89
+Requesting segment #90
+Received segment #45, rtt=16.1404ms, rto=200ms
+Requesting segment #91
+Requesting segment #92
+Received segment #46, rtt=16.8463ms, rto=200ms
+Requesting segment #93
+Requesting segment #94
+Received segment #47, rtt=16.6287ms, rto=200ms
+Requesting segment #95
+Requesting segment #96
+Received segment #48, rtt=17.3308ms, rto=200ms
+Requesting segment #97
+Requesting segment #98
+Received segment #49, rtt=17.5211ms, rto=200ms
+Requesting segment #99
+Requesting segment #100
+Received segment #50, rtt=18.1634ms, rto=200ms
+Requesting segment #101
+Requesting segment #102
+Received segment #51, rtt=18.106ms, rto=200ms
+Requesting segment #103
+Requesting segment #104
+Received segment #52, rtt=18.713ms, rto=200ms
+Requesting segment #105
+Requesting segment #106
+Received segment #53, rtt=18.8879ms, rto=200ms
+Requesting segment #107
+Requesting segment #108
+Received segment #54, rtt=19.5153ms, rto=200ms
+Requesting segment #109
+Requesting segment #110
+Received segment #55, rtt=19.4719ms, rto=200ms
+Requesting segment #111
+Requesting segment #112
+Received segment #56, rtt=20.0418ms, rto=200ms
+Requesting segment #113
+Requesting segment #114
+Received segment #57, rtt=20.5573ms, rto=200ms
+Requesting segment #115
+Requesting segment #116
+Received segment #58, rtt=20.9414ms, rto=200ms
+Requesting segment #117
+Requesting segment #118
+Received segment #59, rtt=20.8822ms, rto=200ms
+Requesting segment #119
+Requesting segment #120
+Received segment #60, rtt=21.5707ms, rto=200ms
+Requesting segment #121
+Requesting segment #122
+Received segment #61, rtt=21.4681ms, rto=200ms
+Requesting segment #123
+Requesting segment #124
+Received segment #62, rtt=22.1587ms, rto=200ms
+Requesting segment #125
+Requesting segment #126
+Received segment #63, rtt=22.3689ms, rto=200ms
+Requesting segment #127
+Requesting segment #128
+Received segment #64, rtt=23.039ms, rto=200ms
+Requesting segment #129
+Requesting segment #130
+Received segment #65, rtt=22.9691ms, rto=200ms
+Requesting segment #131
+Requesting segment #132
+Received segment #66, rtt=23.6774ms, rto=200ms
+Requesting segment #133
+Requesting segment #134
+Received segment #67, rtt=23.6352ms, rto=200ms
+Requesting segment #135
+Requesting segment #136
+Received segment #68, rtt=24.4107ms, rto=200ms
+Requesting segment #137
+Requesting segment #138
+Received segment #69, rtt=24.321ms, rto=200ms
+Requesting segment #139
+Requesting segment #140
+Received segment #70, rtt=25.1077ms, rto=200ms
+Requesting segment #141
+Requesting segment #142
+Received segment #71, rtt=25.1488ms, rto=200ms
+Requesting segment #143
+Requesting segment #144
+Received segment #72, rtt=25.8493ms, rto=200ms
+Requesting segment #145
+Requesting segment #146
+Received segment #73, rtt=25.8326ms, rto=200ms
+Requesting segment #147
+Requesting segment #148
+Received segment #74, rtt=26.5556ms, rto=200ms
+Requesting segment #149
+Requesting segment #150
+Received segment #75, rtt=26.5194ms, rto=200ms
+Requesting segment #151
+Requesting segment #152
+Received segment #76, rtt=27.1932ms, rto=200ms
+Requesting segment #153
+Requesting segment #154
+Received segment #77, rtt=27.1983ms, rto=200ms
+Requesting segment #155
+Requesting segment #156
+Received segment #78, rtt=27.8833ms, rto=200ms
+Requesting segment #157
+Requesting segment #158
+Received segment #79, rtt=27.8493ms, rto=200ms
+Requesting segment #159
+Requesting segment #160
+Received segment #80, rtt=28.5407ms, rto=200ms
+Requesting segment #161
+Requesting segment #162
+Received segment #81, rtt=28.2906ms, rto=200ms
+Requesting segment #163
+Requesting segment #164
+Received segment #82, rtt=29.0317ms, rto=200ms
+Requesting segment #165
+Requesting segment #166
+Received segment #83, rtt=29.1186ms, rto=200ms
+Requesting segment #167
+Requesting segment #168
+Received segment #84, rtt=29.7438ms, rto=200ms
+Requesting segment #169
+Requesting segment #170
+Received segment #85, rtt=29.6652ms, rto=200ms
+Requesting segment #171
+Requesting segment #172
+Received segment #86, rtt=30.4075ms, rto=200ms
+Requesting segment #173
+Requesting segment #174
+Received segment #87, rtt=30.5046ms, rto=200ms
+Requesting segment #175
+Requesting segment #176
+Received segment #88, rtt=31.5821ms, rto=200ms
+Requesting segment #177
+Requesting segment #178
+Received segment #89, rtt=31.492ms, rto=200ms
+Requesting segment #179
+Requesting segment #180
+Received segment #90, rtt=32.1832ms, rto=200ms
+Requesting segment #181
+Requesting segment #182
+Received segment #91, rtt=32.3156ms, rto=200ms
+Requesting segment #183
+Requesting segment #184
+Received segment #92, rtt=33.0869ms, rto=200ms
+Requesting segment #185
+Requesting segment #186
+Received segment #93, rtt=32.9744ms, rto=200ms
+Requesting segment #187
+Requesting segment #188
+Received segment #94, rtt=33.6773ms, rto=200ms
+Requesting segment #189
+Requesting segment #190
+Received segment #95, rtt=33.6679ms, rto=200ms
+Requesting segment #191
+Requesting segment #192
+Received segment #96, rtt=34.3543ms, rto=200ms
+Requesting segment #193
+Requesting segment #194
+Received segment #97, rtt=34.3734ms, rto=200ms
+Requesting segment #195
+Requesting segment #196
+Received segment #98, rtt=35.0916ms, rto=200ms
+Requesting segment #197
+Requesting segment #198
+Received segment #99, rtt=35.1904ms, rto=200ms
+Requesting segment #199
+Requesting segment #200
+Received segment #100, rtt=35.7849ms, rto=200ms
+Requesting segment #201
+Requesting segment #202
+Received segment #101, rtt=35.7993ms, rto=200ms
+Requesting segment #203
+Requesting segment #204
+Received segment #102, rtt=36.5589ms, rto=200ms
+Requesting segment #205
+Requesting segment #206
+Received segment #103, rtt=36.4823ms, rto=200ms
+Requesting segment #207
+Requesting segment #208
+Received segment #104, rtt=37.1633ms, rto=200ms
+Requesting segment #209
+Requesting segment #210
+Received segment #105, rtt=37.1915ms, rto=200ms
+Requesting segment #211
+Requesting segment #212
+Received segment #106, rtt=37.921ms, rto=200ms
+Requesting segment #213
+Requesting segment #214
+Received segment #107, rtt=37.8468ms, rto=200ms
+Requesting segment #215
+Requesting segment #216
+Received segment #108, rtt=38.5207ms, rto=200ms
+Requesting segment #217
+Requesting segment #218
+Received segment #109, rtt=38.5809ms, rto=200ms
+Requesting segment #219
+Requesting segment #220
+Received segment #110, rtt=39.2598ms, rto=200ms
+Requesting segment #221
+Requesting segment #222
+Received segment #111, rtt=39.1313ms, rto=200ms
+Requesting segment #223
+Requesting segment #224
+Received segment #112, rtt=39.8309ms, rto=200ms
+Requesting segment #225
+Requesting segment #226
+Received segment #113, rtt=39.94ms, rto=200ms
+Requesting segment #227
+Requesting segment #228
+Received segment #114, rtt=40.6202ms, rto=200ms
+Requesting segment #229
+Requesting segment #230
+Received segment #115, rtt=40.3478ms, rto=200ms
+Requesting segment #231
+Requesting segment #232
+Received segment #116, rtt=40.9611ms, rto=200ms
+Requesting segment #233
+Requesting segment #234
+Received segment #117, rtt=41.2493ms, rto=200ms
+Requesting segment #235
+Requesting segment #236
+Received segment #118, rtt=41.9615ms, rto=200ms
+Requesting segment #237
+Requesting segment #238
+Received segment #119, rtt=42.2698ms, rto=200ms
+Requesting segment #239
+Requesting segment #240
+Received segment #120, rtt=42.688ms, rto=200ms
+Requesting segment #241
+Requesting segment #242
+Received segment #121, rtt=42.6897ms, rto=200ms
+Requesting segment #243
+Requesting segment #244
+Received segment #122, rtt=43.3655ms, rto=200ms
+Requesting segment #245
+Requesting segment #246
+Received segment #123, rtt=43.3923ms, rto=200ms
+Requesting segment #247
+Requesting segment #248
+Received segment #124, rtt=44.0708ms, rto=200ms
+Requesting segment #249
+Requesting segment #250
+Received segment #125, rtt=44.1389ms, rto=200ms
+Requesting segment #251
+Requesting segment #252
+Received segment #126, rtt=44.7569ms, rto=200ms
+Requesting segment #253
+Requesting segment #254
+Received segment #127, rtt=44.5776ms, rto=200ms
+Requesting segment #255
+Requesting segment #256
+Received segment #128, rtt=45.2515ms, rto=200ms
+Requesting segment #257
+Requesting segment #258
+Received segment #129, rtt=45.3217ms, rto=200ms
+Requesting segment #259
+Requesting segment #260
+Received segment #130, rtt=45.9957ms, rto=200ms
+Requesting segment #261
+Requesting segment #262
+Received segment #131, rtt=46.0939ms, rto=200ms
+Requesting segment #263
+Requesting segment #264
+Received segment #132, rtt=46.7842ms, rto=200ms
+Requesting segment #265
+Requesting segment #266
+Received segment #133, rtt=46.7573ms, rto=200ms
+Requesting segment #267
+Requesting segment #268
+Received segment #134, rtt=47.4471ms, rto=200ms
+Requesting segment #269
+Requesting segment #270
+Received segment #135, rtt=47.6887ms, rto=200ms
+Requesting segment #271
+Requesting segment #272
+Received segment #136, rtt=48.2127ms, rto=200ms
+Requesting segment #273
+Requesting segment #274
+Received segment #137, rtt=48.1717ms, rto=200ms
+Requesting segment #275
+Requesting segment #276
+Received segment #138, rtt=48.7961ms, rto=200ms
+Requesting segment #277
+Requesting segment #278
+Received segment #139, rtt=48.8829ms, rto=200ms
+Requesting segment #279
+Requesting segment #280
+Received segment #140, rtt=49.591ms, rto=200ms
+Requesting segment #281
+Requesting segment #282
+Received segment #141, rtt=49.4791ms, rto=200ms
+Requesting segment #283
+Requesting segment #284
+Received segment #142, rtt=50.1286ms, rto=200ms
+Requesting segment #285
+Requesting segment #286
+Received segment #143, rtt=50.1489ms, rto=200ms
+Requesting segment #287
+Requesting segment #288
+Received segment #144, rtt=50.8315ms, rto=200ms
+Requesting segment #289
+Requesting segment #290
+Received segment #145, rtt=50.8364ms, rto=200ms
+Requesting segment #291
+Requesting segment #292
+Received segment #146, rtt=51.4979ms, rto=200ms
+Requesting segment #293
+Requesting segment #294
+Received segment #147, rtt=51.6413ms, rto=200ms
+Requesting segment #295
+Requesting segment #296
+Received segment #148, rtt=52.2039ms, rto=200ms
+Requesting segment #297
+Requesting segment #298
+Received segment #149, rtt=52.3954ms, rto=200ms
+Requesting segment #299
+Requesting segment #300
+Received segment #150, rtt=52.8619ms, rto=200ms
+Requesting segment #301
+Requesting segment #302
+Received segment #151, rtt=52.8971ms, rto=200ms
+Requesting segment #303
+Requesting segment #304
+Received segment #152, rtt=53.5825ms, rto=200ms
+Requesting segment #305
+Requesting segment #306
+Received segment #153, rtt=53.5972ms, rto=200ms
+Requesting segment #307
+Requesting segment #308
+Received segment #154, rtt=54.2742ms, rto=200ms
+Requesting segment #309
+Requesting segment #310
+Received segment #155, rtt=54.2806ms, rto=200ms
+Requesting segment #311
+Requesting segment #312
+Received segment #156, rtt=54.9592ms, rto=200ms
+Requesting segment #313
+Requesting segment #314
+Received segment #157, rtt=55.0211ms, rto=200ms
+Requesting segment #315
+Requesting segment #316
+Received segment #158, rtt=55.6532ms, rto=200ms
+Requesting segment #317
+Requesting segment #318
+Received segment #159, rtt=55.703ms, rto=200ms
+Requesting segment #319
+Requesting segment #320
+Received segment #160, rtt=56.3458ms, rto=200ms
+Requesting segment #321
+Requesting segment #322
+Received segment #161, rtt=56.3169ms, rto=200ms
+Requesting segment #323
+Requesting segment #324
+Received segment #162, rtt=57.0317ms, rto=200ms
+Requesting segment #325
+Requesting segment #326
+Received segment #163, rtt=57.162ms, rto=200ms
+Requesting segment #327
+Requesting segment #328
+Received segment #164, rtt=57.7246ms, rto=200ms
+Requesting segment #329
+Requesting segment #330
+Received segment #165, rtt=57.6595ms, rto=200ms
+Requesting segment #331
+Requesting segment #332
+Received segment #166, rtt=58.3903ms, rto=200ms
+Requesting segment #333
+Requesting segment #334
+Received segment #167, rtt=58.3535ms, rto=200ms
+Requesting segment #335
+Requesting segment #336
+Received segment #168, rtt=59.0666ms, rto=200ms
+Requesting segment #337
+Requesting segment #338
+Received segment #169, rtt=59.0971ms, rto=200ms
+Requesting segment #339
+Requesting segment #340
+Received segment #170, rtt=59.7756ms, rto=200ms
+Requesting segment #341
+Requesting segment #342
+Received segment #171, rtt=59.6777ms, rto=200ms
+Requesting segment #343
+Requesting segment #344
+Received segment #172, rtt=60.4041ms, rto=200ms
+Requesting segment #345
+Requesting segment #346
+Received segment #173, rtt=60.2977ms, rto=200ms
+Requesting segment #347
+Requesting segment #348
+Received segment #174, rtt=60.9929ms, rto=200ms
+Requesting segment #349
+Requesting segment #350
+Received segment #175, rtt=61.0672ms, rto=200ms
+Requesting segment #351
+Requesting segment #352
+Received segment #176, rtt=61.7449ms, rto=200ms
+Requesting segment #353
+Requesting segment #354
+Received segment #177, rtt=61.4242ms, rto=200ms
+Requesting segment #355
+Requesting segment #356
+Received segment #178, rtt=62.204ms, rto=200ms
+Requesting segment #357
+Requesting segment #358
+Received segment #179, rtt=62.0756ms, rto=200ms
+Requesting segment #359
+Requesting segment #360
+Received segment #180, rtt=62.7632ms, rto=200ms
+Requesting segment #361
+Requesting segment #362
+Received segment #181, rtt=62.7845ms, rto=200ms
+Requesting segment #363
+Requesting segment #364
+Received segment #182, rtt=63.484ms, rto=200ms
+Requesting segment #365
+Requesting segment #366
+Received segment #183, rtt=63.4704ms, rto=200ms
+Requesting segment #367
+Requesting segment #368
+Received segment #184, rtt=64.1816ms, rto=200ms
+Requesting segment #369
+Requesting segment #370
+Received segment #185, rtt=64.0564ms, rto=200ms
+Requesting segment #371
+Requesting segment #372
+Received segment #186, rtt=64.7292ms, rto=200ms
+Requesting segment #373
+Requesting segment #374
+Received segment #187, rtt=64.7977ms, rto=200ms
+Requesting segment #375
+Requesting segment #376
+Received segment #188, rtt=65.5249ms, rto=200ms
+Requesting segment #377
+Requesting segment #378
+Received segment #189, rtt=65.6571ms, rto=200ms
+Requesting segment #379
+Requesting segment #380
+Received segment #190, rtt=66.2027ms, rto=200ms
+Requesting segment #381
+Requesting segment #382
+Received segment #191, rtt=66.2152ms, rto=200ms
+Requesting segment #383
+Requesting segment #384
+Received segment #192, rtt=66.9521ms, rto=200ms
+Requesting segment #385
+Requesting segment #386
+Received segment #193, rtt=66.9194ms, rto=200ms
+Requesting segment #387
+Requesting segment #388
+Received segment #194, rtt=67.5826ms, rto=200ms
+Requesting segment #389
+Requesting segment #390
+Received segment #195, rtt=67.5452ms, rto=200ms
+Requesting segment #391
+Requesting segment #392
+Received segment #196, rtt=68.2706ms, rto=200ms
+Requesting segment #393
+Requesting segment #394
+Received segment #197, rtt=68.2195ms, rto=200ms
+Requesting segment #395
+Requesting segment #396
+Received segment #198, rtt=68.9245ms, rto=200ms
+Requesting segment #397
+Requesting segment #398
+Received segment #199, rtt=68.7788ms, rto=200ms
+Requesting segment #399
+Requesting segment #400
+Received segment #200, rtt=69.5073ms, rto=200ms
+Requesting segment #401
+Requesting segment #402
+Received segment #201, rtt=69.6862ms, rto=200ms
+Requesting segment #403
+Requesting segment #404
+Received segment #202, rtt=70.4876ms, rto=200ms
+Requesting segment #405
+Requesting segment #406
+Received segment #203, rtt=70.4201ms, rto=200ms
+Requesting segment #407
+Requesting segment #408
+Received segment #204, rtt=71.1892ms, rto=200ms
+Requesting segment #409
+Requesting segment #410
+Received segment #205, rtt=71.0256ms, rto=200ms
+Requesting segment #411
+Requesting segment #412
+Received segment #206, rtt=71.7195ms, rto=200ms
+Requesting segment #413
+Requesting segment #414
+Received segment #207, rtt=71.7891ms, rto=200ms
+Requesting segment #415
+Requesting segment #416
+Received segment #208, rtt=72.4594ms, rto=200ms
+Requesting segment #417
+Requesting segment #418
+Received segment #209, rtt=72.5042ms, rto=200ms
+Requesting segment #419
+Requesting segment #420
+Received segment #210, rtt=73.1819ms, rto=200ms
+Requesting segment #421
+Requesting segment #422
+Received segment #211, rtt=73.169ms, rto=200ms
+Requesting segment #423
+Requesting segment #424
+Received segment #212, rtt=74.1893ms, rto=200ms
+Requesting segment #425
+Requesting segment #426
+Received segment #213, rtt=74.0674ms, rto=200ms
+Requesting segment #427
+Requesting segment #428
+Received segment #214, rtt=74.738ms, rto=200ms
+Requesting segment #429
+Requesting segment #430
+Received segment #215, rtt=74.7898ms, rto=200ms
+Requesting segment #431
+Requesting segment #432
+Received segment #216, rtt=75.4804ms, rto=200ms
+Requesting segment #433
+Requesting segment #434
+Received segment #217, rtt=75.4822ms, rto=200ms
+Requesting segment #435
+Requesting segment #436
+Received segment #218, rtt=76.2416ms, rto=200ms
+Requesting segment #437
+Requesting segment #438
+Received segment #219, rtt=76.1836ms, rto=200ms
+Requesting segment #439
+Requesting segment #440
+Received segment #220, rtt=76.8446ms, rto=200ms
+Requesting segment #441
+Requesting segment #442
+Received segment #221, rtt=76.8975ms, rto=200ms
+Requesting segment #443
+Requesting segment #444
+Received segment #222, rtt=77.6481ms, rto=200ms
+Requesting segment #445
+Requesting segment #446
+Received segment #223, rtt=77.6087ms, rto=200ms
+Requesting segment #447
+Requesting segment #448
+Received segment #224, rtt=78.2324ms, rto=200ms
+Requesting segment #449
+Requesting segment #450
+Received segment #225, rtt=78.2624ms, rto=200ms
+Requesting segment #451
+Requesting segment #452
+Received segment #226, rtt=78.9145ms, rto=200ms
+Requesting segment #453
+Requesting segment #454
+Received segment #227, rtt=78.9543ms, rto=200ms
+Requesting segment #455
+Requesting segment #456
+Received segment #228, rtt=79.6439ms, rto=200ms
+Requesting segment #457
+Requesting segment #458
+Received segment #229, rtt=79.6365ms, rto=200ms
+Requesting segment #459
+Requesting segment #460
+Received segment #230, rtt=80.3285ms, rto=200ms
+Requesting segment #461
+Requesting segment #462
+Received segment #231, rtt=80.244ms, rto=200ms
+Requesting segment #463
+Requesting segment #464
+Received segment #232, rtt=80.9324ms, rto=200ms
+Requesting segment #465
+Requesting segment #466
+Received segment #233, rtt=81.2003ms, rto=200ms
+Requesting segment #467
+Requesting segment #468
+Received segment #234, rtt=81.7124ms, rto=200ms
+Requesting segment #469
+Requesting segment #470
+Received segment #235, rtt=81.7151ms, rto=200ms
+Requesting segment #471
+Requesting segment #472
+Received segment #236, rtt=82.3931ms, rto=200ms
+Requesting segment #473
+Requesting segment #474
+Received segment #237, rtt=82.3489ms, rto=200ms
+Requesting segment #475
+Requesting segment #476
+Received segment #238, rtt=83.0399ms, rto=200ms
+Requesting segment #477
+Requesting segment #478
+Received segment #239, rtt=82.8889ms, rto=200ms
+Requesting segment #479
+Requesting segment #480
+Received segment #240, rtt=83.4728ms, rto=200ms
+Requesting segment #481
+Requesting segment #482
+Received segment #241, rtt=83.7628ms, rto=200ms
+Requesting segment #483
+Requesting segment #484
+Received segment #242, rtt=84.4542ms, rto=200ms
+Requesting segment #485
+Requesting segment #486
+Received segment #243, rtt=84.4273ms, rto=200ms
+Requesting segment #487
+Requesting segment #488
+Received segment #244, rtt=85.1388ms, rto=200ms
+Requesting segment #489
+Requesting segment #490
+Received segment #245, rtt=85.2056ms, rto=200ms
+Requesting segment #491
+Requesting segment #492
+Received segment #246, rtt=85.8785ms, rto=200ms
+Requesting segment #493
+Requesting segment #494
+Received segment #247, rtt=85.8127ms, rto=200ms
+Requesting segment #495
+Requesting segment #496
+Received segment #248, rtt=86.514ms, rto=200ms
+Requesting segment #497
+Requesting segment #498
+Received segment #249, rtt=86.5319ms, rto=200ms
+Requesting segment #499
+Requesting segment #500
+Received segment #250, rtt=87.2024ms, rto=200ms
+Requesting segment #501
+Requesting segment #502
+Received segment #251, rtt=87.1523ms, rto=200ms
+Requesting segment #503
+Requesting segment #504
+Received segment #252, rtt=87.8614ms, rto=200ms
+Requesting segment #505
+Requesting segment #506
+Received segment #253, rtt=87.887ms, rto=200ms
+Requesting segment #507
+Requesting segment #508
+Received segment #254, rtt=88.6068ms, rto=200ms
+Requesting segment #509
+Requesting segment #510
+Received segment #255, rtt=88.8943ms, rto=200ms
+Requesting segment #511
+Requesting segment #512
+Received segment #256, rtt=89.5605ms, rto=200ms
+Requesting segment #513
+Requesting segment #514
+Received segment #257, rtt=89.6464ms, rto=200ms
+Requesting segment #515
+Requesting segment #516
+Received segment #258, rtt=90.2102ms, rto=200ms
+Requesting segment #517
+Requesting segment #518
+Received segment #259, rtt=90.1698ms, rto=200ms
+Requesting segment #519
+Requesting segment #520
+Received segment #260, rtt=90.8938ms, rto=200ms
+Requesting segment #521
+Requesting segment #522
+Received segment #261, rtt=90.8757ms, rto=200ms
+Requesting segment #523
+Requesting segment #524
+Received segment #262, rtt=91.634ms, rto=200ms
+Requesting segment #525
+Requesting segment #526
+Received segment #263, rtt=91.619ms, rto=200ms
+Requesting segment #527
+Requesting segment #528
+Received segment #264, rtt=92.3782ms, rto=200ms
+Requesting segment #529
+Requesting segment #530
+Received segment #265, rtt=92.2911ms, rto=200ms
+Requesting segment #531
+Requesting segment #532
+Received segment #266, rtt=93.0752ms, rto=200ms
+Requesting segment #533
+Requesting segment #534
+Received segment #267, rtt=92.99ms, rto=200ms
+Requesting segment #535
+Requesting segment #536
+Received segment #268, rtt=93.65ms, rto=200ms
+Requesting segment #537
+Requesting segment #538
+Received segment #269, rtt=93.6544ms, rto=200ms
+Requesting segment #539
+Requesting segment #540
+Received segment #270, rtt=94.3523ms, rto=200ms
+Requesting segment #541
+Requesting segment #542
+Received segment #271, rtt=94.1558ms, rto=200ms
+Requesting segment #543
+Requesting segment #544
+Received segment #272, rtt=94.8191ms, rto=200ms
+Requesting segment #545
+Requesting segment #546
+Received segment #273, rtt=95.0156ms, rto=200ms
+Requesting segment #547
+Requesting segment #548
+Received segment #274, rtt=95.8103ms, rto=200ms
+Requesting segment #549
+Requesting segment #550
+Received segment #275, rtt=95.642ms, rto=200ms
+Requesting segment #551
+Requesting segment #552
+Received segment #276, rtt=96.3386ms, rto=200ms
+Requesting segment #553
+Requesting segment #554
+Received segment #277, rtt=96.3897ms, rto=200ms
+Requesting segment #555
+Requesting segment #556
+Received segment #278, rtt=97.0814ms, rto=200ms
+Requesting segment #557
+Requesting segment #558
+Received segment #279, rtt=97.1705ms, rto=200ms
+Requesting segment #559
+Requesting segment #560
+Received segment #280, rtt=97.866ms, rto=200ms
+Requesting segment #561
+Requesting segment #562
+Received segment #281, rtt=97.9738ms, rto=200ms
+Requesting segment #563
+Requesting segment #564
+Received segment #282, rtt=98.4937ms, rto=200ms
+Requesting segment #565
+Requesting segment #566
+Received segment #283, rtt=98.4871ms, rto=200ms
+Requesting segment #567
+Requesting segment #568
+Received segment #284, rtt=99.2044ms, rto=200ms
+Requesting segment #569
+Requesting segment #570
+Received segment #285, rtt=99.2591ms, rto=200ms
+Requesting segment #571
+Requesting segment #572
+Received segment #286, rtt=99.946ms, rto=200ms
+Requesting segment #573
+Requesting segment #574
+Received segment #287, rtt=99.9234ms, rto=200ms
+Requesting segment #575
+Requesting segment #576
+Received segment #288, rtt=100.619ms, rto=200ms
+Requesting segment #577
+Requesting segment #578
+Received segment #289, rtt=100.575ms, rto=200ms
+Requesting segment #579
+Requesting segment #580
+Received segment #290, rtt=101.34ms, rto=200ms
+Requesting segment #581
+Requesting segment #582
+Received segment #291, rtt=101.294ms, rto=200ms
+Requesting segment #583
+Requesting segment #584
+Received segment #292, rtt=101.986ms, rto=200ms
+Requesting segment #585
+Requesting segment #586
+Received segment #293, rtt=101.958ms, rto=200ms
+Requesting segment #587
+Requesting segment #588
+Received segment #294, rtt=102.804ms, rto=200ms
+Requesting segment #589
+Requesting segment #590
+Received segment #295, rtt=102.522ms, rto=200ms
+Requesting segment #591
+Requesting segment #592
+Received segment #296, rtt=103.35ms, rto=200ms
+Requesting segment #593
+Requesting segment #594
+Received segment #297, rtt=103.386ms, rto=200ms
+Requesting segment #595
+Requesting segment #596
+Received segment #298, rtt=104.078ms, rto=200ms
+Requesting segment #597
+Requesting segment #598
+Received segment #299, rtt=103.845ms, rto=200ms
+Received segment #300, rtt=104.534ms, rto=200ms
+Received segment #301, rtt=104.741ms, rto=200ms
+Received segment #302, rtt=105.423ms, rto=200ms
+Received segment #303, rtt=105.455ms, rto=200ms
+Received segment #304, rtt=106.131ms, rto=200ms
+Received segment #305, rtt=106.139ms, rto=200ms
+Received segment #306, rtt=106.828ms, rto=200ms
+Received segment #307, rtt=106.885ms, rto=200ms
+Received segment #308, rtt=107.536ms, rto=200ms
+Received segment #309, rtt=107.519ms, rto=200ms
+Received segment #310, rtt=108.21ms, rto=200ms
+Received segment #311, rtt=108.23ms, rto=200ms
+Received segment #312, rtt=108.952ms, rto=200ms
+Received segment #313, rtt=108.985ms, rto=200ms
+Received segment #314, rtt=109.608ms, rto=200ms
+Received segment #315, rtt=109.603ms, rto=200ms
+Received segment #316, rtt=110.235ms, rto=200ms
+Received segment #317, rtt=110.321ms, rto=200ms
+Received segment #318, rtt=110.942ms, rto=200ms
+Received segment #319, rtt=110.965ms, rto=200ms
+Received segment #320, rtt=111.573ms, rto=200ms
+Received segment #321, rtt=111.632ms, rto=200ms
+Received segment #322, rtt=112.378ms, rto=200ms
+Received segment #323, rtt=112.454ms, rto=200ms
+Received segment #324, rtt=113.003ms, rto=200ms
+Received segment #325, rtt=112.998ms, rto=200ms
+Received segment #326, rtt=113.668ms, rto=200ms
+Received segment #327, rtt=113.573ms, rto=200ms
+Received segment #328, rtt=114.312ms, rto=200ms
+Received segment #329, rtt=114.504ms, rto=200ms
+Received segment #330, rtt=115.119ms, rto=200ms
+Received segment #331, rtt=115.225ms, rto=200ms
+Received segment #332, rtt=115.792ms, rto=200ms
+Received segment #333, rtt=115.749ms, rto=200ms
+Received segment #334, rtt=116.42ms, rto=200ms
+Received segment #335, rtt=116.476ms, rto=200ms
+Received segment #336, rtt=117.132ms, rto=200ms
+Received segment #337, rtt=117.213ms, rto=200ms
+Received segment #338, rtt=117.874ms, rto=200ms
+Received segment #339, rtt=117.846ms, rto=200ms
+Received segment #340, rtt=118.512ms, rto=200ms
+Received segment #341, rtt=118.812ms, rto=200ms
+Received segment #342, rtt=119.529ms, rto=200ms
+Received segment #343, rtt=119.361ms, rto=200ms
+Received segment #344, rtt=120.077ms, rto=200ms
+Received segment #345, rtt=120ms, rto=200ms
+Received segment #346, rtt=120.683ms, rto=200ms
+Received segment #347, rtt=120.742ms, rto=200ms
+Received segment #348, rtt=121.418ms, rto=200ms
+Received segment #349, rtt=121.455ms, rto=200ms
+Received segment #350, rtt=122.109ms, rto=200ms
+Received segment #351, rtt=122.095ms, rto=200ms
+Received segment #352, rtt=123.21ms, rto=200ms
+Received segment #353, rtt=123.215ms, rto=200ms
+Received segment #354, rtt=124.083ms, rto=200ms
+Received segment #355, rtt=123.989ms, rto=200ms
+Received segment #356, rtt=124.753ms, rto=200ms
+Received segment #357, rtt=124.626ms, rto=200ms
+Received segment #358, rtt=125.293ms, rto=200ms
+Received segment #359, rtt=125.402ms, rto=200ms
+Received segment #360, rtt=126.088ms, rto=200ms
+Received segment #361, rtt=126.106ms, rto=200ms
+Received segment #362, rtt=126.801ms, rto=200ms
+Received segment #363, rtt=126.779ms, rto=200ms
+Received segment #364, rtt=127.444ms, rto=200ms
+Received segment #365, rtt=127.436ms, rto=200ms
+Received segment #366, rtt=128.11ms, rto=200ms
+Received segment #367, rtt=128.147ms, rto=200ms
+Received segment #368, rtt=128.803ms, rto=200ms
+Received segment #369, rtt=128.808ms, rto=200ms
+Received segment #370, rtt=129.633ms, rto=200ms
+Received segment #371, rtt=129.554ms, rto=200ms
+Received segment #372, rtt=130.248ms, rto=200ms
+Received segment #373, rtt=130.256ms, rto=200ms
+Received segment #374, rtt=131.073ms, rto=200ms
+Received segment #375, rtt=130.988ms, rto=200ms
+Received segment #376, rtt=131.642ms, rto=200ms
+Received segment #377, rtt=131.721ms, rto=200ms
+Received segment #378, rtt=132.349ms, rto=200ms
+Received segment #379, rtt=132.245ms, rto=200ms
+Received segment #380, rtt=132.845ms, rto=200ms
+Received segment #381, rtt=133.069ms, rto=200ms
+Received segment #382, rtt=133.785ms, rto=200ms
+Received segment #383, rtt=133.686ms, rto=200ms
+Received segment #384, rtt=134.393ms, rto=200ms
+Received segment #385, rtt=134.389ms, rto=200ms
+Received segment #386, rtt=135.015ms, rto=200ms
+Received segment #387, rtt=135.101ms, rto=200ms
+Received segment #388, rtt=135.766ms, rto=200ms
+Received segment #389, rtt=135.967ms, rto=200ms
+Received segment #390, rtt=136.484ms, rto=200ms
+Received segment #391, rtt=136.481ms, rto=200ms
+Received segment #392, rtt=137.269ms, rto=200ms
+Received segment #393, rtt=137.132ms, rto=200ms
+Received segment #394, rtt=137.941ms, rto=200ms
+Received segment #395, rtt=137.863ms, rto=200ms
+Received segment #396, rtt=138.507ms, rto=200ms
+Received segment #397, rtt=138.51ms, rto=200ms
+Received segment #398, rtt=139.193ms, rto=200ms
+Received segment #399, rtt=139.236ms, rto=200ms
+Received segment #400, rtt=139.893ms, rto=200ms
+Received segment #401, rtt=139.886ms, rto=200ms
+Received segment #402, rtt=141.642ms, rto=200ms
+Received segment #403, rtt=141.548ms, rto=200ms
+Received segment #404, rtt=142.28ms, rto=200ms
+Received segment #405, rtt=142.154ms, rto=200ms
+Received segment #406, rtt=142.821ms, rto=200ms
+Received segment #407, rtt=142.947ms, rto=200ms
+Received segment #408, rtt=143.763ms, rto=200ms
+Received segment #409, rtt=143.564ms, rto=200ms
+Received segment #410, rtt=144.497ms, rto=200ms
+Received segment #411, rtt=144.551ms, rto=200ms
+Received segment #412, rtt=145.263ms, rto=200ms
+Received segment #413, rtt=145.211ms, rto=200ms
+Received segment #414, rtt=145.981ms, rto=200ms
+Received segment #415, rtt=145.833ms, rto=200ms
+Received segment #416, rtt=146.664ms, rto=200ms
+Received segment #417, rtt=146.695ms, rto=200ms
+Received segment #418, rtt=147.374ms, rto=200ms
+Received segment #419, rtt=147.32ms, rto=200ms
+Received segment #420, rtt=148.048ms, rto=200ms
+Received segment #421, rtt=148.11ms, rto=200ms
+Received segment #422, rtt=148.715ms, rto=200ms
+Received segment #423, rtt=148.85ms, rto=200ms
+Received segment #424, rtt=149.478ms, rto=200ms
+Received segment #425, rtt=149.098ms, rto=200ms
+Received segment #426, rtt=149.89ms, rto=200ms
+Received segment #427, rtt=149.916ms, rto=200ms
+Received segment #428, rtt=150.651ms, rto=200ms
+Received segment #429, rtt=150.598ms, rto=200ms
+Received segment #430, rtt=151.298ms, rto=200ms
+Received segment #431, rtt=151.294ms, rto=200ms
+Received segment #432, rtt=152.044ms, rto=200ms
+Received segment #433, rtt=152.045ms, rto=200ms
+Received segment #434, rtt=152.664ms, rto=200ms
+Received segment #435, rtt=152.668ms, rto=200ms
+Received segment #436, rtt=153.355ms, rto=200ms
+Received segment #437, rtt=153.286ms, rto=200ms
+Received segment #438, rtt=153.977ms, rto=200ms
+Received segment #439, rtt=154.041ms, rto=200ms
+Received segment #440, rtt=154.707ms, rto=200ms
+Received segment #441, rtt=154.698ms, rto=200ms
+Received segment #442, rtt=155.41ms, rto=200ms
+Received segment #443, rtt=155.374ms, rto=200ms
+Received segment #444, rtt=156.036ms, rto=200ms
+Received segment #445, rtt=156.006ms, rto=200ms
+Received segment #446, rtt=156.664ms, rto=200ms
+Received segment #447, rtt=156.828ms, rto=200ms
+Received segment #448, rtt=157.497ms, rto=200ms
+Received segment #449, rtt=157.577ms, rto=200ms
+Requesting segment #599
+Received segment #450, rtt=158.239ms, rto=200ms
+Requesting segment #600
+Requesting segment #601
+Received segment #451, rtt=158.209ms, rto=200ms
+Requesting segment #602
+Received segment #452, rtt=158.884ms, rto=200ms
+Requesting segment #603
+Received segment #453, rtt=158.918ms, rto=200ms
+Requesting segment #604
+Received segment #454, rtt=159.64ms, rto=200ms
+Requesting segment #605
+Received segment #455, rtt=159.614ms, rto=200ms
+Requesting segment #606
+Received segment #456, rtt=160.265ms, rto=200ms
+Requesting segment #607
+Received segment #457, rtt=160.315ms, rto=200ms
+Requesting segment #608
+Received segment #458, rtt=160.958ms, rto=200ms
+Requesting segment #609
+Received segment #459, rtt=160.963ms, rto=200ms
+Requesting segment #610
+Received segment #460, rtt=161.653ms, rto=200ms
+Requesting segment #611
+Received segment #461, rtt=161.66ms, rto=200ms
+Requesting segment #612
+Received segment #462, rtt=162.357ms, rto=200ms
+Requesting segment #613
+Received segment #463, rtt=162.355ms, rto=200ms
+Requesting segment #614
+Received segment #464, rtt=163.131ms, rto=200ms
+Requesting segment #615
+Received segment #465, rtt=163.05ms, rto=200ms
+Requesting segment #616
+Received segment #466, rtt=163.782ms, rto=200ms
+Requesting segment #617
+Received segment #467, rtt=163.564ms, rto=200ms
+Requesting segment #618
+Received segment #468, rtt=164.399ms, rto=200ms
+Requesting segment #619
+Received segment #469, rtt=164.56ms, rto=200ms
+Requesting segment #620
+Received segment #470, rtt=165.188ms, rto=200ms
+Requesting segment #621
+Received segment #471, rtt=165.163ms, rto=200ms
+Requesting segment #622
+Received segment #472, rtt=165.91ms, rto=200ms
+Requesting segment #623
+Received segment #473, rtt=165.851ms, rto=200ms
+Requesting segment #624
+Received segment #474, rtt=166.561ms, rto=200ms
+Requesting segment #625
+Received segment #475, rtt=166.635ms, rto=200ms
+Requesting segment #626
+Received segment #476, rtt=167.252ms, rto=200ms
+Requesting segment #627
+Received segment #477, rtt=167.243ms, rto=200ms
+Requesting segment #628
+Received segment #478, rtt=167.932ms, rto=200ms
+Requesting segment #629
+Received segment #479, rtt=167.9ms, rto=200ms
+Requesting segment #630
+Received segment #480, rtt=168.531ms, rto=200ms
+Requesting segment #631
+Received segment #481, rtt=168.62ms, rto=200ms
+Requesting segment #632
+Received segment #482, rtt=169.432ms, rto=200ms
+Requesting segment #633
+Received segment #483, rtt=169.441ms, rto=200ms
+Requesting segment #634
+Received segment #484, rtt=170.097ms, rto=200ms
+Requesting segment #635
+Received segment #485, rtt=170.105ms, rto=200ms
+Requesting segment #636
+Received segment #486, rtt=170.784ms, rto=200ms
+Requesting segment #637
+Received segment #487, rtt=170.81ms, rto=200ms
+Requesting segment #638
+Received segment #488, rtt=171.504ms, rto=200ms
+Requesting segment #639
+Received segment #489, rtt=171.495ms, rto=200ms
+Requesting segment #640
+Received segment #490, rtt=172.168ms, rto=200ms
+Requesting segment #641
+Received segment #491, rtt=172.116ms, rto=200ms
+Requesting segment #642
+Received segment #492, rtt=172.793ms, rto=200ms
+Requesting segment #643
+Received segment #493, rtt=172.82ms, rto=200ms
+Requesting segment #644
+Received segment #494, rtt=173.479ms, rto=200ms
+Requesting segment #645
+Received segment #495, rtt=173.57ms, rto=200ms
+Requesting segment #646
+Received segment #496, rtt=174.248ms, rto=200ms
+Requesting segment #647
+Received segment #497, rtt=174.248ms, rto=200ms
+Requesting segment #648
+Received segment #498, rtt=174.947ms, rto=200ms
+Requesting segment #649
+Received segment #499, rtt=174.92ms, rto=200ms
+Requesting segment #650
+Received segment #500, rtt=175.594ms, rto=200ms
+Requesting segment #651
+Received segment #501, rtt=175.613ms, rto=200ms
+Requesting segment #652
+Received segment #502, rtt=176.31ms, rto=200ms
+Requesting segment #653
+Received segment #503, rtt=176.291ms, rto=200ms
+Requesting segment #654
+Received segment #504, rtt=176.944ms, rto=200ms
+Requesting segment #655
+Received segment #505, rtt=176.962ms, rto=200ms
+Requesting segment #656
+Received segment #506, rtt=177.661ms, rto=200ms
+Requesting segment #657
+Received segment #507, rtt=177.713ms, rto=200ms
+Requesting segment #658
+Received segment #508, rtt=178.389ms, rto=200ms
+Requesting segment #659
+Received segment #509, rtt=178.336ms, rto=200ms
+Requesting segment #660
+Received segment #510, rtt=179.117ms, rto=200ms
+Requesting segment #661
+Received segment #511, rtt=178.727ms, rto=200ms
+Requesting segment #662
+Received segment #512, rtt=179.423ms, rto=200ms
+Requesting segment #663
+Received segment #513, rtt=179.386ms, rto=200ms
+Requesting segment #664
+Received segment #514, rtt=180.045ms, rto=200ms
+Requesting segment #665
+Received segment #515, rtt=179.988ms, rto=200.711ms
+Requesting segment #666
+Received segment #516, rtt=180.736ms, rto=200.711ms
+Requesting segment #667
+Received segment #517, rtt=180.76ms, rto=201.516ms
+Requesting segment #668
+Received segment #518, rtt=181.444ms, rto=201.516ms
+Requesting segment #669
+Received segment #519, rtt=181.493ms, rto=202.312ms
+Requesting segment #670
+Received segment #520, rtt=182.168ms, rto=202.312ms
+Requesting segment #671
+Received segment #521, rtt=182.122ms, rto=203.118ms
+Requesting segment #672
+Received segment #522, rtt=182.793ms, rto=203.118ms
+Requesting segment #673
+Received segment #523, rtt=182.852ms, rto=203.914ms
+Requesting segment #674
+Received segment #524, rtt=183.528ms, rto=203.914ms
+Requesting segment #675
+Received segment #525, rtt=183.469ms, rto=204.72ms
+Requesting segment #676
+Received segment #526, rtt=184.153ms, rto=204.72ms
+Requesting segment #677
+Received segment #527, rtt=184.21ms, rto=205.518ms
+Requesting segment #678
+Received segment #528, rtt=184.994ms, rto=205.518ms
+Requesting segment #679
+Received segment #529, rtt=184.862ms, rto=206.325ms
+Requesting segment #680
+Received segment #530, rtt=185.543ms, rto=206.325ms
+Requesting segment #681
+Received segment #531, rtt=185.618ms, rto=207.122ms
+Requesting segment #682
+Received segment #532, rtt=186.29ms, rto=207.122ms
+Requesting segment #683
+Received segment #533, rtt=186.213ms, rto=207.93ms
+Requesting segment #684
+Received segment #534, rtt=186.924ms, rto=207.93ms
+Requesting segment #685
+Received segment #535, rtt=186.968ms, rto=208.727ms
+Requesting segment #686
+Received segment #536, rtt=187.672ms, rto=208.727ms
+Requesting segment #687
+Received segment #537, rtt=187.74ms, rto=209.533ms
+Requesting segment #688
+Received segment #538, rtt=188.372ms, rto=209.533ms
+Requesting segment #689
+Received segment #539, rtt=188.374ms, rto=210.33ms
+Requesting segment #690
+Received segment #540, rtt=189.065ms, rto=210.33ms
+Requesting segment #691
+Received segment #541, rtt=189.157ms, rto=211.136ms
+Requesting segment #692
+Received segment #542, rtt=189.857ms, rto=211.136ms
+Requesting segment #693
+Received segment #543, rtt=189.72ms, rto=211.93ms
+Requesting segment #694
+Received segment #544, rtt=190.408ms, rto=211.93ms
+Requesting segment #695
+Received segment #545, rtt=190.433ms, rto=212.732ms
+Requesting segment #696
+Received segment #546, rtt=191.191ms, rto=212.732ms
+Requesting segment #697
+Received segment #547, rtt=191.134ms, rto=213.529ms
+Requesting segment #698
+Received segment #548, rtt=191.791ms, rto=213.529ms
+Requesting segment #699
+Received segment #549, rtt=191.657ms, rto=214.337ms
+Requesting segment #700
+Received segment #550, rtt=192.439ms, rto=214.337ms
+Requesting segment #701
+Received segment #551, rtt=192.488ms, rto=215.133ms
+Requesting segment #702
+Received segment #552, rtt=193.241ms, rto=215.133ms
+Requesting segment #703
+Received segment #553, rtt=193.165ms, rto=215.937ms
+Requesting segment #704
+Received segment #554, rtt=193.838ms, rto=215.937ms
+Requesting segment #705
+Received segment #555, rtt=193.865ms, rto=216.735ms
+Requesting segment #706
+Received segment #556, rtt=194.534ms, rto=216.735ms
+Requesting segment #707
+Received segment #557, rtt=194.54ms, rto=217.54ms
+Requesting segment #708
+Received segment #558, rtt=195.212ms, rto=217.54ms
+Requesting segment #709
+Received segment #559, rtt=195.209ms, rto=218.339ms
+Requesting segment #710
+Received segment #560, rtt=195.881ms, rto=218.339ms
+Requesting segment #711
+Received segment #561, rtt=196.12ms, rto=219.146ms
+Requesting segment #712
+Received segment #562, rtt=196.56ms, rto=219.146ms
+Requesting segment #713
+Received segment #563, rtt=196.437ms, rto=219.946ms
+Requesting segment #714
+Received segment #564, rtt=197.169ms, rto=219.946ms
+Requesting segment #715
+Received segment #565, rtt=197.273ms, rto=220.752ms
+Requesting segment #716
+Received segment #566, rtt=197.991ms, rto=220.752ms
+Requesting segment #717
+Received segment #567, rtt=198.09ms, rto=221.55ms
+Requesting segment #718
+Received segment #568, rtt=198.709ms, rto=221.55ms
+Requesting segment #719
+Received segment #569, rtt=198.678ms, rto=222.357ms
+Requesting segment #720
+Received segment #570, rtt=199.352ms, rto=222.357ms
+Requesting segment #721
+Received segment #571, rtt=199.327ms, rto=223.156ms
+Requesting segment #722
+Received segment #572, rtt=200.008ms, rto=223.156ms
+Requesting segment #723
+Received segment #573, rtt=200.015ms, rto=223.963ms
+Requesting segment #724
+Received segment #574, rtt=200.678ms, rto=223.963ms
+Requesting segment #725
+Received segment #575, rtt=201.155ms, rto=224.762ms
+Requesting segment #726
+Received segment #576, rtt=201.399ms, rto=224.762ms
+Requesting segment #727
+Received segment #577, rtt=201.372ms, rto=225.569ms
+Requesting segment #728
+Received segment #578, rtt=202.153ms, rto=225.569ms
+Requesting segment #729
+Received segment #579, rtt=202.106ms, rto=226.368ms
+Requesting segment #730
+Received segment #580, rtt=202.797ms, rto=226.368ms
+Requesting segment #731
+Received segment #581, rtt=202.694ms, rto=227.175ms
+Requesting segment #732
+Received segment #582, rtt=203.387ms, rto=227.175ms
+Requesting segment #733
+Received segment #583, rtt=203.38ms, rto=227.974ms
+Requesting segment #734
+Received segment #584, rtt=204.096ms, rto=227.974ms
+Requesting segment #735
+Received segment #585, rtt=204.101ms, rto=228.781ms
+Requesting segment #736
+Received segment #586, rtt=204.787ms, rto=228.781ms
+Requesting segment #737
+Received segment #587, rtt=204.86ms, rto=229.579ms
+Requesting segment #738
+Received segment #588, rtt=205.537ms, rto=229.579ms
+Requesting segment #739
+Received segment #589, rtt=205.394ms, rto=230.388ms
+Requesting segment #740
+Received segment #590, rtt=206.036ms, rto=230.388ms
+Requesting segment #741
+Received segment #591, rtt=206.222ms, rto=231.185ms
+Requesting segment #742
+Received segment #592, rtt=206.914ms, rto=231.185ms
+Requesting segment #743
+Received segment #593, rtt=206.768ms, rto=231.992ms
+Requesting segment #744
+Received segment #594, rtt=207.43ms, rto=231.992ms
+Requesting segment #745
+Received segment #595, rtt=207.566ms, rto=232.791ms
+Requesting segment #746
+Received segment #596, rtt=208.283ms, rto=232.791ms
+Requesting segment #747
+Received segment #597, rtt=208.256ms, rto=233.598ms
+Requesting segment #748
+Received segment #598, rtt=208.903ms, rto=233.598ms
+Requesting segment #749
+Received segment #599, rtt=103.394ms, rto=434.774ms
+Received segment #600, rtt=103.443ms, rto=436.787ms
+Received segment #601, rtt=104.098ms, rto=436.787ms
+Received segment #602, rtt=104.129ms, rto=438.788ms
+Received segment #603, rtt=104.115ms, rto=440.797ms
+Received segment #604, rtt=104.099ms, rto=442.795ms
+Received segment #605, rtt=104.088ms, rto=444.802ms
+Received segment #606, rtt=104.059ms, rto=446.797ms
+Received segment #607, rtt=104.488ms, rto=448.798ms
+Received segment #608, rtt=104.331ms, rto=450.79ms
+Received segment #609, rtt=104.263ms, rto=452.788ms
+Received segment #610, rtt=104.338ms, rto=454.774ms
+Received segment #611, rtt=104.309ms, rto=456.769ms
+Received segment #612, rtt=104.34ms, rto=458.752ms
+Received segment #613, rtt=104.276ms, rto=460.743ms
+Received segment #614, rtt=104.282ms, rto=462.723ms
+Received segment #615, rtt=104.265ms, rto=464.713ms
+Received segment #616, rtt=104.322ms, rto=466.689ms
+Received segment #617, rtt=104.29ms, rto=468.675ms
+Received segment #618, rtt=104.386ms, rto=470.642ms
+Received segment #619, rtt=104.262ms, rto=472.622ms
+Received segment #620, rtt=104.145ms, rto=474.595ms
+Received segment #621, rtt=104.312ms, rto=476.574ms
+Received segment #622, rtt=104.232ms, rto=478.54ms
+Received segment #623, rtt=104.258ms, rto=480.517ms
+Received segment #624, rtt=104.32ms, rto=482.479ms
+Received segment #625, rtt=104.375ms, rto=484.451ms
+Received segment #626, rtt=104.246ms, rto=486.413ms
+Received segment #627, rtt=104.357ms, rto=488.381ms
+Received segment #628, rtt=104.477ms, rto=490.337ms
+Received segment #629, rtt=104.344ms, rto=492.301ms
+Received segment #630, rtt=104.281ms, rto=494.252ms
+Received segment #631, rtt=104.311ms, rto=496.21ms
+Received segment #632, rtt=104.297ms, rto=498.158ms
+Received segment #633, rtt=104.209ms, rto=500.119ms
+Received segment #634, rtt=104.164ms, rto=502.067ms
+Received segment #635, rtt=104.202ms, rto=504.023ms
+Received segment #636, rtt=104.17ms, rto=505.967ms
+Received segment #637, rtt=104.222ms, rto=507.919ms
+Received segment #638, rtt=104.37ms, rto=509.86ms
+Received segment #639, rtt=104.173ms, rto=511.81ms
+Received segment #640, rtt=104.138ms, rto=513.747ms
+Received segment #641, rtt=104.159ms, rto=515.692ms
+Received segment #642, rtt=104.134ms, rto=517.624ms
+Received segment #643, rtt=104.186ms, rto=519.563ms
+Received segment #644, rtt=104.281ms, rto=521.491ms
+Received segment #645, rtt=104.168ms, rto=523.427ms
+Received segment #646, rtt=104.143ms, rto=525.354ms
+Received segment #647, rtt=104.129ms, rto=527.288ms
+Received segment #648, rtt=104.133ms, rto=529.21ms
+Received segment #649, rtt=104.135ms, rto=531.141ms
+Received segment #650, rtt=104.192ms, rto=533.06ms
+Received segment #651, rtt=104.199ms, rto=534.985ms
+Received segment #652, rtt=104.155ms, rto=536.9ms
+Received segment #653, rtt=104.287ms, rto=538.823ms
+Received segment #654, rtt=104.213ms, rto=540.734ms
+Received segment #655, rtt=104.175ms, rto=542.652ms
+Received segment #656, rtt=104.172ms, rto=544.559ms
+Received segment #657, rtt=104.147ms, rto=546.474ms
+Received segment #658, rtt=104.115ms, rto=548.379ms
+Received segment #659, rtt=104.216ms, rto=550.291ms
+Received segment #660, rtt=104.146ms, rto=552.19ms
+Received segment #661, rtt=104.053ms, rto=554.1ms
+Received segment #662, rtt=104.086ms, rto=555.987ms
+Received segment #663, rtt=104.08ms, rto=557.883ms
+Received segment #664, rtt=104.126ms, rto=559.765ms
+Received segment #665, rtt=104.152ms, rto=561.655ms
+Received segment #666, rtt=104.153ms, rto=563.532ms
+Received segment #667, rtt=104.115ms, rto=565.418ms
+Received segment #668, rtt=104.144ms, rto=567.294ms
+Received segment #669, rtt=104.201ms, rto=569.177ms
+Received segment #670, rtt=104.182ms, rto=571.051ms
+Received segment #671, rtt=104.158ms, rto=572.931ms
+Received segment #672, rtt=104.149ms, rto=574.799ms
+Received segment #673, rtt=104.136ms, rto=576.675ms
+Received segment #674, rtt=104.14ms, rto=578.541ms
+Requesting segment #750
+Received segment #675, rtt=104.144ms, rto=580.414ms
+Requesting segment #751
+Received segment #676, rtt=104.155ms, rto=582.274ms
+Requesting segment #752
+Received segment #677, rtt=104.148ms, rto=584.142ms
+Requesting segment #753
+Received segment #678, rtt=104.151ms, rto=586ms
+Requesting segment #754
+Requesting segment #755
+Received segment #679, rtt=104.045ms, rto=587.868ms
+Requesting segment #756
+Received segment #680, rtt=104.131ms, rto=589.722ms
+Requesting segment #757
+Received segment #681, rtt=104.134ms, rto=591.583ms
+Requesting segment #758
+Received segment #682, rtt=104.155ms, rto=593.434ms
+Requesting segment #759
+Received segment #683, rtt=104.184ms, rto=595.294ms
+Requesting segment #760
+Received segment #684, rtt=104.145ms, rto=597.139ms
+Requesting segment #761
+Received segment #685, rtt=104.102ms, rto=598.993ms
+Requesting segment #762
+Received segment #686, rtt=104.513ms, rto=600.837ms
+Requesting segment #763
+Received segment #687, rtt=104.845ms, rto=602.689ms
+Requesting segment #764
+Received segment #688, rtt=104.861ms, rto=604.532ms
+Requesting segment #765
+Received segment #689, rtt=104.897ms, rto=606.381ms
+Requesting segment #766
+Received segment #690, rtt=104.893ms, rto=608.218ms
+Requesting segment #767
+Received segment #691, rtt=105.005ms, rto=610.064ms
+Requesting segment #768
+Received segment #692, rtt=104.731ms, rto=611.901ms
+Requesting segment #769
+Received segment #693, rtt=104.77ms, rto=613.746ms
+Requesting segment #770
+Received segment #694, rtt=104.856ms, rto=615.575ms
+Requesting segment #771
+Received segment #695, rtt=105.306ms, rto=617.413ms
+Requesting segment #772
+Received segment #696, rtt=105.341ms, rto=619.239ms
+Requesting segment #773
+Received segment #697, rtt=105.235ms, rto=621.076ms
+Requesting segment #774
+Received segment #698, rtt=105.261ms, rto=622.899ms
+Requesting segment #775
+Received segment #699, rtt=105.428ms, rto=624.73ms
+Requesting segment #776
+Received segment #700, rtt=105.483ms, rto=626.545ms
+Requesting segment #777
+Received segment #701, rtt=105.295ms, rto=628.371ms
+Requesting segment #778
+Received segment #702, rtt=105.513ms, rto=630.187ms
+Requesting segment #779
+Received segment #703, rtt=105.3ms, rto=632.012ms
+Requesting segment #780
+Received segment #704, rtt=105.501ms, rto=633.824ms
+Requesting segment #781
+Received segment #705, rtt=105.371ms, rto=635.643ms
+Requesting segment #782
+Received segment #706, rtt=105.556ms, rto=637.452ms
+Requesting segment #783
+Received segment #707, rtt=105.374ms, rto=639.268ms
+Requesting segment #784
+Received segment #708, rtt=105.45ms, rto=641.073ms
+Requesting segment #785
+Received segment #709, rtt=105.536ms, rto=642.885ms
+Requesting segment #786
+Received segment #710, rtt=105.361ms, rto=644.686ms
+Requesting segment #787
+Received segment #711, rtt=105.359ms, rto=646.494ms
+Requesting segment #788
+Received segment #712, rtt=105.122ms, rto=648.297ms
+Requesting segment #789
+Received segment #713, rtt=105.36ms, rto=650.102ms
+Requesting segment #790
+Received segment #714, rtt=105.394ms, rto=651.891ms
+Requesting segment #791
+Received segment #715, rtt=105.284ms, rto=653.69ms
+Requesting segment #792
+Received segment #716, rtt=105.489ms, rto=655.48ms
+Requesting segment #793
+Received segment #717, rtt=105.528ms, rto=657.279ms
+Requesting segment #794
+Received segment #718, rtt=105.426ms, rto=659.069ms
+Requesting segment #795
+Received segment #719, rtt=105.505ms, rto=660.865ms
+Requesting segment #796
+Received segment #720, rtt=105.482ms, rto=662.649ms
+Received segment #721, rtt=105.491ms, rto=664.441ms
+Received segment #722, rtt=105.522ms, rto=666.22ms
+Received segment #723, rtt=105.513ms, rto=668.007ms
+Received segment #724, rtt=105.519ms, rto=669.782ms
+Received segment #725, rtt=105.527ms, rto=671.565ms
+Received segment #726, rtt=105.083ms, rto=673.35ms
+Received segment #727, rtt=105.487ms, rto=675.131ms
+Received segment #728, rtt=105.72ms, rto=676.899ms
+Received segment #729, rtt=105.572ms, rto=678.677ms
+Received segment #730, rtt=105.689ms, rto=680.443ms
+Received segment #731, rtt=105.757ms, rto=682.217ms
+Received segment #732, rtt=105.682ms, rto=683.977ms
+Received segment #733, rtt=105.962ms, rto=685.744ms
+Received segment #734, rtt=105.955ms, rto=687.5ms
+Received segment #735, rtt=105.919ms, rto=689.265ms
+Received segment #736, rtt=105.9ms, rto=691.019ms
+Received segment #737, rtt=105.903ms, rto=692.78ms
+Received segment #738, rtt=105.965ms, rto=694.532ms
+Received segment #739, rtt=105.928ms, rto=696.292ms
+Received segment #740, rtt=105.932ms, rto=698.036ms
+Received segment #741, rtt=105.945ms, rto=699.787ms
+Received segment #742, rtt=105.9ms, rto=701.531ms
+Received segment #743, rtt=105.982ms, rto=703.284ms
+Received segment #744, rtt=105.908ms, rto=705.021ms
+Received segment #745, rtt=105.915ms, rto=706.766ms
+Received segment #746, rtt=105.86ms, rto=708.503ms
+Received segment #747, rtt=105.849ms, rto=710.248ms
+Received segment #748, rtt=105.875ms, rto=711.982ms
+Received segment #749, rtt=105.966ms, rto=713.722ms
+Received segment #750, rtt=54.0817ms, rto=597.758ms
+Received segment #751, rtt=54.1274ms, rto=595.823ms
+Received segment #752, rtt=54.1194ms, rto=593.897ms
+Received segment #753, rtt=54.1133ms, rto=591.98ms
+Received segment #754, rtt=54.0908ms, rto=590.07ms
+Received segment #755, rtt=55.1ms, rto=590.07ms
+Received segment #756, rtt=54.8708ms, rto=588.163ms
+Received segment #757, rtt=54.8524ms, rto=586.269ms
+Received segment #758, rtt=54.8567ms, rto=584.384ms
+Received segment #759, rtt=54.8339ms, rto=582.507ms
+Received segment #760, rtt=54.8391ms, rto=580.641ms
+Received segment #761, rtt=54.8182ms, rto=578.78ms
+Received segment #762, rtt=54.9447ms, rto=576.925ms
+Received segment #763, rtt=54.6306ms, rto=575.101ms
+Received segment #764, rtt=54.1732ms, rto=573.304ms
+Received segment #765, rtt=54.1099ms, rto=571.515ms
+Received segment #766, rtt=54.1196ms, rto=569.735ms
+Received segment #767, rtt=54.21ms, rto=567.963ms
+Received segment #768, rtt=54.0967ms, rto=566.204ms
+Received segment #769, rtt=54.2025ms, rto=564.438ms
+Received segment #770, rtt=54.1121ms, rto=562.68ms
+Received segment #771, rtt=54.1589ms, rto=560.936ms
+Received segment #772, rtt=54.2956ms, rto=559.223ms
+Received segment #773, rtt=53.6358ms, rto=557.52ms
+Received segment #774, rtt=53.6462ms, rto=555.818ms
+Received segment #775, rtt=53.7102ms, rto=554.124ms
+Received segment #776, rtt=53.5273ms, rto=552.446ms
+Received segment #777, rtt=53.4906ms, rto=550.779ms
+Received segment #778, rtt=53.5861ms, rto=549.107ms
+Received segment #779, rtt=53.4787ms, rto=547.455ms
+Received segment #780, rtt=53.6663ms, rto=545.798ms
+Received segment #781, rtt=53.449ms, rto=544.158ms
+Received segment #782, rtt=53.6291ms, rto=542.518ms
+Received segment #783, rtt=53.4028ms, rto=540.895ms
+Received segment #784, rtt=53.6504ms, rto=539.268ms
+Received segment #785, rtt=53.6076ms, rto=537.653ms
+Received segment #786, rtt=53.5255ms, rto=536.048ms
+Received segment #787, rtt=53.9134ms, rto=534.44ms
+Received segment #788, rtt=53.7562ms, rto=532.839ms
+Received segment #789, rtt=53.7651ms, rto=531.231ms
+Received segment #790, rtt=53.7766ms, rto=529.643ms
+Received segment #791, rtt=53.7333ms, rto=528.063ms
+Received segment #792, rtt=53.9237ms, rto=526.484ms
+Received segment #793, rtt=53.759ms, rto=524.922ms
+Received segment #794, rtt=53.551ms, rto=523.369ms
+Received segment #795, rtt=53.5779ms, rto=521.817ms
+Received segment #796, rtt=53.3267ms, rto=520.275ms
+
+
+All segments have been received.
+Time elapsed: 0.562001 seconds
+Segments received: 797
+Transferred size: 6525.33 kB
+Goodput: 92.887195 Mbit/s
+Congestion marks: 9 (caused 3 window decreases)
+Timeouts: 0 (caused 0 window decreases)
+Retransmitted segments: 0 (0%), skipped: 0
+RTT min/avg/max = 1.019/101.728/208.903 ms

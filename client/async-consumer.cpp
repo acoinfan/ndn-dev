@@ -41,7 +41,7 @@ namespace ndn::get
       // Build the socket for the consumer
       waitForProducer(logFile);
 
-      std::string socketPath = "unix:///run/nfd/" + prefix + ".sock";
+      std::string socketPath = "unix:///run/nfd/client" + std::to_string(consumerId) + ".sock";
       auto transport = ndn::UnixTransport::create(socketPath);
       Face face(transport);
 

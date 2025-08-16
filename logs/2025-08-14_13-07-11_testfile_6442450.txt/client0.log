@@ -1,0 +1,5 @@
+client0 Waiting for all consumers to complete...
+client0 Consumer failed with exit code: 1
+client0 Consumer failed with exit code: 1
+client0 SUMMARY: Success=0, Failed=2, Total=2
+End of the execution

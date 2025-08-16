@@ -39,7 +39,7 @@ namespace ndn::chunks
         std::ofstream logFile(logFilePath);
         try
         {
-            std::string socketPath = "unix:///run/nfd/" + prefix + ".sock";
+            std::string socketPath = "unix:///run/nfd/client" + std::to_string(producerId) + ".sock";
             auto transport = ndn::UnixTransport::create(socketPath);
             Face face(transport);
             KeyChain keyChain;
@@ -48,7 +48,7 @@ namespace ndn::chunks
             sendConsumerSignal();
             if (options.isVerbose)
             {
-                logFile << prefix << " is ready! \n";
+                logFile << prefix << " is ready!" << std::endl;
             }
 
             producer.run();

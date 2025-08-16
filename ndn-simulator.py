@@ -277,6 +277,7 @@ def setup_ndn_environment(net, hosts, config):
     for node_name, routes in config['routes'].items():
         node = hosts[node_name]
         for prefix, nexthop in routes:
+            print(f"add route for {prefix} and {nexthop} on {node_name}")
             node.add_route(prefix, nexthop)
     sleep(10)
 

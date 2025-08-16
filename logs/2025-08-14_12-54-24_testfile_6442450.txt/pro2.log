@@ -1,0 +1,6 @@
+Calling branch 2: /pro2/testfile_6442450.txt
+Loading input ...
+testfile_6442450.txt
+Published 797 Data packets with prefix /pro2/testfile_6442450.txt
+pro2 is ready! 
+pro2 ERROR: socket read error (End of file)

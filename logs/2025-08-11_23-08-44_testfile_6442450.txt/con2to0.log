@@ -1,0 +1,90 @@
+con2to0 waiting for producer ready signal: /tmp/ndn/all.ok
+con2to0 received producer ready signal!
+RTT estimator parameters:
+	Alpha = 0.125
+	Beta = 0.25
+	K = 8
+	Initial RTO = 1000 milliseconds
+	Min RTO = 200 milliseconds
+	Max RTO = 60000 milliseconds
+	Backoff multiplier = 2
+Pipeline parameters:
+	Request fresh content = no
+	Interest lifetime = 1000000 milliseconds
+	Max retries on timeout or Nack = 3
+	Initial congestion window size = 10
+	Initial slow start threshold = 1.79769e+308
+	Additive increase step = 1
+	Multiplicative decrease factor = 0.5
+	RTO check interval = 10 milliseconds
+	React to congestion marks = yes
+	Conservative window adaptation = yes
+	Resetting window to ssthresh upon loss event
+try to fetch/pro0/testfile_6442450.txt
+Requesting segment #0
+Requesting segment #1
+Requesting segment #2
+Requesting segment #3
+Requesting segment #4
+Requesting segment #5
+Requesting segment #6
+Requesting segment #7
+Requesting segment #8
+Requesting segment #9
+Packet loss event, new cwnd = 5, ssthresh = 5
+Retransmitting segment #9
+Retransmitting segment #8
+Retransmitting segment #7
+Retransmitting segment #6
+Retransmitting segment #5
+Retransmitting segment #4
+Retransmitting segment #3
+Retransmitting segment #2
+Retransmitting segment #1
+Retransmitting segment #0
+Retransmitting segment #9
+# of retries for segment #9 is 2
+Retransmitting segment #8
+# of retries for segment #8 is 2
+Retransmitting segment #7
+# of retries for segment #7 is 2
+Retransmitting segment #6
+# of retries for segment #6 is 2
+Retransmitting segment #5
+# of retries for segment #5 is 2
+Retransmitting segment #4
+# of retries for segment #4 is 2
+Retransmitting segment #3
+# of retries for segment #3 is 2
+Retransmitting segment #2
+# of retries for segment #2 is 2
+Retransmitting segment #1
+# of retries for segment #1 is 2
+Retransmitting segment #0
+# of retries for segment #0 is 2
+Retransmitting segment #9
+# of retries for segment #9 is 3
+Retransmitting segment #8
+# of retries for segment #8 is 3
+Retransmitting segment #7
+# of retries for segment #7 is 3
+Retransmitting segment #6
+# of retries for segment #6 is 3
+Retransmitting segment #5
+# of retries for segment #5 is 3
+Retransmitting segment #4
+# of retries for segment #4 is 3
+Retransmitting segment #3
+# of retries for segment #3 is 3
+Retransmitting segment #2
+# of retries for segment #2 is 3
+Retransmitting segment #1
+# of retries for segment #1 is 3
+Retransmitting segment #0
+# of retries for segment #0 is 3
+Retransmitting segment #9
+Retransmitting segment #8
+Retransmitting segment #7
+Retransmitting segment #6
+Retransmitting segment #5
+con2to0 ERROR: socket read error (End of file)

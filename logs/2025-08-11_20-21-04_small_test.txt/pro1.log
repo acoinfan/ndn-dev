@@ -1,0 +1,21 @@
+Loading input ...
+Producer is ready for prefix: /pro1
+pro1 is ready! 
+Received Interest: /pro1/small_test0.txt/seg=0?Nonce=53dbbff9
+(call from outer Function) Segmentation file for prefix: /pro1/small_test0.txt
+(call from segmentationFile Function) Segmentation file for prefix: /pro1/small_test0.txt
+File path: /home/a_coin_fan/code/ndn-dev/experiments/small_test0.txt
+Loading input ...
+Published 2 Data packets
+Data: Name: /pro1/small_test0.txt/seg=0
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000 milliseconds, FinalBlockId: seg=1]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Received Interest: /pro1/small_test0.txt/seg=1?Nonce=7bd781bf
+Data: Name: /pro1/small_test0.txt/seg=1
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000 milliseconds, FinalBlockId: seg=1]
+Content: [4068 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+pro1 ERROR: socket read error (End of file)

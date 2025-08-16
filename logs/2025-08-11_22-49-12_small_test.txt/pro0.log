@@ -1,0 +1,18 @@
+Calling branch 2: /pro0/small_test.txt
+Loading input ...
+small_test.txt
+Published 2 Data packets with prefix /pro0/small_test.txt
+pro0 is ready! 
+Interest: /pro0/small_test.txt/seg=0?Nonce=21c1e37f
+Data: Name: /pro0/small_test.txt/seg=0
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000 milliseconds, FinalBlockId: seg=1]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/small_test.txt/seg=1?Nonce=0ae3bb58
+Data: Name: /pro0/small_test.txt/seg=1
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000 milliseconds, FinalBlockId: seg=1]
+Content: [4068 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+pro0 ERROR: socket read error (End of file)

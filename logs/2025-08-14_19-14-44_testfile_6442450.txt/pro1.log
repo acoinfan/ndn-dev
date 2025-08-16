@@ -1,0 +1,8 @@
+Producer initialized with prefix: /pro1 and data directory: /home/a_coin_fan/code/ndn-dev/experiments
+Producer ready to serve files from directory: /home/a_coin_fan/code/ndn-dev/experiments
+pro1 is ready! 
+Interest: /pro1/testfile_6442450.txt/seg=0?Nonce=4a418eaa
+Loading file: testfile_6442450.txt with prefix: /pro1/testfile_6442450.txt/v=1755170129500
+Successfully loaded testfile_6442450.txt with 0 segments, total size: 6525333 bytes
+Interest cannot be satisfied, sending Nack
+pro1 ERROR: socket read error (End of file)

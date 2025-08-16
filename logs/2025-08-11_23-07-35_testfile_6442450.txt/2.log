@@ -1,0 +1,1 @@
+ndnclient: pipeline-interests-adaptive.cpp:360: void ndn::get::PipelineInterestsAdaptive::enqueueForRetransmission(uint64_t): Assertion `m_nInFlight > 0' failed.

@@ -1,0 +1,4 @@
+Producer initialized with prefix: /pro1 and data directory: /home/a_coin_fan/code/ndn-dev/experiments
+Producer ready to serve files from directory: /home/a_coin_fan/code/ndn-dev/experiments
+pro1 is ready! 
+pro1 ERROR: socket read error (End of file)
