@@ -224,13 +224,25 @@ Producer::loadFileIntoStore(const std::string& filename)
   }
 
   // Segment the file
+  auto start = std::chrono::steady_clock::now();
+
   Segmenter segmenter(m_keyChain, m_options.signingInfo);
   auto segments = segmenter.segment(file, versionedPrefix, m_options.maxSegmentSize, m_options.freshnessPeriod);
+ 
+  auto end = std::chrono::steady_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  if (!m_options.isQuiet) {
+    m_logFile << "Segmenting took " << duration.count() << " μs" << std::endl;
+  }
 
   // Debug: log how many segments were produced
-  m_logFile << "Segmenter returned " << segments.size() << " segments" << std::endl;
+  if (m_options.isVerbose) {
+    m_logFile << "Segmenter returned " << segments.size() << " segments" << std::endl;
+  }
   if (!segments.empty()) {
-    m_logFile << "First segment name (preview): " << segments[0]->getName() << std::endl;
+    if (!m_options.isQuiet) {
+      m_logFile << "First segment name (preview): " << segments[0]->getName() << std::endl;
+    }
   } else {
     m_logFile << "ERROR: No segments produced by Segmenter for file " << filePath << std::endl;
     m_logFile << " - Check KeyChain/signingInfo and ndn-cxx Segmenter behavior." << std::endl;

@@ -298,7 +298,7 @@ PipelineInterestsAdaptive::handleNack(const Interest& interest, const lp::Nack& 
   if (isStopping())
     return;
 
-  if (m_options.isVerbose)
+  if (!m_options.isQuiet)
     m_logFile << "Received Nack with reason " << nack.getReason()
               << " for Interest " << interest << "\n";
 

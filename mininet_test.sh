@@ -25,7 +25,7 @@ sudo rm -rf /tmp/ndn/*
 sudo rm -rf /tmp/*-nfd.conf
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
-CLIENT_BIN="${PROJECT_ROOT}/client/bin/ndnclient"
+CLIENT_BIN="${PROJECT_ROOT}/client/bin/ndnclient"/
 
 
 # 重新编译应用（如果需要）
@@ -40,7 +40,7 @@ fi
 echo "4. 运行网络模拟..."
 cd "$PROJECT_ROOT"
 
-sudo python3 ndn-simulator.py
+sudo python3 mininet-simulator.py
 
 echo "=== 测试完成 ==="
 

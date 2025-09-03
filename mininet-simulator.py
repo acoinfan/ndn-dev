@@ -15,8 +15,9 @@ h1 = net.addHost('h1')
 h2 = net.addHost('h2')
 h3 = net.addHost('h3')
 
-net.addLink(h1, h2, bw=100)
-net.addLink(h1, h3, bw=100)
+net.addLink(h1, h2, bw=100, max_queue_size=10000, delay='0ms')
+net.addLink(h1, h3, bw=100, max_queue_size=10000, delay='0ms')
+net.addLink(h2, h3, bw=100, max_queue_size=10000, delay='0ms')
 
 net.start()
 
@@ -27,12 +28,15 @@ h2.setIP('10.0.1.2/30', intf='h2-eth0')
 h1.setIP('10.0.2.1/30', intf='h1-eth1')
 h3.setIP('10.0.2.2/30', intf='h3-eth0')
 
+h2.setIP('10.0.3.1/30', intf='h2-eth1')
+h3.setIP('10.0.3.2/30', intf='h3-eth1')
+
 info('IP configured\n')
 
 # 使 h2 <-> h3 可达（通过 h1 路由）
-h1.cmd('sysctl -w net.ipv4.ip_forward=1')
-h2.cmd('ip route add 10.0.2.0/30 via 10.0.1.1')
-h3.cmd('ip route add 10.0.1.0/30 via 10.0.2.1')
+# h1.cmd('sysctl -w net.ipv4.ip_forward=1')
+# h2.cmd('ip route add 10.0.2.0/30 via 10.0.1.1')
+# h3.cmd('ip route add 10.0.1.0/30 via 10.0.2.1')
 
 # 准备目录
 os.makedirs('/tmp/ndn', exist_ok=True)
@@ -155,7 +159,26 @@ def create_faces_and_routes():
             src_host.cmd(addroute_cmd)
             time.sleep(0.1)
 
-create_faces_and_routes()
+def create_faces_and_routes_new():
+    mapping = {
+        'client0': [('10.0.1.1', h1, '10.0.1.2', h2, 1), ('10.0.2.1', h1, '10.0.2.2', h3, 2)],
+        'client1': [('10.0.1.2', h2, '10.0.1.1', h1, 0), ('10.0.3.1', h2, '10.0.3.2', h3, 2)],
+        'client2': [('10.0.2.2', h3, '10.0.2.1', h1, 0), ('10.0.3.2', h3, '10.0.3.1', h2, 1)]
+    }
+    # pairwise create faces and routes
+    for src_name, src_list in mapping.items():
+        env = f'export NDN_CLIENT_TRANSPORT="unix:///run/nfd/{src_name}.sock"; '
+        for (src_ip, src_host, dst_ip, dst_host, dst_index) in src_list:
+            # create face to dst IP and add route for /pro<dst_index>
+            face_cmd = f'{env} nfdc face create udp4://{dst_ip}:6363'
+            addroute_cmd = f'{env} nfdc route add /pro{dst_index} udp4://{dst_ip}:6363'
+            info(f'On {src_host.name}: {face_cmd} ; {addroute_cmd}\n')
+            src_host.cmd(face_cmd)
+            time.sleep(0.2)
+            src_host.cmd(addroute_cmd)
+            time.sleep(0.2)
+
+create_faces_and_routes_new()
 
 # 验证（简短输出）
 for host, cname, ip in hosts:
@@ -164,16 +187,18 @@ for host, cname, ip in hosts:
     info(host.cmd(f'export NDN_CLIENT_TRANSPORT="unix:///run/nfd/{cname}.sock"; nfdc route list'))
 
 # 启动客户端程序（参数留空，由你填写）
+ok_file = []
 CLIENT_BIN = '/home/a_coin_fan/code/ndn-dev/client/bin/ndnclient'
 if os.path.isfile(CLIENT_BIN):
     for idx, (host, cname, ip) in enumerate(hosts):
         log = f'/tmp/ndn/{cname}.log'
+        ok_file.append(f"/tmp/ndn/pro{idx}.ok")
         # 保留参数位置，用户自行填充
         cmd = (
             f'cd /home/a_coin_fan/code/ndn-dev/client && export NDN_CLIENT_TRANSPORT="unix:///run/nfd/{cname}.sock"; '
             f'{CLIENT_BIN} --config /home/a_coin_fan/code/ndn-dev/exp-clientconfig.ini '
             f'--directory /home/a_coin_fan/code/ndn-dev/experiments '
-            f'--filename testfile_6442450.txt '
+            f'--filename testfile_64424509.txt '
             f'--id {idx} '
             f'--nodes 3 > /tmp/ndn/client{idx}.log 2>&1 &'
         )
@@ -182,6 +207,16 @@ if os.path.isfile(CLIENT_BIN):
 else:
     info('WARN: client binary not found, skipping starting clients\n')
 
+while True:
+    if all(os.path.exists(ok) for ok in ok_file):
+        break
+    time.sleep(1)
+
+time.sleep(5)
+with open(os.path.join("/tmp/ndn/", "all.ok"), 'w') as f:
+    f.write("all producers started\n")
+
+input("Press enter to Continue")
 info('setup complete — drop to Mininet CLI. Stop the network when done.\n')
 CLI(net)
 
