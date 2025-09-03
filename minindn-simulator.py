@@ -66,7 +66,7 @@ def main():
             cmd = (
                 f'NDN_CLIENT_TRANSPORT="unix:///run/nfd/{hostname}.sock" {CLIENT_BIN} --config /home/a_coin_fan/code/ndn-dev/exp-clientconfig.ini '
                 f'--directory /home/a_coin_fan/code/ndn-dev/experiments '
-                f'--filename testfile_64424509.txt '
+                f'--filename testfile_6442450.txt '
                 f'--id {idx} '
                 f'--nodes {total_host} > /tmp/ndn/client{idx}.log 2>&1 &'
             )
