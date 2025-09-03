@@ -83,6 +83,12 @@ public:
   void
   run(std::unique_ptr<DiscoverVersion> discover, std::unique_ptr<PipelineInterests> pipeline);
 
+  /**
+   * @brief Get I/O statistics
+   */
+  std::string
+  getIOStatistics() const;
+
 private:
   void
   handleData(const Data& data);
@@ -97,6 +103,10 @@ private:
   std::unique_ptr<DiscoverVersion> m_discover;
   std::unique_ptr<PipelineInterests> m_pipeline;
   uint64_t m_nextToPrint = 0;
+
+  // IO logging
+  std::chrono::microseconds m_ioTime{0};
+  int m_callCount = 0;
 
 PUBLIC_WITH_TESTS_ELSE_PRIVATE:
   std::map<uint64_t, std::shared_ptr<const Data>> m_bufferedData;

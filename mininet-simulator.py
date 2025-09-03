@@ -188,11 +188,13 @@ for host, cname, ip in hosts:
 
 # 启动客户端程序（参数留空，由你填写）
 ok_file = []
+finish_file = []
 CLIENT_BIN = '/home/a_coin_fan/code/ndn-dev/client/bin/ndnclient'
 if os.path.isfile(CLIENT_BIN):
     for idx, (host, cname, ip) in enumerate(hosts):
         log = f'/tmp/ndn/{cname}.log'
         ok_file.append(f"/tmp/ndn/pro{idx}.ok")
+        finish_file.append(f"/tmp/ndn/{idx}.finish")
         # 保留参数位置，用户自行填充
         cmd = (
             f'cd /home/a_coin_fan/code/ndn-dev/client && export NDN_CLIENT_TRANSPORT="unix:///run/nfd/{cname}.sock"; '
@@ -216,6 +218,12 @@ time.sleep(5)
 with open(os.path.join("/tmp/ndn/", "all.ok"), 'w') as f:
     f.write("all producers started\n")
 
+while True:
+    if all(os.path.exists(finish) for finish in finish_file):
+        break
+    time.sleep(0.5)
+info("All clients finished\n")
+    
 input("Press enter to Continue")
 info('setup complete — drop to Mininet CLI. Stop the network when done.\n')
 CLI(net)

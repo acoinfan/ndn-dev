@@ -29,15 +29,11 @@ CLIENT_BIN="${PROJECT_ROOT}/client/bin/ndnclient"/
 
 
 # 重新编译应用（如果需要）
-echo "3. 检查应用程序..."
-if [ ! -f "$CLIENT_BIN" ]; then
-    echo "编译客户端应用..."
-    cd "${PROJECT_ROOT}/client" && make -j$(nproc)
-fi
+cd "${PROJECT_ROOT}/client" && make clean && make -j$(nproc)
 
 
 # 运行测试
-echo "4. 运行网络模拟..."
+echo "3. 运行网络模拟..."
 cd "$PROJECT_ROOT"
 
 sudo python3 minindn-simulator.py web.conf

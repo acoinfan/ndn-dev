@@ -1,0 +1,5 @@
+Received Nack with reason NoRoute for Interest /pro2/testfile_64424509.txt/seg=7976?Nonce=ff4bed86
+con3to2 ERROR: Could not retrieve data for /pro2/testfile_64424509.txt/seg=7976, reason: NoRoute
+
+=== Segmentation data from pro2.log ===
+Segmenting took 321696 μs

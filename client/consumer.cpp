@@ -35,10 +35,11 @@ namespace ndn::get {
 Consumer::Consumer(security::Validator& validator, std::ostream& os)
   : m_validator(validator)
   , m_outputStream(os)
+  , m_ioTime(0)
+  , m_callCount(0)
 {
 }
 
-// To do
 void
 Consumer::run(std::unique_ptr<DiscoverVersion> discover, std::unique_ptr<PipelineInterests> pipeline)
 {
@@ -82,9 +83,6 @@ void
 Consumer::writeInOrderData()
 {
   // Time tracking Part1
-  static std::chrono::microseconds total_io_time{0};
-  static size_t call_count = 0;
-  
   auto start = std::chrono::steady_clock::now();
   // 
 
@@ -101,15 +99,17 @@ Consumer::writeInOrderData()
   auto end = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
   
-  total_io_time += duration;
-  call_count++;
-  
-  if (call_count % 100 == 0) {
-    std::cerr << "I/O stats: " << call_count << " calls, " 
-              << total_io_time.count() << " μs total, "
-              << total_io_time.count() / call_count << " μs avg" << std::endl;
-  }
+  m_ioTime += duration;
+  m_callCount++;
   //
 }
 
+std::string
+Consumer::getIOStatistics() const {
+  std::ostringstream oss;
+  oss << "I/O Time: " << m_ioTime.count() << " μs\n";
+  oss << "Call Count: " << m_callCount << "\n";
+  oss << "avg I/O Time: " << m_ioTime.count() * 1.0 / m_callCount<< " μs\n";
+  return oss.str();
+}
 } // namespace ndn::get

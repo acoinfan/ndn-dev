@@ -56,7 +56,9 @@ namespace ndn::get
         int getExitCode() const;
 
         bool isFinished() const;
-
+        
+        void printStatistics() const;
+        
     private:
         int runConsumerMain();
 

@@ -7,13 +7,28 @@ from minindn.apps.nfd import Nfd
 from minindn.helpers.ndn_routing_helper import NdnRoutingHelper
 from minindn.helpers.nfdc import Nfdc
 from time import sleep
-from mininet.node import OVSController
 import os
 import time
+import shutil
 
 def main():
+    TEMP_DIR = os.path.join("/tmp", "ndn")
+    WORK_DIR = os.getcwd()
+    LOG_DIR = os.path.join(WORK_DIR, "logs")
+    FILE_DIR = os.path.join(WORK_DIR, "experiments")
+    
+    CLIENT_BIN = os.path.join(WORK_DIR, "client", "bin", "ndnclient")
+    CONFIG_FILE = os.path.join(WORK_DIR, "exp-clientconfig.ini")
     setLogLevel('info')
     
+    info("Setup Environment")
+    if os.path.exists(TEMP_DIR):
+        files = os.listdir(TEMP_DIR)
+        for file in files:
+            os.remove(os.path.join(TEMP_DIR, file))
+    else:
+        os.makedirs(TEMP_DIR)
+
     Minindn.cleanUp()
     Minindn.verifyDependencies()
 
@@ -41,7 +56,8 @@ def main():
     
     host_names = [host.name for host in ndn.net.hosts if host.name.startswith('client')]
     total_host = len(host_names)
-    ok_file = [f"/tmp/ndn/pro{idx}.ok" for idx in range(total_host)]
+    ok_file = [os.path.join(TEMP_DIR, f"pro{idx}.ok") for idx in range(total_host)]
+    finish_file = [os.path.join(TEMP_DIR, f"{idx}.finish") for idx in range(total_host)]
     
     for idx in range(total_host):
         grh.addOrigin([ndn.net[f'client{idx}']], [f"/pro{idx}"])
@@ -51,24 +67,17 @@ def main():
 
     info('Route addition to NFD completed succesfully\n')
 
-    info(ndn.net["client0"].cmd("nfdc face list"))
-    info(ndn.net["client0"].cmd("nfdc fib list"))
-    info(ndn.net["client0"].cmd("nfdc strategy show /client0"))
-
-
-    ok_file = []
-    CLIENT_BIN = '/home/a_coin_fan/code/ndn-dev/client/bin/ndnclient'
     if os.path.isfile(CLIENT_BIN):
         for idx, hostname in enumerate(host_names):
             host = ndn.net[hostname]
-            log = f'/tmp/ndn/{hostname}.log'
+            log = os.path.join(TEMP_DIR, f'{hostname}.log')
             # 保留参数位置，用户自行填充
             cmd = (
-                f'NDN_CLIENT_TRANSPORT="unix:///run/nfd/{hostname}.sock" {CLIENT_BIN} --config /home/a_coin_fan/code/ndn-dev/exp-clientconfig.ini '
-                f'--directory /home/a_coin_fan/code/ndn-dev/experiments '
-                f'--filename testfile_6442450.txt '
+                f'{CLIENT_BIN} --config {CONFIG_FILE} '
+                f'--directory {FILE_DIR} '
+                f'--filename testfile_64424509.txt '
                 f'--id {idx} '
-                f'--nodes {total_host} > /tmp/ndn/client{idx}.log 2>&1 &'
+                f'--nodes {total_host} &'
             )
             info(f'start client on {hostname}: {cmd}\n')
             host.cmd(cmd)
@@ -78,15 +87,88 @@ def main():
     while True:
         if all(os.path.exists(ok) for ok in ok_file):
             break
-        time.sleep(1)
+        time.sleep(0.5)
 
     time.sleep(5)
-    with open(os.path.join("/tmp/ndn/", "all.ok"), 'w') as f:
+    with open(os.path.join(TEMP_DIR, "all.ok"), 'w') as f:
         f.write("all producers started\n")
 
-    input("Press enter to Continue")
+    while True:
+        if all(os.path.exists(finish) for finish in finish_file):
+            break
+        time.sleep(0.5)
+    info("All clients finished\n")
+    sleep(0.5)
+    
     info('setup complete — drop to Mininet CLI. Stop the network when done.\n')
     MiniNDNCLI(ndn.net)
+    
+    # save logs
+    files = os.listdir('/tmp/ndn/')
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    LOG_DIR = os.path.join(LOG_DIR, timestamp)
+    os.makedirs(LOG_DIR)
+    
+    for file_name in files:
+        if file_name.endswith(".log"):
+            src_file = os.path.join("/tmp/ndn", file_name)
+            dst_file = os.path.join(LOG_DIR, file_name)
+            if os.path.getsize(src_file) != 0:
+                shutil.move(src_file, dst_file)
+
+    src_topo = os.path.join(WORK_DIR, "web.conf")
+    dst_topo = os.path.join(LOG_DIR, "topo.conf")
+    src_conf = os.path.join(WORK_DIR, "exp-clientconfig.ini")
+    dst_conf = os.path.join(LOG_DIR, "clientconfig.ini")
+
+    shutil.copy(src_topo, dst_topo)
+    shutil.copy(src_conf, dst_conf)
+    extract_and_append_segmentation_data(LOG_DIR)
+    
+    ndn.stop()
+    # calculate output
+    
+def extract_and_append_segmentation_data(log_dir):
+    """提取分段数据并追加到相关日志"""
+    from pathlib import Path
+    import re
+    
+    log_path = Path(log_dir)
+    
+    # 提取所有 pro*.log 的 Segmenting took 数据
+    segment_data = {}
+    for pro_log in log_path.glob("pro*.log"):
+        producer_id = re.search(r'pro(\d+)', pro_log.name).group(1)
+        lines = []
+        
+        try:
+            with pro_log.open('r') as f:
+                for line in f:
+                    if "Segmenting took" in line:
+                        lines.append(line.strip())
+            
+            if lines:
+                segment_data[producer_id] = lines
+                info(f"Extracted {len(lines)} segmentation lines from pro{producer_id}.log\n")
+        except Exception as e:
+            info(f"Failed to read {pro_log}: {e}\n")
+    
+    # 追加到对应的 consumer 日志
+    for producer_id, lines in segment_data.items():
+        # 找到所有 con*to{producer_id}.log 文件
+        pattern = f"con*to{producer_id}.log"
+        target_files = list(log_path.glob(pattern))
+        
+        for target_file in target_files:
+            try:
+                with target_file.open('a') as f:
+                    f.write(f"\n=== Segmentation data from pro{producer_id}.log ===\n")
+                    for line in lines:
+                        f.write(line + "\n")
+                info(f"Appended segmentation data to {target_file.name}\n")
+            except Exception as e:
+                info(f"Failed to append to {target_file}: {e}\n")      
+    
     
     
 main()

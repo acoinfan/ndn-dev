@@ -78,7 +78,7 @@ namespace ndn::get
 
     std::string fileName, nameConv, pipelineType, configPath, fileDir, signingInfo; // fileName is the file to be fetched and sent
     int id, totalNodes;
-    std::string cwndPath, rttPath, signalFile = "/tmp/ndn/all.ok"; // signal file path
+    std::string cwndPath, rttPath, signalFile = "/tmp/ndn/all.ok", finishSignalFile = "/tmp/ndn/all.finish"; // signal file path
     const std::string programName(argv[0]);
 
     // Analyse command line options
@@ -300,8 +300,11 @@ namespace ndn::get
 
     // remove the signal file if it exists
     std::string m_signal = "/tmp/ndn/" + std::to_string(id) + ".ok";
-    std::remove(signalFile.c_str()); // rm /tmp/ndn/all.ok
-    std::remove(m_signal.c_str());   // rm /tmp/ndn/<id>.ok
+    std::string m_finishSignal = "/tmp/ndn/" + std::to_string(id) + ".finish";
+    std::remove(signalFile.c_str());      // rm /tmp/ndn/all.ok
+    std::remove(m_signal.c_str());        // rm /tmp/ndn/<id>.ok
+    std::remove(finishSignalFile.c_str());// rm /tmp/ndn/all.finish
+    std::remove(m_finishSignal.c_str());  // rm /tmp/ndn/<id>.finish
 
     // main logic
     try
@@ -324,38 +327,29 @@ namespace ndn::get
       asyncProducer->start();
 
       // Start the async consumers
-      for (auto &consumer : asyncConsumers)
+      for (auto &asyncConsumer : asyncConsumers)
       {
-        consumer->start();
+        asyncConsumer->start();
       }
 
       // Wait for the async consumers to finish
-      logFile << clientPrefix << " Waiting for all consumers to complete..." << std::endl;
-
-      int successCount = 0;
-      int failureCount = 0;
-
-      for (auto &consumer : asyncConsumers)
+      for (auto &asyncConsumer : asyncConsumers)
       {
-        consumer->join(); // 等待该Consumer完成
-        int exitCode = consumer->getExitCode();
+        asyncConsumer->join(); // 等待该Consumer完成
+      }
+      
+      // std::this_thread::sleep_for(std::chrono::seconds(1)); // wait for 1 second to ensure all producers are ready
 
-        if (exitCode == 0)
-        {
-          successCount++;
-        }
-        else
-        {
-          failureCount++;
-          logFile << clientPrefix << " Consumer failed with exit code: " << exitCode << std::endl;
-        }
+      // tell simulator that all the consumers finished
+      std::ofstream m_finishStream(m_finishSignal);
+      m_finishStream << "all consumers finished" << std::endl;
+      m_finishStream.close();
+
+      // waiting for all clients finished
+      while (!std::ifstream(finishSignalFile).good()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
       }
 
-      logFile << clientPrefix << " SUMMARY: Success=" << successCount
-              << ", Failed=" << failureCount
-              << ", Total=" << (successCount + failureCount) << std::endl;
-      
-      asyncProducer->join(); // 等待Producer完成
       return 0;
     }
     catch (const std::exception &e)

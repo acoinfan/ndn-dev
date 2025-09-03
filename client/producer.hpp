@@ -76,6 +76,12 @@ public:
   void
   run();
 
+  /**
+   * @brief Get segmentation time.
+   */
+  inline std::chrono::microseconds
+  getSegmentationTime() const { return m_segmentationTime; };
+
 private:
   struct FileStore {
     std::vector<std::shared_ptr<Data>> segments;
@@ -119,6 +125,7 @@ private:
   KeyChain& m_keyChain;
   const Options m_options;
   std::ofstream& m_logFile;
+  std::chrono::microseconds m_segmentationTime{0};
 };
 
 } // namespace ndn::serve

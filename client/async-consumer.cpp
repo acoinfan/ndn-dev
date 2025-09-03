@@ -41,16 +41,16 @@ namespace ndn::get
       // Build the socket for the consumer
       waitForProducer(logFile);
 
-      #ifdef MODE_NEW
-        std::string socketPath = "unix:///run/nfd/client" + std::to_string(consumerId) + ".sock"; 
-      #else
+      #ifdef MODE_OLD
         std::string socketPath = "unix:///run/nfd/" + prefix + ".sock"; 
+      #else
+        std::string socketPath = "unix:///run/nfd/client" + std::to_string(consumerId) + ".sock"; 
       #endif
       
       auto transport = ndn::UnixTransport::create(socketPath);
       Face face(transport);
 
-      // Create the interest prefix (eg. /producer1/file.txt)
+      // Create the interest prefix (eg. /pro1/file.txt)
       std::string interestPrefix = "/pro" + std::to_string(producerId) + "/" + asyncOptions.fileName;
       auto discover = std::make_unique<DiscoverVersion>(face, Name(interestPrefix), options);
       std::unique_ptr<PipelineInterests> pipeline;
@@ -161,7 +161,8 @@ namespace ndn::get
       BOOST_ASSERT(pipeline != nullptr);
       consumer.run(std::move(discover), std::move(pipeline));
       face.processEvents();
-      logFile << std::flush;
+      logFile << std::endl;
+      logFile << consumer.getIOStatistics() << std::endl; // print IO statistics
       return 0;
     }
     // handling errors

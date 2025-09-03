@@ -26,6 +26,8 @@ namespace ndn::serve
 
         const ndn::serve::Producer::Options& options;
 
+        std::chrono::microseconds segmentationTime;
+
     public:
         AsyncProducer(int producerId, const std::string& fileDir, const Producer::Options& options);
 
@@ -37,6 +39,7 @@ namespace ndn::serve
 
         bool isFinished() const;
 
+        std::chrono::microseconds getSegmentationTime() const { return segmentationTime; }
     private:
         int runProducerMain();
 

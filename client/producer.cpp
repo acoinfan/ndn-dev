@@ -230,9 +230,9 @@ Producer::loadFileIntoStore(const std::string& filename)
   auto segments = segmenter.segment(file, versionedPrefix, m_options.maxSegmentSize, m_options.freshnessPeriod);
  
   auto end = std::chrono::steady_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  m_segmentationTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
   if (!m_options.isQuiet) {
-    m_logFile << "Segmenting took " << duration.count() << " μs" << std::endl;
+    m_logFile << "Segmenting took " << m_segmentationTime.count() << " μs" << std::endl;
   }
 
   // Debug: log how many segments were produced
@@ -290,5 +290,4 @@ Producer::extractFilenameFromInterest(const Interest& interest)
   // Extract filename (component right after prefix)
   return name.get(m_prefix.size()).toUri();
 }
-
 } // namespace ndn::serve
