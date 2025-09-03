@@ -7,8 +7,8 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -g
 LDFLAGS = 
 LIBS = -lndn-cxx -lboost_program_options -lboost_system -lboost_thread -lpthread -lfmt
 
-ifeq ($(MODE),new)
-    CXXFLAGS += -DMODE_NEW
+ifeq ($(MODE),old)
+    CXXFLAGS += -DMODE_OLD
 endif
 
 # Include directories
