@@ -1,7 +1,0 @@
-Loading input ...
-Producer is ready for prefix: /producer1
-Segmentation file for prefix: /producer1/testfile_6442450.txt
-File path: /home/a_coin_fan/code/ndn-dev/experiments/1/testfile_6442450.txt
-Loading input ...
-Published 797 Data packets
-ERROR: socket read error (End of file)

@@ -1,3 +1,0 @@
-client1 Waiting for all consumers to complete...
-client1 Consumer failed with exit code: 1
-client1 SUMMARY: Success=1, Failed=1, Total=2
