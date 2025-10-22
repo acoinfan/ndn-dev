@@ -1,35 +1,112 @@
-# Main Makefile for NDN Consumer and Producer
-# Author: GitHub Copilot
+# Compiler settings
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -g
+LDFLAGS = 
+LIBS = -lndn-cxx -lboost_program_options -lboost_system -lboost_thread -lpthread -lfmt
+MAKEFLAGS += -j$(nproc)
 
-.PHONY: all clean consumer producer install
+ifeq ($(MODE),old)
+    CXXFLAGS += -DMODE_OLD
+endif
+
+# Include directories
+INCLUDES = -I.
+
+# Directories
+SRCDIR = client
+OBJDIR = client/obj
+BINDIR = client/bin
+
+# Target executable
+TARGET = ndnclient
+BINPATH = $(BINDIR)/$(TARGET)
+
+# Source files (explicitly list to ensure all are included)
+SOURCES = main.cpp \
+          consumer.cpp \
+          async-consumer.cpp \
+          async-producer.cpp \
+          discover-version.cpp \
+          data-fetcher.cpp \
+          pipeline-interests.cpp \
+          pipeline-interests-fixed.cpp \
+          pipeline-interests-aimd.cpp \
+          pipeline-interests-cubic.cpp \
+          pipeline-interests-adaptive.cpp \
+          statistics-collector.cpp \
+          producer.cpp \
+          core/version.cpp
+
+# Generate object file paths
+OBJECTS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SOURCES))
+
+# Header files for dependency tracking
+HEADERS = $(wildcard $(SRCDIR)/*.hpp) \
+          $(wildcard $(SRCDIR)/core/*.hpp)
 
 # Default target
-all: consumer producer
+all: $(BINPATH)
 
-# Build consumer
-consumer:
-	$(MAKE) -C consumer
+# Create directories if they don't exist
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+	mkdir -p $(OBJDIR)/core
 
-# Build producer  
-producer:
-	$(MAKE) -C producer
+$(BINDIR):
+	mkdir -p $(BINDIR)
 
-# Clean all
+# Build the executable
+$(BINPATH): $(OBJECTS) | $(BINDIR)
+	$(CXX) $(OBJECTS) -o $@ $(LDFLAGS) $(LIBS)
+	@echo "Built $(TARGET) successfully"
+
+# Compile source files to object files
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS) | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+	@echo "Compiled $<"
+
+# Clean build files
 clean:
-	$(MAKE) -C consumer clean
-	$(MAKE) -C producer clean
+	rm -rf $(OBJDIR) $(BINDIR)
+	@echo "Cleaned build files"
 
-# Install (optional)
-install: all
-	$(MAKE) -C consumer install
-	$(MAKE) -C producer install
+# Install (copy to /usr/local/bin)
+install: $(BINPATH)
+	sudo cp $(BINPATH) /usr/local/bin/
+	@echo "Installed $(TARGET) to /usr/local/bin/"
 
-# Help
+# Uninstall
+uninstall:
+	sudo rm -f /usr/local/bin/$(TARGET)
+	@echo "Uninstalled $(TARGET)"
+
+# Debug build
+debug: CXXFLAGS += -DDEBUG -g3
+debug: $(BINPATH)
+
+# Release build
+release: CXXFLAGS += -O3 -DNDEBUG
+release: clean $(BINPATH)
+
+# Show help
 help:
 	@echo "Available targets:"
-	@echo "  all        - Build both consumer and producer"
-	@echo "  consumer   - Build consumer only"
-	@echo "  producer   - Build producer only"
-	@echo "  clean      - Clean all build files"
-	@echo "  install    - Install binaries (optional)"
+	@echo "  all        - Build $(TARGET) (default)"
+	@echo "  clean      - Remove build files"
+	@echo "  install    - Install $(TARGET) to /usr/local/bin"
+	@echo "  uninstall  - Remove $(TARGET) from /usr/local/bin"
+	@echo "  debug      - Build with debug flags"
+	@echo "  release    - Build optimized release version"
 	@echo "  help       - Show this help message"
+
+# Phony targets
+.PHONY: all clean install uninstall debug release help
+
+# Dependency tracking
+-include $(OBJECTS:.o=.d)
+
+# Generate dependency files
+$(OBJDIR)/%.d: $(SRCDIR)/%.cpp | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	@$(CXX) $(CXXFLAGS) -MM -MT $(@:.d=.o) $< > $@

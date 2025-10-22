@@ -1,2 +1,6 @@
 experiments/testfile_644245090.txt
 logs/*
+__pycache__
+.vscode
+client/bin/ndnclient
+client/obj
