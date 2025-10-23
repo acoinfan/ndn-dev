@@ -347,7 +347,7 @@ namespace ndn::get
 
       // waiting for all clients finished
       while (!std::ifstream(finishSignalFile).good()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
       }
 
       return 0;

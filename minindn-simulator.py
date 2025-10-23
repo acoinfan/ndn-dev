@@ -10,6 +10,7 @@ from time import sleep
 import os
 import time
 import shutil
+import argparse, sys, signal
 
 def main():
     TEMP_DIR = os.path.join("/tmp", "ndn")
@@ -21,7 +22,16 @@ def main():
     CONFIG_FILE = os.path.join(WORK_DIR, "exp-clientconfig.ini")
     setLogLevel('info')
     
-    info("Setup Environment")
+    
+    parser = argparse.ArgumentParser(description="Parser for Minindn-Simulator")
+    parser.add_argument("--test-file", required=True, type=str, help="the file to transfer")
+    parser.add_argument("--topo-file", required=True, type=str, help="the topology file")
+    args = parser.parse_args()
+
+    TEST_FILE = os.path.basename(args.test_file)
+    sys.argv = [sys.argv[0], args.topo_file]
+
+    info("Setup Environment\n")
     if os.path.exists(TEMP_DIR):
         files = os.listdir(TEMP_DIR)
         for file in files:
@@ -66,7 +76,8 @@ def main():
     sleep(2)
 
     info('Route addition to NFD completed succesfully\n')
-
+    
+    pid_list = []
     if os.path.isfile(CLIENT_BIN):
         for idx, hostname in enumerate(host_names):
             host = ndn.net[hostname]
@@ -75,12 +86,13 @@ def main():
             cmd = (
                 f'{CLIENT_BIN} --config {CONFIG_FILE} '
                 f'--directory {FILE_DIR} '
-                f'--filename testfile_64424509.txt '
+                f'--filename {TEST_FILE} '
                 f'--id {idx} '
                 f'--nodes {total_host} &'
             )
             info(f'start client on {hostname}: {cmd}\n')
-            host.cmd(cmd)
+            proc = host.popen(cmd)
+            pid_list.append(proc.pid)
     else:
         info('WARN: client binary not found, skipping starting clients\n')
 
@@ -92,14 +104,22 @@ def main():
     time.sleep(5)
     with open(os.path.join(TEMP_DIR, "all.ok"), 'w') as f:
         f.write("all producers started\n")
-
+    
+    info(f"pidList: {pid_list}\n")
     while True:
         if all(os.path.exists(finish) for finish in finish_file):
             break
         time.sleep(0.5)
     info("All clients finished\n")
-    sleep(0.5)
+    sleep(2)
     
+    for pid in pid_list:
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        except Exception as e:
+            info(f"Failed to kill {pid}: {e}\n")
     info('setup complete — drop to Mininet CLI. Stop the network when done.\n')
     MiniNDNCLI(ndn.net)
     
@@ -116,10 +136,10 @@ def main():
             if os.path.getsize(src_file) != 0:
                 shutil.move(src_file, dst_file)
 
-    src_topo = os.path.join(WORK_DIR, "web.conf")
+    src_topo = os.path.join(WORK_DIR, args.topo_file)
     dst_topo = os.path.join(LOG_DIR, "topo.conf")
     src_conf = os.path.join(WORK_DIR, "exp-clientconfig.ini")
-    dst_conf = os.path.join(LOG_DIR, "clientconfig.ini")
+    dst_conf = os.path.join(LOG_DIR, "client.ini")
 
     shutil.copy(src_topo, dst_topo)
     shutil.copy(src_conf, dst_conf)
@@ -170,5 +190,5 @@ def extract_and_append_segmentation_data(log_dir):
                 info(f"Failed to append to {target_file}: {e}\n")      
     
     
-    
+
 main()

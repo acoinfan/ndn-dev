@@ -30,24 +30,39 @@ Read `exp-clientconfig.ini` for more details:
 
 ```
 ndn-dev/
-├── README.md              # This file
-├── Makefile              # Main build file
-├── nfd.conf              # NFD configuration
-├── test_transmission.sh  # Automated test script
-├── experiments/          # Test data directory
-│   └── 1/
-│       └── test.txt     # Sample test file
-├── consumer/             # Consumer application
-│   ├── Makefile
-│   ├── *.cpp, *.hpp     # Source files
-│   └── bin/
-│       └── ndnget       # Consumer executable
-└── producer/             # Producer application
-    ├── Makefile
-    ├── config.ini       # Producer configuration
-    ├── *.cpp, *.hpp     # Source files
-    └── bin/
-        └── ndnput       # Producer executable
+├── README.md                  # This file
+├── Makefile                   # Main build file
+├── debug.md                   # Debug notes
+├── exp-clientconfig.ini       # Client experiment configuration
+├── minindn-simulator.py       # Mini-NDN simulation helper
+├── minindn_test.sh            # Mini-NDN test script
+├── client/                    # NDN client (consumer/producer) sources
+│   ├── main.cpp               # Entry point
+│   ├── *.cpp, *.hpp           # Source files
+│   ├── bin/
+│   │   └── ndnclient          # Built client executable
+│   └── obj/                   # Build artifacts
+│       └── core/
+├── core/                      # Core shared headers/sources
+│   ├── common.hpp
+│   ├── version.hpp
+│   └── version.cpp.in / version.cpp
+├── experiments/               # Experiment assets and data
+├── install/                   # Install scripts and utilities
+│   ├── install.sh
+│   └── util/
+│       ├── testbed_topo_generator.py
+│       ├── patches/
+│       │   └── ndn-cxx-dummy-keychain.patch
+│       └── pkgdep/            # OS-specific dependency installers
+│           ├── debian.sh
+│           ├── ubuntu.sh
+│           ├── fedora.sh
+│           └── common.sh
+├── logs/                      # Runtime logs
+└── topologies/                # Network topology configs
+    ├── old.conf
+    └── web.conf
 ```
 
 ## 📊 Performance Metrics

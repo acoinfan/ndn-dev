@@ -1,4 +1,4 @@
-experiments/testfile_644245090.txt
+experiments/*
 logs/*
 __pycache__
 .vscode
