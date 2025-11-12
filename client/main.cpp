@@ -346,10 +346,8 @@ namespace ndn::get
       m_finishStream.close();
 
       // waiting for all clients finished
-      while (!std::ifstream(finishSignalFile).good()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-      }
-
+      asyncProducer->join();
+      // will never reach here because receive SIGKILL
       return 0;
     }
     catch (const std::exception &e)

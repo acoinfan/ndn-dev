@@ -38,7 +38,12 @@ def main():
             os.remove(os.path.join(TEMP_DIR, file))
     else:
         os.makedirs(TEMP_DIR)
-
+        
+    custom_home = os.path.join("/tmp", "nfd")
+    if os.path.exists(custom_home):
+        shutil.rmtree(custom_home)
+    os.makedirs(custom_home)
+        
     Minindn.cleanUp()
     Minindn.verifyDependencies()
 
@@ -55,14 +60,29 @@ def main():
     ndn.start()
     
     info('Starting NFD on nodes\n')
-    nfds = AppManager(ndn, ndn.net.hosts, Nfd)
-    
+    # # default: nfds = AppManager(ndn, ndn.net.hosts, Nfd, csSize=65536, csPolicy='lru', csUnsolicitedPolicy='drop-all')
+    for host in ndn.net.hosts:
+        host.params['params']['homeDir'] = os.path.join(custom_home, host.name)
     sleep(2)
-    
+        
+    nfds = AppManager(ndn, ndn.net.hosts, Nfd, csSize=65536, logLevel='TRACE') 
+    sleep(2)
+    for host in ndn.net.hosts:
+    #     # ndn.net[host.name].cmd(        
+    #     # 'nfdc log set cs TRACE || '
+    #     # 'nfdc log set nfd.Cs TRACE || '
+    #     # 'nfdc log set nfd.ContentStore TRACE')
+        ndn.net[host.name].cmd('nfdc strategy set / /localhost/nfd/strategy/asf \
+            retx-suppression-initial~4000ms \
+            retx-suppression-max~16000ms \
+            retx-suppression-multiplier~2')
+        # ndn.net[host.name].cmd('nfdc strategy set / /localhost/nfd/strategy/asf')
+        
     info("Setting up static routes\n")
     info('Adding static routes to NFD\n')
-    grh = NdnRoutingHelper(ndn.net, Nfdc.PROTOCOL_UDP)
+    grh = NdnRoutingHelper(ndn.net, Nfdc.PROTOCOL_UDP) # support PROTOCOL_TCP, PROTOCOL_UDP, PROTOCOL_ETHER
     # For all host, pass ndn.net.hosts or a list, [ndn.net['a'], ..] or [ndn.net.hosts[0],.]
+    
     
     host_names = [host.name for host in ndn.net.hosts if host.name.startswith('client')]
     total_host = len(host_names)
@@ -112,7 +132,16 @@ def main():
         time.sleep(0.5)
     info("All clients finished\n")
     sleep(2)
-    
+    try:
+        cs_log = os.path.join(TEMP_DIR, "cs.log")
+        hits = 0
+        info("Collecting CS data\n")
+        for host in ndn.net.hosts:
+            ndn.net[host.name].cmd(f'{{ echo "{host.name}:"; nfdc status report; }} >> {cs_log} 2>&1')
+    except:
+        info(f"Failed to collect CS info\n")
+        
+        
     for pid in pid_list:
         try:
             os.kill(pid, signal.SIGKILL)

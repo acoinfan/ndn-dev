@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE platform
+  SYSTEM 'https://simgrid.org/simgrid.dtd'>
+<platform version="4.1">
+ <zone id="AS0" routing="Floyd">
+  <!--Node Definition-->
+  <host id="client0" speed="1Gf"/>
+  <host id="client1" speed="1Gf"/>
+  <host id="client2" speed="1Gf"/>
+  <host id="client3" speed="1Gf"/>
+  <!--Router Definition-->
+  <router id="s0"/>
+  <router id="s1"/>
+  <router id="s2"/>
+  <!--Link Definition-->
+  <link id="client0_s0" bandwidth="100Mbps" latency="0us"/>
+  <link id="client1_s0" bandwidth="100Mbps" latency="0us"/>
+  <link id="s2_s0" bandwidth="100Mbps" latency="0us"/>
+  <link id="client2_s1" bandwidth="100Mbps" latency="0us"/>
+  <link id="client3_s1" bandwidth="100Mbps" latency="0us"/>
+  <link id="s2_s1" bandwidth="100Mbps" latency="0us"/>
+  <!--Route Definition-->
+  <route src="client0" dst="client1">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client2">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client3">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client1" dst="client2">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client3">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client2" dst="client3">
+   <link_ctn id="client2_s1"/>
+  </route>
+ </zone>
+</platform>
