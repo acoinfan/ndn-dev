@@ -47,4 +47,4 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         configReader(sys.argv[1])
     else:
-        print(f"Usage: python {sys.argv[0]} <configDir>")
+        print(f"Usage: python {sys.argv[0]} <topology file for minindn>")

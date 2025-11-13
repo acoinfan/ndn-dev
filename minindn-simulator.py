@@ -10,26 +10,51 @@ from time import sleep
 import os
 import time
 import shutil
-import argparse, sys, signal
+import argparse, sys, signal, configparser
 
 def main():
-    TEMP_DIR = os.path.join("/tmp", "ndn")
-    WORK_DIR = os.getcwd()
-    LOG_DIR = os.path.join(WORK_DIR, "logs")
-    FILE_DIR = os.path.join(WORK_DIR, "experiments")
+    TEMP_DIR : str = os.path.join("/tmp", "ndn")
+    WORK_DIR : str = os.getcwd()
+    LOG_DIR : str = os.path.join(WORK_DIR, "logs")
+    FILE_DIR : str = os.path.join(WORK_DIR, "experiments")
     
-    CLIENT_BIN = os.path.join(WORK_DIR, "client", "bin", "ndnclient")
-    CONFIG_FILE = os.path.join(WORK_DIR, "exp-clientconfig.ini")
+    CLIENT_BIN : str= os.path.join(WORK_DIR, "client", "bin", "ndnclient")
+    CLIENT_CONFIG_FILE : str = os.path.join(WORK_DIR, "exp-clientconfig.ini")
     setLogLevel('info')
     
     
     parser = argparse.ArgumentParser(description="Parser for Minindn-Simulator")
     parser.add_argument("--test-file", required=True, type=str, help="the file to transfer")
     parser.add_argument("--topo-file", required=True, type=str, help="the topology file")
+    parser.add_argument("--nfdc-file", required=True, type=str, help="nfdc config file")
     args = parser.parse_args()
 
     TEST_FILE = os.path.basename(args.test_file)
+    NFDC_CONFIG_FILE = os.path.basename(args.nfdc_file)
+    
     sys.argv = [sys.argv[0], args.topo_file]
+
+    config = configparser.ConfigParser()
+    try:
+        config.read(NFDC_CONFIG_FILE)
+        strategy : str = f'/localhost/nfd/strategy/{config.get("general", "strategy", fallback=None) or "best-route"}'
+        protocol : str  = config.get("general", "protocol", fallback=None) or "tcp"
+        logLevel : str = config.get("general", "logLevel", fallback=None) or "trace"
+        logLevel = logLevel.upper()
+        
+        csSize : int = config.getint("cache", "csSize", fallback=65536) or 65536
+        csPolicy : str = config.get("cache", "csPolicy", fallback=None) or "lru"
+        csUnsolicitedPolicy : str = config.get("cache", "csUnsolicitedPolicy", fallback=None) or "drop-all"
+        
+        supInitial : str = f'retx-suppression-initial~{config.getint("suppression", "retx-suppression-initial", fallback=10) or 10}ms'
+        supMax : str = f'retx-suppression-max~{config.getint("suppression", "retx-suppression-max", fallback=250) or 250}ms'
+        supMultiplier : str = f'retx-suppression-multiplier~{config.getint("suppression", "retx-suppression-multiplier", fallback=2) or 2}'
+    except FileNotFoundError:
+        info("Invalid NFDC config : file not found\n")
+
+
+
+
 
     info("Setup Environment\n")
     if os.path.exists(TEMP_DIR):
@@ -38,7 +63,8 @@ def main():
             os.remove(os.path.join(TEMP_DIR, file))
     else:
         os.makedirs(TEMP_DIR)
-        
+    
+    # logging for TRACE    
     custom_home = os.path.join("/tmp", "nfd")
     if os.path.exists(custom_home):
         shutil.rmtree(custom_home)
@@ -61,33 +87,24 @@ def main():
     
     info('Starting NFD on nodes\n')
     # # default: nfds = AppManager(ndn, ndn.net.hosts, Nfd, csSize=65536, csPolicy='lru', csUnsolicitedPolicy='drop-all')
+        
+    nfds = AppManager(ndn, ndn.net.hosts, Nfd, csSize=csSize, csPolicy=csPolicy, csUnsolicitedPolicy=csUnsolicitedPolicy, logLevel=logLevel) 
+    
     for host in ndn.net.hosts:
         host.params['params']['homeDir'] = os.path.join(custom_home, host.name)
-    sleep(2)
-        
-    nfds = AppManager(ndn, ndn.net.hosts, Nfd, csSize=65536, logLevel='TRACE') 
-    sleep(2)
-    for host in ndn.net.hosts:
-    #     # ndn.net[host.name].cmd(        
-    #     # 'nfdc log set cs TRACE || '
-    #     # 'nfdc log set nfd.Cs TRACE || '
-    #     # 'nfdc log set nfd.ContentStore TRACE')
-        ndn.net[host.name].cmd('nfdc strategy set / /localhost/nfd/strategy/asf \
-            retx-suppression-initial~4000ms \
-            retx-suppression-max~16000ms \
-            retx-suppression-multiplier~2')
+        ndn.net[host.name].cmd(f'nfdc strategy set {strategy} {supInitial} {supMax} {supMultiplier}')
         # ndn.net[host.name].cmd('nfdc strategy set / /localhost/nfd/strategy/asf')
-        
+    sleep(2)
     info("Setting up static routes\n")
     info('Adding static routes to NFD\n')
-    grh = NdnRoutingHelper(ndn.net, Nfdc.PROTOCOL_UDP) # support PROTOCOL_TCP, PROTOCOL_UDP, PROTOCOL_ETHER
+    grh = NdnRoutingHelper(ndn.net, protocol) # support PROTOCOL_TCP, PROTOCOL_UDP, PROTOCOL_ETHER
     # For all host, pass ndn.net.hosts or a list, [ndn.net['a'], ..] or [ndn.net.hosts[0],.]
     
     
-    host_names = [host.name for host in ndn.net.hosts if host.name.startswith('client')]
-    total_host = len(host_names)
-    ok_file = [os.path.join(TEMP_DIR, f"pro{idx}.ok") for idx in range(total_host)]
-    finish_file = [os.path.join(TEMP_DIR, f"{idx}.finish") for idx in range(total_host)]
+    host_names : list[str] = [host.name for host in ndn.net.hosts if host.name.startswith('client')]
+    total_host : int = len(host_names)
+    ok_file : list[str] = [os.path.join(TEMP_DIR, f"pro{idx}.ok") for idx in range(total_host)]
+    finish_file : list[str] = [os.path.join(TEMP_DIR, f"{idx}.finish") for idx in range(total_host)]
     
     for idx in range(total_host):
         grh.addOrigin([ndn.net[f'client{idx}']], [f"/pro{idx}"])
@@ -104,7 +121,7 @@ def main():
             log = os.path.join(TEMP_DIR, f'{hostname}.log')
             # 保留参数位置，用户自行填充
             cmd = (
-                f'{CLIENT_BIN} --config {CONFIG_FILE} '
+                f'{CLIENT_BIN} --config {CLIENT_CONFIG_FILE} '
                 f'--directory {FILE_DIR} '
                 f'--filename {TEST_FILE} '
                 f'--id {idx} '

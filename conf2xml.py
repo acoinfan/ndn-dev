@@ -6,6 +6,7 @@ VERSION = "4.1"
 ROUTING_MODE = "Floyd"
 HOST_SPEED = "1Gf"
 
+# 注: 目前只适用于每个最基础的node只有一个switch(寻路要求必须指出第一步才能自动使用dijkstra计算后续拓扑)
 def main(conf_path: str):
     # Parsing conf file
     nodes, switches, links = configReader(conf_path)
@@ -58,6 +59,7 @@ def main(conf_path: str):
     for idx, src_node in enumerate(nodes):
         status = False
         for link in links:
+            # prefix "s" refers to switches in Mini-ndn
             if link["src"] == src_node and link["dst"].startswith("s"):
                 status = True
                 for dst_node in nodes[idx+1:]:
@@ -98,4 +100,4 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         main(sys.argv[1])
     else:
-        main(f"Usage: python {sys.argv[0]} <configDir>")
+        main(f"Usage: python {sys.argv[0]} <topology file for minindn>")
