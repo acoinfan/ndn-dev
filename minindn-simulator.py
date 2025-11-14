@@ -26,21 +26,6 @@ class NfdConfig:
     supMax: str
     supMultiplier: str
     
-setLogLevel('info')
-args = parse_args()
-TEMP_DIR: str = os.path.join("/tmp", "ndn")
-WORK_DIR: str = os.getcwd()
-LOG_DIR: str = os.path.join(WORK_DIR, "logs")
-FILE_DIR: str = os.path.join(WORK_DIR, "experiments")
-TRACE_DIR: str = os.path.join("/tmp", "minindn")
-SOCKET_DIR: str = os.path.join("/var", "run", "nfd")
-
-CLIENT_BIN: str = os.path.join(WORK_DIR, "client", "bin", "ndnclient")
-CLIENT_CONFIG_FILE: str = os.path.join(WORK_DIR, "exp-clientconfig.ini")
-TEST_FILE: str = os.path.basename(args.test_file)
-TOPO_FILE: str = os.path.abspath(args.topo_file)
-
-@dataclass
 class Paths:
     TEMP = Path("/tmp/ndn")
     WORK = Path.cwd()
@@ -49,27 +34,33 @@ class Paths:
     TRACE = Path("/tmp/minindn")
     SOCKET = Path("/var/run/nfd")
 
-    CLIENT_BIN = WORK / "client" / "bin" / "ndnclient" 
-    CLIENT_CONFIG_FILE = WORK / "exp-clientconfig.ini"
-    TEST_FILE: Path | None = None
-    TOPO_FILE: Path | None = None
-    NFDC_CONFIG_FILE: Path | None = None
+    CLIENT_BIN = WORK / "client" / "bin" / "ndnclient"
+    CLIENT_CONFIG_FILE = None
+    TEST_FILE = None
+    TOPO_FILE = None
+    NFDC_CONFIG_FILE = None
         
 def parse_args():
     parser = argparse.ArgumentParser(description="Parser for Minindn-Simulator")
     parser.add_argument("--test-file", required=True, type=str, help="the file to transfer")
     parser.add_argument("--topo-file", required=True, type=str, help="the topology file")
     parser.add_argument("--nfdc-file", required=True, type=str, help="nfdc config file")
+    parser.add_argument("--client-file", required=True, type=str, help="client config file")
     args = parser.parse_args()
-    paths = Paths()
+    
+    Paths.TEST_FILE = Path(Path(args.test_file).name)
+    Paths.TOPO_FILE = Path(args.topo_file).resolve()
+    Paths.NFDC_CONFIG_FILE = Path(args.nfdc_file).resolve()
+    Paths.CLIENT_CONFIG_FILE = Path(args.client_file).resolve()
+                  
     
 
-def load_Nfdconfig(path: str) -> NfdConfig:
+def load_Nfdconfig() -> NfdConfig:
     config = configparser.ConfigParser()
     try:
-        config.read(path)
+        config.read(Paths.NFDC_CONFIG_FILE)
     except(FileNotFoundError):
-        raise RuntimeError(f"{path}: file not found\n")
+        raise RuntimeError(f"{Paths.NFDC_CONFIG_FILE}: file not found\n")
     
     try:
         strategy : str = f'/localhost/nfd/strategy/{config.get("general", "strategy", fallback=None) or "best-route"}'
@@ -85,7 +76,7 @@ def load_Nfdconfig(path: str) -> NfdConfig:
         supMax : str = f'retx-suppression-max~{config.getint("suppression", "retx-suppression-max", fallback=250) or 250}ms'
         supMultiplier : str = f'retx-suppression-multiplier~{config.getint("suppression", "retx-suppression-multiplier", fallback=2) or 2}'
     except Exception as e:
-        raise RuntimeError(f"Error reading config file {path}: {e}") from e
+        raise RuntimeError(f"Error reading config file {Paths.NFDC_CONFIG_FILE}: {e}") from e
     
     return NfdConfig(
         strategy=strategy,
@@ -99,39 +90,40 @@ def load_Nfdconfig(path: str) -> NfdConfig:
         supMultiplier=supMultiplier
     )
 
-def setup_env(TEMP_DIR: str, TRACE_DIR: str):
+def setup_env():
     info("Setting up Environment...\n")
     
     # Cleanup /tmp/ndn
-    if os.path.exists(TEMP_DIR):
-        shutil.rmtree(TEMP_DIR)
-
-    # Create /tmp/ndn/trace
-    if not os.path.exists(TRACE_DIR):
-        os.makedirs(TRACE_DIR)
+    if Paths.TEMP.exists():
+        shutil.rmtree(Paths.TEMP)
+    Paths.TEMP.mkdir(parents=True, exist_ok=True)
+    
+    # Cleanup /tmp/minindn/trace
+    if Paths.TRACE.exists():
+        shutil.rmtree(Paths.TRACE)
+    Paths.TRACE.mkdir(parents=True, exist_ok=True)
         
     Minindn.cleanUp()
     Minindn.verifyDependencies()
     info("Done\n")
     
-def setup_Minindn(TOPO_FILE: str, TRACE_DIR: str, nfdConfig: NfdConfig):
+def setup_Minindn(nfdConfig: NfdConfig):
     # Setup nfd & sockets
     info('Starting NFD on nodes...\n')
-    ndn = Minindn(topoFile=TOPO_FILE)
+    ndn = Minindn(topoFile=Paths.TOPO_FILE)
     ndn.start()    
     
-    # Register TRACE file directory: /tmp/ndn/trace/<host_name>/log
-    info(getattr(Minindn, "workDir", "/tmp/minindn"))
+    # Register TRACE file directory: /tmp/minindn/<host_name>/log
     nfds = AppManager(ndn, ndn.net.hosts, Nfd, csSize=nfdConfig.csSize, 
                       csPolicy=nfdConfig.csPolicy, csUnsolicitedPolicy=nfdConfig.csUnsolicitedPolicy, logLevel=nfdConfig.logLevel) 
 
     info("Done\n")
     return ndn, nfds
     
-def wait_for_sockets(nodes: list[str], SOCKET_DIR: str):
+def wait_for_sockets(nodes: list[str]):
     info("Waiting for Socket files...\n")
     while True:
-        if all(os.path.exists(socket) for socket in [f'{SOCKET_DIR}/{node}.sock' for node in nodes]):
+        if all(os.path.exists(socket) for socket in [f'{Paths.SOCKET}/{node}.sock' for node in nodes]):
             break
         time.sleep(0.5)
     info("Done\n")
@@ -153,15 +145,16 @@ def setup_strategy(ndn, nfdConfig: NfdConfig):
     sleep(1)
     info("Done\n")
 
-def simulate(n):
-    if os.path.isfile(CLIENT_BIN):
+def simulate(ndn, clients: list[str]):
+    pid_list: list[int] = []
+    if Paths.CLIENT_BIN.exists():
         for client in clients:
-            log = os.path.join(TEMP_DIR, f'{client}.log')
+            log = Paths.TEMP / f'{client}.log'
             # 保留参数位置，用户自行填充
             cmd = (
-                f'{CLIENT_BIN} --config {CLIENT_CONFIG_FILE} '
-                f'--directory {FILE_DIR} '
-                f'--filename {TEST_FILE} '
+                f'{Paths.CLIENT_BIN} --config {Paths.CLIENT_CONFIG_FILE} '
+                f'--directory {Paths.FILE} '
+                f'--filename {Paths.TEST_FILE} '
                 f'--id {client.split("client")[-1]} '
                 f'--nodes {len(clients)} &'
             )
@@ -171,24 +164,31 @@ def simulate(n):
     else:
         info('WARN: client binary not found, skipping starting clients\n')
 
+    # detect for producer
     while True:
-        if all(os.path.exists(ok) for ok in [f'{TEMP_DIR}/pro{client.split("client")[-1]}.ok' for client in clients]):
+        ok_files = [Paths.TEMP / f"pro{client.split('client')[-1]}.ok" for client in clients]
+        if all(ok.exists() for ok in ok_files):
             break
         time.sleep(0.5)
 
-    time.sleep(5)
-    with open(os.path.join(TEMP_DIR, "all.ok"), 'w') as f:
-        f.write("all producers started\n")
+    # send out signal
+    time.sleep(1)
+    (Paths.TEMP / "all.ok").write_text("all producers started\n")
     
     info(f"pidList: {pid_list}\n")
+    
+    # detect for finish
     while True:
-        if all(os.path.exists(finish) for finish in [f'{TEMP_DIR}/{client.split("client")[-1]}.finish' for client in clients]):
+        finish_files = [Paths.TEMP / f"{client.split('client')[-1]}.finish" for client in clients]
+        if all(finish.exists() for finish in finish_files):
             break
-        time.sleep(0.5)
+        sleep(0.5)
+        
     info("All clients finished\n")
-    sleep(2)
+    
+    time.sleep(2)
     try:
-        cs_log = os.path.join(TEMP_DIR, "cs.log")
+        cs_log = Paths.TEMP / "cs.log"
         hits = 0
         info("Collecting CS data\n")
         for host in ndn.net.hosts:
@@ -209,32 +209,21 @@ def simulate(n):
                 
 def main():
     setLogLevel('info')
-    args = parse_args()
-    TEMP_DIR: str = os.path.join("/tmp", "ndn")
-    WORK_DIR: str = os.getcwd()
-    LOG_DIR: str = os.path.join(WORK_DIR, "logs")
-    FILE_DIR: str = os.path.join(WORK_DIR, "experiments")
-    TRACE_DIR: str = os.path.join("/tmp", "minindn")
-    SOCKET_DIR: str = os.path.join("/var", "run", "nfd")
-    
-    CLIENT_BIN: str = os.path.join(WORK_DIR, "client", "bin", "ndnclient")
-    CLIENT_CONFIG_FILE: str = os.path.join(WORK_DIR, "exp-clientconfig.ini")
-    TEST_FILE: str = os.path.basename(args.test_file)
-    TOPO_FILE: str = os.path.abspath(args.topo_file)
+    parse_args()
     
     # Cleanup sys.argv
     sys.argv = [sys.argv[0]]
-    nfdConfig: NfdConfig = load_Nfdconfig(args.nfdc_file)
+    nfdConfig: NfdConfig = load_Nfdconfig()
 
-    setup_env(TEMP_DIR=TEMP_DIR, TRACE_DIR=TRACE_DIR)
+    setup_env()
 
-    ndn, nfds = setup_Minindn(TOPO_FILE, TRACE_DIR, nfdConfig)
+    ndn, nfds = setup_Minindn(nfdConfig)
 
     nodes: list[str] = [host.name for host in ndn.net.hosts]
     clients: list[str] = [node for node in nodes if node.startswith('client')]
     switches: list[str] = [node for node in nodes if node.startswith('s')]
     
-    wait_for_sockets(nodes, SOCKET_DIR)
+    wait_for_sockets(nodes)
     
     setup_routing(ndn, clients, nfdConfig)
     
@@ -243,85 +232,34 @@ def main():
     info("Preparation Done\n")
     
     sleep(1)
-    pid_list = simulate(ndn)
-    pid_list = []
-    if os.path.isfile(CLIENT_BIN):
-        for client in clients:
-            log = os.path.join(TEMP_DIR, f'{client}.log')
-            # 保留参数位置，用户自行填充
-            cmd = (
-                f'{CLIENT_BIN} --config {CLIENT_CONFIG_FILE} '
-                f'--directory {FILE_DIR} '
-                f'--filename {TEST_FILE} '
-                f'--id {client.split("client")[-1]} '
-                f'--nodes {len(clients)} &'
-            )
-            info(f'start client on {client}: {cmd}\n')
-            proc = ndn.net[client].popen(cmd)
-            pid_list.append(proc.pid)
-    else:
-        info('WARN: client binary not found, skipping starting clients\n')
-
-    while True:
-        if all(os.path.exists(ok) for ok in [f'{TEMP_DIR}/pro{client.split("client")[-1]}.ok' for client in clients]):
-            break
-        time.sleep(0.5)
-
-    time.sleep(5)
-    with open(os.path.join(TEMP_DIR, "all.ok"), 'w') as f:
-        f.write("all producers started\n")
     
-    info(f"pidList: {pid_list}\n")
-    while True:
-        if all(os.path.exists(finish) for finish in [f'{TEMP_DIR}/{client.split("client")[-1]}.finish' for client in clients]):
-            break
-        time.sleep(0.5)
-    info("All clients finished\n")
-    sleep(2)
-    try:
-        cs_log = os.path.join(TEMP_DIR, "cs.log")
-        hits = 0
-        info("Collecting CS data\n")
-        for host in ndn.net.hosts:
-            ndn.net[host.name].cmd(f'{{ echo "{host.name}:"; nfdc status report; }} >> {cs_log} 2>&1')
-    except:
-        info(f"Failed to collect CS info\n")
-        
-        
-    for pid in pid_list:
-        try:
-            os.kill(pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
-        except Exception as e:
-            info(f"Failed to kill {pid}: {e}\n")
-    info('setup complete — drop to Mininet CLI. Stop the network when done.\n')
-    MiniNDNCLI(ndn.net)
+    simulate(ndn, clients)
     
-    # save logs
-    files = os.listdir('/tmp/ndn/')
+    # collecting logs
     timestamp = time.strftime("%Y%m%d-%H%M%S")
-    LOG_DIR = os.path.join(LOG_DIR, timestamp)
-    os.makedirs(LOG_DIR)
-    
-    for file_name in files:
-        if file_name.endswith(".log"):
-            src_file = os.path.join("/tmp/ndn", file_name)
-            dst_file = os.path.join(LOG_DIR, file_name)
-            if os.path.getsize(src_file) != 0:
-                shutil.move(src_file, dst_file)
+    log_dir = Paths.LOG / timestamp
+    log_dir.mkdir(parents=True, exist_ok=True)
 
-    src_topo = os.path.join(WORK_DIR, args.topo_file)
-    dst_topo = os.path.join(LOG_DIR, "topo.conf")
-    src_conf = os.path.join(WORK_DIR, "exp-clientconfig.ini")
-    dst_conf = os.path.join(LOG_DIR, "client.ini")
+    # 移动 .log 文件
+    for file_path in Paths.TEMP.glob("*.log"):
+        if file_path.stat().st_size != 0:
+            shutil.move(str(file_path), str(log_dir / file_path.name))
 
-    shutil.copy(src_topo, dst_topo)
-    shutil.copy(src_conf, dst_conf)
-    extract_and_append_segmentation_data(LOG_DIR)
-    
+    # 拷贝拓扑文件和客户端配置
+    src_topo = Paths.TOPO_FILE
+    dst_topo = log_dir / "topo.conf"
+
+    src_conf = Paths.CLIENT_CONFIG_FILE
+    dst_conf = log_dir / "client.ini"
+
+    shutil.copy(str(src_topo), str(dst_topo))
+    shutil.copy(str(src_conf), str(dst_conf))
+
+    # 提取并追加分段数据
+    extract_and_append_segmentation_data(log_dir)
+
+    # 停止网络
     ndn.stop()
-    # calculate output
     
 def extract_and_append_segmentation_data(log_dir):
     """提取分段数据并追加到相关日志"""

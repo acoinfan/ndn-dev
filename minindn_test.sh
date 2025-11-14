@@ -9,6 +9,7 @@ sudo rm -rf /tmp/ndn/*
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 CLIENT_BIN="${PROJECT_ROOT}/client/bin/ndnclient"
 NFDC_FILE="${PROJECT_ROOT}/nfd.ini"
+CLIENT_FILE="${PROJECT_ROOT}/exp-clientconfig.ini"
 
 # 检查可执行文件是否存在
 if [[ ! -x "$CLIENT_BIN" ]]; then
@@ -70,7 +71,7 @@ fi
 echo
 echo "=== Running Test ==="
 cd "$PROJECT_ROOT" || exit
-sudo python3 minindn-simulator.py --topo-file "$SELECTED_TOPO" --test-file "$TEST_FILE" --nfdc-file "$NFDC_FILE"
+sudo python3 minindn-simulator.py --topo-file "$SELECTED_TOPO" --test-file "$TEST_FILE" --nfdc-file "$NFDC_FILE" --client-file "$CLIENT_FILE"
 
 echo
 echo "=== End Of Test ==="
