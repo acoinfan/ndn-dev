@@ -1,0 +1,19 @@
+
+
+All segments have been received.
+Time elapsed: 11.7159 seconds
+Segments received: 6104
+Transferred size: 50000 kB
+Goodput: 34.141585 Mbit/s
+Congestion marks: 85 (caused 26 window decreases)
+Timeouts: 15 (caused 0 window decreases)
+Retransmitted segments: 15 (0.245138%), skipped: 0
+RTT min/avg/max = 9.784/143.260/856.628 ms
+
+I/O Time: 10031 μs
+Call Count: 6104
+avg I/O Time: 1.64335 μs
+
+
+=== Segmentation data from pro3.log ===
+Segmenting took 289484 μs

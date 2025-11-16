@@ -1,0 +1,552 @@
+client0:
+General NFD status:
+                version=24.07-20-gbeb9e85b
+              startTime=20251113T115631.895000
+            currentTime=20251113T115703.515000
+                 uptime=31 seconds
+       nNameTreeEntries=36
+            nFibEntries=12
+            nPitEntries=8
+   nMeasurementsEntries=0
+             nCsEntries=256
+           nInInterests=33425
+          nOutInterests=32717
+                nInData=32714
+               nOutData=33376
+               nInNacks=0
+              nOutNacks=0
+    nSatisfiedInterests=33376
+  nUnsatisfiedInterests=0
+Channels:
+  udp4://0.0.0.0:6363
+  udp6://[::]:6363
+  dev://client0-eth0
+  unix:///run/nfd/client0.sock
+  tcp4://0.0.0.0:6363
+  tcp6://[::]:6363
+Faces:
+  faceid=1 remote=internal:// local=internal:// congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 59d 0n 10443B} out={61i 0d 0n 5245B}} flags={local permanent point-to-point local-fields}
+  faceid=254 remote=contentstore:// local=contentstore:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=255 remote=null:// local=null:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=256 remote=ether://[01:00:5e:00:17:aa] local=dev://client0-eth0 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=257 remote=fd://26 local=unix:///run/nfd/client0.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={45i 10d 0n 5554B} out={11i 44d 0n 10175B}} flags={local on-demand point-to-point local-fields congestion-marking}
+  faceid=258 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.1:53537 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=259 remote=udp6://[ff02::1234%client0-eth0]:56363 local=udp6://[fe80::881e:b4ff:feef:22d4%client0-eth0]:58098 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=261 remote=tcp4://10.0.0.2:57094 local=tcp4://10.0.0.1:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={15041i 0d 0n 510863B} out={0i 15000d 0n 125541515B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=262 remote=tcp4://10.0.0.2:6363 local=tcp4://10.0.0.1:46332 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 18312d 0n 153259591B} out={18312i 0d 0n 621840B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=272 remote=fd://31 local=unix:///run/nfd/client0.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={1i 14333d 0n 119959005B} out={14333i 1d 0n 487210B}} flags={local on-demand point-to-point congestion-marking}
+  faceid=276 remote=fd://34 local=unix:///run/nfd/client0.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={7i 0d 0n 312B} out={0i 0d 0n 0B}} flags={local on-demand point-to-point congestion-marking}
+FIB:
+  /pro0 nexthops={faceid=272 (cost=0)}
+  /ndn/s0-site/s0 nexthops={faceid=262 (cost=0)}
+  /localhost/nfd/rib nexthops={faceid=257 (cost=0)}
+  /ndn/s1-site/s1 nexthops={faceid=262 (cost=0)}
+  /ndn/client3-site/client3 nexthops={faceid=262 (cost=0)}
+  /ndn/client1-site/client1 nexthops={faceid=262 (cost=0)}
+  /pro1 nexthops={faceid=262 (cost=0)}
+  /ndn/s2-site/s2 nexthops={faceid=262 (cost=0)}
+  /pro3 nexthops={faceid=262 (cost=0)}
+  /localhost/nfd nexthops={faceid=1 (cost=0)}
+  /ndn/client2-site/client2 nexthops={faceid=262 (cost=0)}
+  /pro2 nexthops={faceid=262 (cost=0)}
+RIB:
+  /ndn/s0-site/s0 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s1-site/s1 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s2-site/s2 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client1-site/client1 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client2-site/client2 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client3-site/client3 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /pro0 routes={nexthop=272 origin=app cost=0 flags=child-inherit expires=never}
+  /pro1 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /pro2 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /pro3 routes={nexthop=262 origin=static cost=0 flags=child-inherit expires=never}
+  /localhost/nfd routes={nexthop=257 origin=app cost=0 flags=child-inherit expires=never}
+CS information:
+  capacity=256
+     admit=on
+     serve=on
+  nEntries=256
+     nHits=685
+   nMisses=32740
+Strategy choices:
+  prefix=/ strategy=/localhost/nfd/strategy/best-route/v=5
+  prefix=/localhost strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/ndn/broadcast strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/localhost/nfd strategy=/localhost/nfd/strategy/best-route/v=5
+client1:
+General NFD status:
+                version=24.07-20-gbeb9e85b
+              startTime=20251113T115632.486000
+            currentTime=20251113T115703.522000
+                 uptime=31 seconds
+       nNameTreeEntries=36
+            nFibEntries=12
+            nPitEntries=8
+   nMeasurementsEntries=0
+             nCsEntries=256
+           nInInterests=32030
+          nOutInterests=31246
+                nInData=31243
+               nOutData=31988
+               nInNacks=0
+              nOutNacks=0
+    nSatisfiedInterests=31988
+  nUnsatisfiedInterests=0
+Channels:
+  udp4://0.0.0.0:6363
+  udp6://[::]:6363
+  dev://client1-eth0
+  unix:///run/nfd/client1.sock
+  tcp4://0.0.0.0:6363
+  tcp6://[::]:6363
+Faces:
+  faceid=1 remote=internal:// local=internal:// congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 59d 0n 10443B} out={61i 0d 0n 5245B}} flags={local permanent point-to-point local-fields}
+  faceid=254 remote=contentstore:// local=contentstore:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=255 remote=null:// local=null:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=256 remote=ether://[01:00:5e:00:17:aa] local=dev://client1-eth0 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=257 remote=fd://26 local=unix:///run/nfd/client1.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={45i 10d 0n 5554B} out={11i 44d 0n 10171B}} flags={local on-demand point-to-point local-fields congestion-marking}
+  faceid=258 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.5:47251 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=259 remote=udp6://[ff02::1234%client1-eth0]:56363 local=udp6://[fe80::682c:21ff:fece:8a40%client1-eth0]:49457 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=261 remote=tcp4://10.0.0.6:6363 local=tcp4://10.0.0.5:56370 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 18312d 0n 153259506B} out={18312i 0d 0n 621840B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=263 remote=tcp4://10.0.0.6:40438 local=tcp4://10.0.0.5:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={13646i 0d 0n 463364B} out={0i 13612d 0n 113923917B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=272 remote=fd://31 local=unix:///run/nfd/client1.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={1i 12862d 0n 107646663B} out={12862i 1d 0n 436883B}} flags={local on-demand point-to-point congestion-marking}
+  faceid=276 remote=fd://34 local=unix:///run/nfd/client1.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={7i 0d 0n 312B} out={0i 0d 0n 0B}} flags={local on-demand point-to-point congestion-marking}
+FIB:
+  /pro0 nexthops={faceid=261 (cost=0)}
+  /ndn/s0-site/s0 nexthops={faceid=261 (cost=0)}
+  /localhost/nfd/rib nexthops={faceid=257 (cost=0)}
+  /ndn/s1-site/s1 nexthops={faceid=261 (cost=0)}
+  /ndn/client3-site/client3 nexthops={faceid=261 (cost=0)}
+  /pro1 nexthops={faceid=272 (cost=0)}
+  /ndn/s2-site/s2 nexthops={faceid=261 (cost=0)}
+  /pro3 nexthops={faceid=261 (cost=0)}
+  /localhost/nfd nexthops={faceid=1 (cost=0)}
+  /ndn/client0-site/client0 nexthops={faceid=261 (cost=0)}
+  /ndn/client2-site/client2 nexthops={faceid=261 (cost=0)}
+  /pro2 nexthops={faceid=261 (cost=0)}
+RIB:
+  /ndn/s0-site/s0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s1-site/s1 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s2-site/s2 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client0-site/client0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client2-site/client2 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client3-site/client3 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro1 routes={nexthop=272 origin=app cost=0 flags=child-inherit expires=never}
+  /pro2 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro3 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /localhost/nfd routes={nexthop=257 origin=app cost=0 flags=child-inherit expires=never}
+CS information:
+  capacity=256
+     admit=on
+     serve=on
+  nEntries=256
+     nHits=770
+   nMisses=31260
+Strategy choices:
+  prefix=/ strategy=/localhost/nfd/strategy/best-route/v=5
+  prefix=/localhost strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/ndn/broadcast strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/localhost/nfd strategy=/localhost/nfd/strategy/best-route/v=5
+client2:
+General NFD status:
+                version=24.07-20-gbeb9e85b
+              startTime=20251113T115633.043000
+            currentTime=20251113T115703.529000
+                 uptime=30 seconds
+       nNameTreeEntries=36
+            nFibEntries=12
+            nPitEntries=8
+   nMeasurementsEntries=0
+             nCsEntries=256
+           nInInterests=31648
+          nOutInterests=30582
+                nInData=30580
+               nOutData=31589
+               nInNacks=0
+              nOutNacks=0
+    nSatisfiedInterests=31589
+  nUnsatisfiedInterests=0
+Channels:
+  udp4://0.0.0.0:6363
+  udp6://[::]:6363
+  dev://client2-eth0
+  unix:///run/nfd/client2.sock
+  tcp4://0.0.0.0:6363
+  tcp6://[::]:6363
+Faces:
+  faceid=1 remote=internal:// local=internal:// congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 60d 0n 10621B} out={61i 0d 0n 5245B}} flags={local permanent point-to-point local-fields}
+  faceid=254 remote=contentstore:// local=contentstore:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=255 remote=null:// local=null:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=256 remote=ether://[01:00:5e:00:17:aa] local=dev://client2-eth0 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=257 remote=fd://26 local=unix:///run/nfd/client2.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={45i 10d 0n 5554B} out={11i 44d 0n 10178B}} flags={local on-demand point-to-point local-fields congestion-marking}
+  faceid=258 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.9:38654 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=259 remote=udp6://[ff02::1234%client2-eth0]:56363 local=udp6://[fe80::bc11:1fff:fe2e:8a3d%client2-eth0]:48629 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=261 remote=tcp4://10.0.0.10:6363 local=tcp4://10.0.0.9:39742 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 18312d 0n 153259530B} out={18312i 0d 0n 621840B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=262 remote=tcp4://10.0.0.10:45456 local=tcp4://10.0.0.9:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={13264i 0d 0n 450411B} out={0i 13213d 0n 110584266B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=272 remote=fd://31 local=unix:///run/nfd/client2.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={1i 12198d 0n 102089002B} out={12198i 1d 0n 414393B}} flags={local on-demand point-to-point congestion-marking}
+  faceid=276 remote=fd://34 local=unix:///run/nfd/client2.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={7i 0d 0n 312B} out={0i 0d 0n 0B}} flags={local on-demand point-to-point congestion-marking}
+FIB:
+  /pro0 nexthops={faceid=261 (cost=0)}
+  /ndn/s0-site/s0 nexthops={faceid=261 (cost=0)}
+  /localhost/nfd/rib nexthops={faceid=257 (cost=0)}
+  /ndn/s1-site/s1 nexthops={faceid=261 (cost=0)}
+  /ndn/client3-site/client3 nexthops={faceid=261 (cost=0)}
+  /ndn/client1-site/client1 nexthops={faceid=261 (cost=0)}
+  /pro1 nexthops={faceid=261 (cost=0)}
+  /ndn/s2-site/s2 nexthops={faceid=261 (cost=0)}
+  /pro3 nexthops={faceid=261 (cost=0)}
+  /localhost/nfd nexthops={faceid=1 (cost=0)}
+  /ndn/client0-site/client0 nexthops={faceid=261 (cost=0)}
+  /pro2 nexthops={faceid=272 (cost=0)}
+RIB:
+  /ndn/s0-site/s0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s1-site/s1 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s2-site/s2 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client0-site/client0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client1-site/client1 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client3-site/client3 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro1 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro2 routes={nexthop=272 origin=app cost=0 flags=child-inherit expires=never}
+  /pro3 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /localhost/nfd routes={nexthop=257 origin=app cost=0 flags=child-inherit expires=never}
+CS information:
+  capacity=256
+     admit=on
+     serve=on
+  nEntries=256
+     nHits=1035
+   nMisses=30613
+Strategy choices:
+  prefix=/ strategy=/localhost/nfd/strategy/best-route/v=5
+  prefix=/localhost strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/ndn/broadcast strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/localhost/nfd strategy=/localhost/nfd/strategy/best-route/v=5
+client3:
+General NFD status:
+                version=24.07-20-gbeb9e85b
+              startTime=20251113T115633.639000
+            currentTime=20251113T115703.536000
+                 uptime=29 seconds
+       nNameTreeEntries=36
+            nFibEntries=12
+            nPitEntries=8
+   nMeasurementsEntries=0
+             nCsEntries=256
+           nInInterests=35296
+          nOutInterests=34638
+                nInData=34634
+               nOutData=35267
+               nInNacks=0
+              nOutNacks=0
+    nSatisfiedInterests=35267
+  nUnsatisfiedInterests=0
+Channels:
+  udp4://0.0.0.0:6363
+  udp6://[::]:6363
+  dev://client3-eth0
+  unix:///run/nfd/client3.sock
+  tcp4://0.0.0.0:6363
+  tcp6://[::]:6363
+Faces:
+  faceid=1 remote=internal:// local=internal:// congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 58d 0n 10312B} out={61i 0d 0n 5245B}} flags={local permanent point-to-point local-fields}
+  faceid=254 remote=contentstore:// local=contentstore:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=255 remote=null:// local=null:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=256 remote=ether://[01:00:5e:00:17:aa] local=dev://client3-eth0 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=257 remote=fd://26 local=unix:///run/nfd/client3.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={45i 10d 0n 5554B} out={11i 44d 0n 10182B}} flags={local on-demand point-to-point local-fields congestion-marking}
+  faceid=258 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.13:48098 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=259 remote=udp6://[ff02::1234%client3-eth0]:56363 local=udp6://[fe80::5c80:21ff:fe43:a7c0%client3-eth0]:38721 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=261 remote=tcp4://10.0.0.14:6363 local=tcp4://10.0.0.13:49940 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 18312d 0n 153259423B} out={18312i 0d 0n 621840B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=263 remote=tcp4://10.0.0.14:48610 local=tcp4://10.0.0.13:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={16912i 0d 0n 574714B} out={0i 16891d 0n 141365664B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=272 remote=fd://31 local=unix:///run/nfd/client3.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={1i 16254d 0n 136034169B} out={16254i 1d 0n 552533B}} flags={local on-demand point-to-point congestion-marking}
+  faceid=276 remote=fd://34 local=unix:///run/nfd/client3.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={7i 0d 0n 312B} out={0i 0d 0n 0B}} flags={local on-demand point-to-point congestion-marking}
+FIB:
+  /pro0 nexthops={faceid=261 (cost=0)}
+  /ndn/s0-site/s0 nexthops={faceid=261 (cost=0)}
+  /localhost/nfd/rib nexthops={faceid=257 (cost=0)}
+  /ndn/s1-site/s1 nexthops={faceid=261 (cost=0)}
+  /ndn/client1-site/client1 nexthops={faceid=261 (cost=0)}
+  /pro1 nexthops={faceid=261 (cost=0)}
+  /ndn/s2-site/s2 nexthops={faceid=261 (cost=0)}
+  /pro3 nexthops={faceid=272 (cost=0)}
+  /localhost/nfd nexthops={faceid=1 (cost=0)}
+  /ndn/client0-site/client0 nexthops={faceid=261 (cost=0)}
+  /ndn/client2-site/client2 nexthops={faceid=261 (cost=0)}
+  /pro2 nexthops={faceid=261 (cost=0)}
+RIB:
+  /ndn/s0-site/s0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s1-site/s1 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s2-site/s2 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client0-site/client0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client1-site/client1 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client2-site/client2 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro0 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro1 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro2 routes={nexthop=261 origin=static cost=0 flags=child-inherit expires=never}
+  /pro3 routes={nexthop=272 origin=app cost=0 flags=child-inherit expires=never}
+  /localhost/nfd routes={nexthop=257 origin=app cost=0 flags=child-inherit expires=never}
+CS information:
+  capacity=256
+     admit=on
+     serve=on
+  nEntries=256
+     nHits=647
+   nMisses=34649
+Strategy choices:
+  prefix=/ strategy=/localhost/nfd/strategy/best-route/v=5
+  prefix=/localhost strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/ndn/broadcast strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/localhost/nfd strategy=/localhost/nfd/strategy/best-route/v=5
+s0:
+General NFD status:
+                version=24.07-20-gbeb9e85b
+              startTime=20251113T115634.219000
+            currentTime=20251113T115703.544000
+                 uptime=29 seconds
+       nNameTreeEntries=36
+            nFibEntries=12
+            nPitEntries=8
+   nMeasurementsEntries=0
+             nCsEntries=256
+           nInInterests=54981
+          nOutInterests=50038
+                nInData=46654
+               nOutData=53487
+               nInNacks=0
+              nOutNacks=0
+    nSatisfiedInterests=46458
+  nUnsatisfiedInterests=0
+Channels:
+  udp4://0.0.0.0:6363
+  udp6://[::]:6363
+  dev://s0-eth0
+  dev://s0-eth1
+  dev://s0-eth2
+  unix:///run/nfd/s0.sock
+  tcp4://0.0.0.0:6363
+  tcp6://[::]:6363
+Faces:
+  faceid=1 remote=internal:// local=internal:// congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 78d 0n 13786B} out={72i 0d 0n 6333B}} flags={local permanent point-to-point local-fields}
+  faceid=254 remote=contentstore:// local=contentstore:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=255 remote=null:// local=null:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=256 remote=ether://[01:00:5e:00:17:aa] local=dev://s0-eth0 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=257 remote=ether://[01:00:5e:00:17:aa] local=dev://s0-eth1 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=258 remote=ether://[01:00:5e:00:17:aa] local=dev://s0-eth2 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=259 remote=fd://34 local=unix:///run/nfd/s0.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={53i 10d 0n 5978B} out={11i 52d 0n 11441B}} flags={local on-demand point-to-point local-fields congestion-marking}
+  faceid=260 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.2:44934 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=261 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.6:50723 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=262 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.18:58349 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=263 remote=udp6://[ff02::1234%s0-eth0]:56363 local=udp6://[fe80::747d:12ff:feed:485c%s0-eth0]:50177 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=264 remote=udp6://[ff02::1234%s0-eth1]:56363 local=udp6://[fe80::8dd:8bff:febe:5ca2%s0-eth1]:46142 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=265 remote=udp6://[ff02::1234%s0-eth2]:56363 local=udp6://[fe80::d854:7fff:fedd:fb68%s0-eth2]:56961 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=267 remote=tcp4://10.0.0.17:49950 local=tcp4://10.0.0.18:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={18274i 0d 0n 620440B} out={0i 16788d 0n 140507025B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=268 remote=tcp4://10.0.0.5:56370 local=tcp4://10.0.0.6:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={18312i 0d 0n 621840B} out={0i 18312d 0n 153259506B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=269 remote=tcp4://10.0.0.1:6363 local=tcp4://10.0.0.2:57094 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 15000d 0n 125541515B} out={15041i 0d 0n 510863B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=270 remote=tcp4://10.0.0.1:46332 local=tcp4://10.0.0.2:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={18312i 0d 0n 621840B} out={0i 18312d 0n 153259591B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=272 remote=tcp4://10.0.0.5:6363 local=tcp4://10.0.0.6:40438 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 13612d 0n 113923917B} out={13646i 0d 0n 463364B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=274 remote=tcp4://10.0.0.17:6363 local=tcp4://10.0.0.18:57480 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 17954d 0n 150262733B} out={21268i 0d 0n 722202B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=285 remote=fd://47 local=unix:///run/nfd/s0.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={7i 0d 0n 312B} out={0i 0d 0n 0B}} flags={local on-demand point-to-point congestion-marking}
+FIB:
+  /pro0 nexthops={faceid=269 (cost=0)}
+  /localhost/nfd/rib nexthops={faceid=259 (cost=0)}
+  /ndn/s1-site/s1 nexthops={faceid=274 (cost=0)}
+  /ndn/client3-site/client3 nexthops={faceid=274 (cost=0)}
+  /ndn/client1-site/client1 nexthops={faceid=272 (cost=0)}
+  /pro1 nexthops={faceid=272 (cost=0)}
+  /ndn/s2-site/s2 nexthops={faceid=274 (cost=0)}
+  /pro3 nexthops={faceid=274 (cost=0)}
+  /localhost/nfd nexthops={faceid=1 (cost=0)}
+  /ndn/client0-site/client0 nexthops={faceid=269 (cost=0)}
+  /ndn/client2-site/client2 nexthops={faceid=274 (cost=0)}
+  /pro2 nexthops={faceid=274 (cost=0)}
+RIB:
+  /ndn/s1-site/s1 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s2-site/s2 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client0-site/client0 routes={nexthop=269 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client1-site/client1 routes={nexthop=272 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client2-site/client2 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client3-site/client3 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /pro0 routes={nexthop=269 origin=static cost=0 flags=child-inherit expires=never}
+  /pro1 routes={nexthop=272 origin=static cost=0 flags=child-inherit expires=never}
+  /pro2 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /pro3 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /localhost/nfd routes={nexthop=259 origin=app cost=0 flags=child-inherit expires=never}
+CS information:
+  capacity=256
+     admit=on
+     serve=on
+  nEntries=256
+     nHits=2600
+   nMisses=52381
+Strategy choices:
+  prefix=/ strategy=/localhost/nfd/strategy/best-route/v=5
+  prefix=/localhost strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/ndn/broadcast strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/localhost/nfd strategy=/localhost/nfd/strategy/best-route/v=5
+s1:
+General NFD status:
+                version=24.07-20-gbeb9e85b
+              startTime=20251113T115634.749000
+            currentTime=20251113T115703.551000
+                 uptime=28 seconds
+       nNameTreeEntries=36
+            nFibEntries=12
+            nPitEntries=8
+   nMeasurementsEntries=0
+             nCsEntries=256
+           nInInterests=56296
+          nOutInterests=49417
+                nInData=46334
+               nOutData=54400
+               nInNacks=0
+              nOutNacks=0
+    nSatisfiedInterests=46686
+  nUnsatisfiedInterests=0
+Channels:
+  udp4://0.0.0.0:6363
+  udp6://[::]:6363
+  dev://s1-eth0
+  dev://s1-eth1
+  dev://s1-eth2
+  unix:///run/nfd/s1.sock
+  tcp4://0.0.0.0:6363
+  tcp6://[::]:6363
+Faces:
+  faceid=1 remote=internal:// local=internal:// congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 77d 0n 13658B} out={72i 0d 0n 6336B}} flags={local permanent point-to-point local-fields}
+  faceid=254 remote=contentstore:// local=contentstore:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=255 remote=null:// local=null:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=256 remote=ether://[01:00:5e:00:17:aa] local=dev://s1-eth0 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=257 remote=ether://[01:00:5e:00:17:aa] local=dev://s1-eth1 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=258 remote=ether://[01:00:5e:00:17:aa] local=dev://s1-eth2 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=259 remote=fd://34 local=unix:///run/nfd/s1.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={53i 10d 0n 5978B} out={11i 52d 0n 11451B}} flags={local on-demand point-to-point local-fields congestion-marking}
+  faceid=260 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.10:36471 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=261 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.14:48683 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=262 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.22:45942 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=263 remote=udp6://[ff02::1234%s1-eth0]:56363 local=udp6://[fe80::bc26:9aff:fe18:d507%s1-eth0]:49015 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=264 remote=udp6://[ff02::1234%s1-eth1]:56363 local=udp6://[fe80::c029:3fff:fe19:6dd7%s1-eth1]:38434 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=265 remote=udp6://[ff02::1234%s1-eth2]:56363 local=udp6://[fe80::3092:44ff:fe63:aaa3%s1-eth2]:44728 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=267 remote=tcp4://10.0.0.13:49940 local=tcp4://10.0.0.14:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={18312i 0d 0n 621840B} out={0i 18312d 0n 153259423B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=268 remote=tcp4://10.0.0.9:6363 local=tcp4://10.0.0.10:45456 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 13213d 0n 110584266B} out={13264i 0d 0n 450411B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=269 remote=tcp4://10.0.0.9:39742 local=tcp4://10.0.0.10:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={18312i 0d 0n 621840B} out={0i 18312d 0n 153259530B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=271 remote=tcp4://10.0.0.21:32846 local=tcp4://10.0.0.22:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={19589i 0d 0n 665377B} out={0i 17701d 0n 148145269B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=272 remote=tcp4://10.0.0.13:6363 local=tcp4://10.0.0.14:48610 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 16891d 0n 141365664B} out={16912i 0d 0n 574714B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=274 remote=tcp4://10.0.0.21:6363 local=tcp4://10.0.0.22:42834 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 16143d 0n 135108274B} out={19158i 0d 0n 650457B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=285 remote=fd://47 local=unix:///run/nfd/s1.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={7i 0d 0n 312B} out={0i 0d 0n 0B}} flags={local on-demand point-to-point congestion-marking}
+FIB:
+  /pro0 nexthops={faceid=274 (cost=0)}
+  /ndn/s0-site/s0 nexthops={faceid=274 (cost=0)}
+  /localhost/nfd/rib nexthops={faceid=259 (cost=0)}
+  /ndn/client3-site/client3 nexthops={faceid=272 (cost=0)}
+  /ndn/client1-site/client1 nexthops={faceid=274 (cost=0)}
+  /pro1 nexthops={faceid=274 (cost=0)}
+  /ndn/s2-site/s2 nexthops={faceid=274 (cost=0)}
+  /pro3 nexthops={faceid=272 (cost=0)}
+  /localhost/nfd nexthops={faceid=1 (cost=0)}
+  /ndn/client0-site/client0 nexthops={faceid=274 (cost=0)}
+  /ndn/client2-site/client2 nexthops={faceid=268 (cost=0)}
+  /pro2 nexthops={faceid=268 (cost=0)}
+RIB:
+  /ndn/s0-site/s0 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s2-site/s2 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client0-site/client0 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client1-site/client1 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client2-site/client2 routes={nexthop=268 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client3-site/client3 routes={nexthop=272 origin=static cost=0 flags=child-inherit expires=never}
+  /pro0 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /pro1 routes={nexthop=274 origin=static cost=0 flags=child-inherit expires=never}
+  /pro2 routes={nexthop=268 origin=static cost=0 flags=child-inherit expires=never}
+  /pro3 routes={nexthop=272 origin=static cost=0 flags=child-inherit expires=never}
+  /localhost/nfd routes={nexthop=259 origin=app cost=0 flags=child-inherit expires=never}
+CS information:
+  capacity=256
+     admit=on
+     serve=on
+  nEntries=256
+     nHits=2614
+   nMisses=53682
+Strategy choices:
+  prefix=/ strategy=/localhost/nfd/strategy/best-route/v=5
+  prefix=/localhost strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/ndn/broadcast strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/localhost/nfd strategy=/localhost/nfd/strategy/best-route/v=5
+s2:
+General NFD status:
+                version=24.07-20-gbeb9e85b
+              startTime=20251113T115635.322000
+            currentTime=20251113T115703.559000
+                 uptime=28 seconds
+       nNameTreeEntries=36
+            nFibEntries=12
+            nPitEntries=8
+   nMeasurementsEntries=0
+             nCsEntries=256
+           nInInterests=40501
+          nOutInterests=37938
+                nInData=34563
+               nOutData=34164
+               nInNacks=0
+              nOutNacks=0
+    nSatisfiedInterests=34133
+  nUnsatisfiedInterests=0
+Channels:
+  udp4://0.0.0.0:6363
+  udp6://[::]:6363
+  dev://s2-eth0
+  dev://s2-eth1
+  unix:///run/nfd/s2.sock
+  tcp4://0.0.0.0:6363
+  tcp6://[::]:6363
+Faces:
+  faceid=1 remote=internal:// local=internal:// congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 64d 0n 11401B} out={64i 0d 0n 5652B}} flags={local permanent point-to-point local-fields}
+  faceid=254 remote=contentstore:// local=contentstore:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=255 remote=null:// local=null:// mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={local permanent point-to-point}
+  faceid=256 remote=ether://[01:00:5e:00:17:aa] local=dev://s2-eth0 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=257 remote=ether://[01:00:5e:00:17:aa] local=dev://s2-eth1 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=1500 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access}
+  faceid=258 remote=fd://30 local=unix:///run/nfd/s2.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={46i 10d 0n 5642B} out={11i 45d 0n 10318B}} flags={local on-demand point-to-point local-fields congestion-marking}
+  faceid=259 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.17:36616 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=260 remote=udp4://224.0.23.170:56363 local=udp4://10.0.0.21:35381 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=261 remote=udp6://[ff02::1234%s2-eth0]:56363 local=udp6://[fe80::f4d5:1eff:fe29:58c6%s2-eth0]:42999 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=262 remote=udp6://[ff02::1234%s2-eth1]:56363 local=udp6://[fe80::681f:8eff:fe1a:c5bd%s2-eth1]:33723 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 0d 0n 0B} out={0i 0d 0n 0B}} flags={non-local permanent multi-access congestion-marking}
+  faceid=264 remote=tcp4://10.0.0.18:6363 local=tcp4://10.0.0.17:49950 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 16788d 0n 140507025B} out={18274i 0d 0n 620440B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=266 remote=tcp4://10.0.0.22:6363 local=tcp4://10.0.0.21:32846 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={0i 17701d 0n 148145269B} out={19589i 0d 0n 665377B}} flags={non-local persistent point-to-point congestion-marking}
+  faceid=268 remote=tcp4://10.0.0.18:57480 local=tcp4://10.0.0.17:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={21268i 0d 0n 722202B} out={0i 17954d 0n 150262733B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=269 remote=tcp4://10.0.0.22:42834 local=tcp4://10.0.0.21:6363 congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={19158i 0d 0n 650457B} out={0i 16143d 0n 135108274B}} flags={non-local on-demand point-to-point congestion-marking}
+  faceid=279 remote=fd://43 local=unix:///run/nfd/s2.sock congestion={base-marking-interval=100ms default-threshold=65536B} mtu=8800 counters={in={7i 0d 0n 312B} out={0i 0d 0n 0B}} flags={local on-demand point-to-point congestion-marking}
+FIB:
+  /pro0 nexthops={faceid=264 (cost=0)}
+  /ndn/s0-site/s0 nexthops={faceid=264 (cost=0)}
+  /localhost/nfd/rib nexthops={faceid=258 (cost=0)}
+  /ndn/s1-site/s1 nexthops={faceid=266 (cost=0)}
+  /ndn/client3-site/client3 nexthops={faceid=266 (cost=0)}
+  /ndn/client1-site/client1 nexthops={faceid=264 (cost=0)}
+  /pro1 nexthops={faceid=264 (cost=0)}
+  /pro3 nexthops={faceid=266 (cost=0)}
+  /localhost/nfd nexthops={faceid=1 (cost=0)}
+  /ndn/client0-site/client0 nexthops={faceid=264 (cost=0)}
+  /ndn/client2-site/client2 nexthops={faceid=266 (cost=0)}
+  /pro2 nexthops={faceid=266 (cost=0)}
+RIB:
+  /ndn/s0-site/s0 routes={nexthop=264 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/s1-site/s1 routes={nexthop=266 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client0-site/client0 routes={nexthop=264 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client1-site/client1 routes={nexthop=264 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client2-site/client2 routes={nexthop=266 origin=static cost=0 flags=child-inherit expires=never}
+  /ndn/client3-site/client3 routes={nexthop=266 origin=static cost=0 flags=child-inherit expires=never}
+  /pro0 routes={nexthop=264 origin=static cost=0 flags=child-inherit expires=never}
+  /pro1 routes={nexthop=264 origin=static cost=0 flags=child-inherit expires=never}
+  /pro2 routes={nexthop=266 origin=static cost=0 flags=child-inherit expires=never}
+  /pro3 routes={nexthop=266 origin=static cost=0 flags=child-inherit expires=never}
+  /localhost/nfd routes={nexthop=258 origin=app cost=0 flags=child-inherit expires=never}
+CS information:
+  capacity=256
+     admit=on
+     serve=on
+  nEntries=256
+     nHits=1979
+   nMisses=38522
+Strategy choices:
+  prefix=/ strategy=/localhost/nfd/strategy/best-route/v=5
+  prefix=/localhost strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/ndn/broadcast strategy=/localhost/nfd/strategy/multicast/v=5
+  prefix=/localhost/nfd strategy=/localhost/nfd/strategy/best-route/v=5

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE platform
+  SYSTEM 'https://simgrid.org/simgrid.dtd'>
+<platform version="4.1">
+ <zone id="AS0" routing="Floyd">
+  <!--Node Definition-->
+  <host id="client0" speed="1Gf"/>
+  <host id="client1" speed="1Gf"/>
+  <host id="client2" speed="1Gf"/>
+  <host id="client3" speed="1Gf"/>
+  <host id="client4" speed="1Gf"/>
+  <host id="client5" speed="1Gf"/>
+  <host id="client6" speed="1Gf"/>
+  <host id="client7" speed="1Gf"/>
+  <host id="client8" speed="1Gf"/>
+  <host id="client9" speed="1Gf"/>
+  <host id="client10" speed="1Gf"/>
+  <host id="client11" speed="1Gf"/>
+  <host id="client12" speed="1Gf"/>
+  <host id="client13" speed="1Gf"/>
+  <host id="client14" speed="1Gf"/>
+  <host id="client15" speed="1Gf"/>
+  <!--Router Definition-->
+  <router id="s0"/>
+  <router id="s1"/>
+  <router id="s2"/>
+  <router id="s3"/>
+  <router id="s4"/>
+  <router id="s5"/>
+  <router id="s6"/>
+  <router id="s7"/>
+  <router id="s8"/>
+  <router id="s9"/>
+  <router id="s10"/>
+  <router id="s11"/>
+  <router id="s12"/>
+  <router id="s13"/>
+  <!--Link Definition-->
+  <link id="client0_s0" bandwidth="100Mbps" latency="0us"/>
+  <link id="client1_s0" bandwidth="100Mbps" latency="0us"/>
+  <link id="client2_s1" bandwidth="100Mbps" latency="0us"/>
+  <link id="client3_s1" bandwidth="100Mbps" latency="0us"/>
+  <link id="client4_s2" bandwidth="100Mbps" latency="0us"/>
+  <link id="client5_s2" bandwidth="100Mbps" latency="0us"/>
+  <link id="client6_s3" bandwidth="100Mbps" latency="0us"/>
+  <link id="client7_s3" bandwidth="100Mbps" latency="0us"/>
+  <link id="client8_s4" bandwidth="100Mbps" latency="0us"/>
+  <link id="client9_s4" bandwidth="100Mbps" latency="0us"/>
+  <link id="client10_s5" bandwidth="100Mbps" latency="0us"/>
+  <link id="client11_s5" bandwidth="100Mbps" latency="0us"/>
+  <link id="client12_s6" bandwidth="100Mbps" latency="0us"/>
+  <link id="client13_s6" bandwidth="100Mbps" latency="0us"/>
+  <link id="client14_s7" bandwidth="100Mbps" latency="0us"/>
+  <link id="client15_s7" bandwidth="100Mbps" latency="0us"/>
+  <link id="s0_s8" bandwidth="150Mbps" latency="0us"/>
+  <link id="s1_s8" bandwidth="150Mbps" latency="0us"/>
+  <link id="s2_s9" bandwidth="150Mbps" latency="0us"/>
+  <link id="s3_s9" bandwidth="150Mbps" latency="0us"/>
+  <link id="s4_s10" bandwidth="150Mbps" latency="0us"/>
+  <link id="s5_s10" bandwidth="150Mbps" latency="0us"/>
+  <link id="s6_s11" bandwidth="150Mbps" latency="0us"/>
+  <link id="s7_s11" bandwidth="150Mbps" latency="0us"/>
+  <link id="s8_s12" bandwidth="250Mbps" latency="0us"/>
+  <link id="s9_s12" bandwidth="250Mbps" latency="0us"/>
+  <link id="s10_s13" bandwidth="250Mbps" latency="0us"/>
+  <link id="s11_s13" bandwidth="250Mbps" latency="0us"/>
+  <link id="s12_s13" bandwidth="300Mbps" latency="0us"/>
+  <!--Route Definition-->
+  <route src="client0" dst="client1">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client2">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client3">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client4">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client5">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client6">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client7">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client8">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client9">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client10">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client11">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client12">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client13">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client14">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client15">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client1" dst="client2">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client3">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client4">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client5">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client6">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client7">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client8">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client9">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client10">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client11">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client12">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client13">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client14">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client15">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client2" dst="client3">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client4">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client5">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client6">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client7">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client8">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client9">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client10">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client11">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client12">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client13">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client14">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client15">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client3" dst="client4">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client5">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client6">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client7">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client8">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client9">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client10">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client11">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client12">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client13">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client14">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client15">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client4" dst="client5">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client6">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client7">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client8">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client9">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client10">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client11">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client12">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client13">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client14">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client4" dst="client15">
+   <link_ctn id="client4_s2"/>
+  </route>
+  <route src="client5" dst="client6">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client7">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client8">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client9">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client10">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client11">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client12">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client13">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client14">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client5" dst="client15">
+   <link_ctn id="client5_s2"/>
+  </route>
+  <route src="client6" dst="client7">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client6" dst="client8">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client6" dst="client9">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client6" dst="client10">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client6" dst="client11">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client6" dst="client12">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client6" dst="client13">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client6" dst="client14">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client6" dst="client15">
+   <link_ctn id="client6_s3"/>
+  </route>
+  <route src="client7" dst="client8">
+   <link_ctn id="client7_s3"/>
+  </route>
+  <route src="client7" dst="client9">
+   <link_ctn id="client7_s3"/>
+  </route>
+  <route src="client7" dst="client10">
+   <link_ctn id="client7_s3"/>
+  </route>
+  <route src="client7" dst="client11">
+   <link_ctn id="client7_s3"/>
+  </route>
+  <route src="client7" dst="client12">
+   <link_ctn id="client7_s3"/>
+  </route>
+  <route src="client7" dst="client13">
+   <link_ctn id="client7_s3"/>
+  </route>
+  <route src="client7" dst="client14">
+   <link_ctn id="client7_s3"/>
+  </route>
+  <route src="client7" dst="client15">
+   <link_ctn id="client7_s3"/>
+  </route>
+  <route src="client8" dst="client9">
+   <link_ctn id="client8_s4"/>
+  </route>
+  <route src="client8" dst="client10">
+   <link_ctn id="client8_s4"/>
+  </route>
+  <route src="client8" dst="client11">
+   <link_ctn id="client8_s4"/>
+  </route>
+  <route src="client8" dst="client12">
+   <link_ctn id="client8_s4"/>
+  </route>
+  <route src="client8" dst="client13">
+   <link_ctn id="client8_s4"/>
+  </route>
+  <route src="client8" dst="client14">
+   <link_ctn id="client8_s4"/>
+  </route>
+  <route src="client8" dst="client15">
+   <link_ctn id="client8_s4"/>
+  </route>
+  <route src="client9" dst="client10">
+   <link_ctn id="client9_s4"/>
+  </route>
+  <route src="client9" dst="client11">
+   <link_ctn id="client9_s4"/>
+  </route>
+  <route src="client9" dst="client12">
+   <link_ctn id="client9_s4"/>
+  </route>
+  <route src="client9" dst="client13">
+   <link_ctn id="client9_s4"/>
+  </route>
+  <route src="client9" dst="client14">
+   <link_ctn id="client9_s4"/>
+  </route>
+  <route src="client9" dst="client15">
+   <link_ctn id="client9_s4"/>
+  </route>
+  <route src="client10" dst="client11">
+   <link_ctn id="client10_s5"/>
+  </route>
+  <route src="client10" dst="client12">
+   <link_ctn id="client10_s5"/>
+  </route>
+  <route src="client10" dst="client13">
+   <link_ctn id="client10_s5"/>
+  </route>
+  <route src="client10" dst="client14">
+   <link_ctn id="client10_s5"/>
+  </route>
+  <route src="client10" dst="client15">
+   <link_ctn id="client10_s5"/>
+  </route>
+  <route src="client11" dst="client12">
+   <link_ctn id="client11_s5"/>
+  </route>
+  <route src="client11" dst="client13">
+   <link_ctn id="client11_s5"/>
+  </route>
+  <route src="client11" dst="client14">
+   <link_ctn id="client11_s5"/>
+  </route>
+  <route src="client11" dst="client15">
+   <link_ctn id="client11_s5"/>
+  </route>
+  <route src="client12" dst="client13">
+   <link_ctn id="client12_s6"/>
+  </route>
+  <route src="client12" dst="client14">
+   <link_ctn id="client12_s6"/>
+  </route>
+  <route src="client12" dst="client15">
+   <link_ctn id="client12_s6"/>
+  </route>
+  <route src="client13" dst="client14">
+   <link_ctn id="client13_s6"/>
+  </route>
+  <route src="client13" dst="client15">
+   <link_ctn id="client13_s6"/>
+  </route>
+  <route src="client14" dst="client15">
+   <link_ctn id="client14_s7"/>
+  </route>
+ </zone>
+</platform>

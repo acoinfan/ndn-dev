@@ -205,8 +205,8 @@ namespace ndn::get
         if (elapsed > waitTimeout) {
             throw std::runtime_error("Timeout waiting for producer ready signal (30 seconds)");
         }
-        // every 100 milliseconds, check again
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // every 10 milliseconds, check again
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 } // namespace ndn::get

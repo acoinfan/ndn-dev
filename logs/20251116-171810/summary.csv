@@ -1,0 +1,6 @@
+key,value1,value2
+file_size(kB/seg_counts),,122071
+max_transfer_time(s),310.756,"(1, 2)"
+min_transfer_time(s),182.498,"(1, 0)"
+consumer_io(max[μs]/avg[μs]),115624.0,105542.5
+producer_io(max[μs]/avg[μs]),6399894,6349650.75

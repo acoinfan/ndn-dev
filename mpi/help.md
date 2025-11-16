@@ -1,0 +1,1 @@
+smpirun -platform <?.xml> ./allreduce --cfg=smpi/allreduce:ompi 

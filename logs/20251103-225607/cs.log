@@ -1,0 +1,63 @@
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=1121
+   nMisses=31105
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=2103
+   nMisses=28063
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=647
+   nMisses=31997
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=1616
+   nMisses=26048
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=7732
+   nMisses=46210
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=7663
+   nMisses=46236
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=2011
+   nMisses=35313
+
+client0:
+
+client1:
+
+client2:
+
+client3:
+
+s0:
+
+s1:
+
+s2:

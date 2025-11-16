@@ -1,0 +1,71 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "https://simgrid.org/simgrid.dtd">
+
+<platform version="4.1">
+  <zone id="AS0" routing="Full">
+
+    <!-- ======== 主机定义 ======== -->
+    <host id="host0" speed="10Gf"/>
+    <host id="host1" speed="10Gf"/>
+    <host id="host2" speed="10Gf"/>
+    <host id="host3" speed="10Gf"/>
+
+    <!-- ======== 交换机定义（逻辑节点） ======== -->
+    <router id="core"/>
+    <router id="agg0"/>
+    <router id="agg1"/>
+
+    <!-- ======== 链路定义 ======== -->
+    <!-- 带宽 100Mbit/s = 12.5MBps -->
+    <!-- 单向链路延迟 10us -->
+    <link id="link_host0_agg0" bandwidth="12.5MBps" latency="0us"/>
+    <link id="link_host1_agg0" bandwidth="12.5MBps" latency="0us"/>
+    <link id="link_host2_agg1" bandwidth="12.5MBps" latency="0us"/>
+    <link id="link_host3_agg1" bandwidth="12.5MBps" latency="0us"/>
+
+    <link id="link_agg0_core" bandwidth="12.5MBps" latency="0us"/>
+    <link id="link_agg1_core" bandwidth="12.5MBps" latency="0us"/>
+
+    <!-- ======== 路由定义 ======== -->
+
+    <!-- host0, host1 经 agg0 -> core -> agg1 -> host2/host3 -->
+    <route src="host0" dst="host1">
+      <link_ctn id="link_host0_agg0"/>
+      <!-- <link_ctn id="link_host1_agg0"/> -->
+    </route>
+
+    <route src="host0" dst="host2">
+      <link_ctn id="link_host0_agg0"/>
+      <!-- <link_ctn id="link_agg0_core"/>
+      <link_ctn id="link_agg1_core"/>
+      <link_ctn id="link_host2_agg1"/> -->
+    </route>
+
+    <route src="host0" dst="host3">
+      <link_ctn id="link_host0_agg0"/>
+      <!-- <link_ctn id="link_agg0_core"/>
+      <link_ctn id="link_agg1_core"/>
+      <link_ctn id="link_host3_agg1"/> -->
+    </route>
+
+    <route src="host1" dst="host2">
+      <link_ctn id="link_host1_agg0"/>
+      <!-- <link_ctn id="link_agg0_core"/>
+      <link_ctn id="link_agg1_core"/>
+      <link_ctn id="link_host2_agg1"/> -->
+    </route>
+
+    <route src="host1" dst="host3">
+      <link_ctn id="link_host1_agg0"/>
+      <!-- <link_ctn id="link_agg0_core"/>
+      <link_ctn id="link_agg1_core"/>
+      <link_ctn id="link_host3_agg1"/> -->
+    </route>
+
+    <route src="host2" dst="host3">
+      <link_ctn id="link_host2_agg1"/>
+      <!-- <link_ctn id="link_host3_agg1"/> -->
+    </route>
+
+  </zone>
+</platform>

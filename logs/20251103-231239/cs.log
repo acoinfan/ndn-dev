@@ -1,0 +1,56 @@
+client0:
+CS information:
+  capacity=65536
+     admit=on
+     serve=on
+  nEntries=24439
+     nHits=798
+   nMisses=24491
+client1:
+CS information:
+  capacity=65536
+     admit=on
+     serve=on
+  nEntries=24439
+     nHits=877
+   nMisses=24491
+client2:
+CS information:
+  capacity=65536
+     admit=on
+     serve=on
+  nEntries=24439
+     nHits=1204
+   nMisses=24491
+client3:
+CS information:
+  capacity=65536
+     admit=on
+     serve=on
+  nEntries=24439
+     nHits=2168
+   nMisses=24623
+s0:
+CS information:
+  capacity=65536
+     admit=on
+     serve=on
+  nEntries=24441
+     nHits=16542
+   nMisses=32957
+s1:
+CS information:
+  capacity=65536
+     admit=on
+     serve=on
+  nEntries=24441
+     nHits=19782
+   nMisses=31226
+s2:
+CS information:
+  capacity=65536
+     admit=on
+     serve=on
+  nEntries=24440
+     nHits=389
+   nMisses=27264

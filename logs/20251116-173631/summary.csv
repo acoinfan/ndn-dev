@@ -1,0 +1,11 @@
+key,value1,value2
+file_size(kB/seg_counts),1000000,122071
+max_transfer_time(s),87.4489,"(1, 2)"
+min_transfer_time(s),57.1731,"(2, 3)"
+consumer_io(max[μs]/avg[μs]),171454.0,168960.5
+producer_io(max[μs]/avg[μs]),5902302,5885122.0
+max/min throughput for single link(Mbps),139.9259441940353,91.48199691476965
+throughput(Mbps),274.44599074430903,based on bw=100Mbps
+ultilization,2.7444599074430904,274.44599074430903%
+consumer io percentage,0.0019606192873781146,0.19606192873781148%
+producer io percentage,0.06749429666925484,6.749429666925484%

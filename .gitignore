@@ -1,5 +1,7 @@
 experiments/*
-logs/*
+# logs/*
+!experiments
+!logs
 __pycache__
 .vscode
 client/bin/ndnclient

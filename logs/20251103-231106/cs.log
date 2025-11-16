@@ -1,0 +1,56 @@
+client0:
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=379
+   nMisses=35349
+client1:
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=411
+   nMisses=30489
+client2:
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=190
+   nMisses=35637
+client3:
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=153
+   nMisses=32880
+s0:
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=2194
+   nMisses=53591
+s1:
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=2199
+   nMisses=55413
+s2:
+CS information:
+  capacity=640
+     admit=on
+     serve=on
+  nEntries=640
+     nHits=1376
+   nMisses=40314

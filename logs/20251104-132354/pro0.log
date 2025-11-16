@@ -1,0 +1,6 @@
+Producer initialized with prefix: /pro0 and data directory: /home/a_coin_fan/code/ndn-dev/experiments
+Producer ready to serve files from directory: /home/a_coin_fan/code/ndn-dev/experiments
+Loading file: 50MB.txt with prefix: /pro0/50MB.txt
+Segmenting took 263109 μs
+First segment name (preview): /pro0/50MB.txt/seg=0
+Successfully loaded 50MB.txt with 6104 segments, total size: 50000000 bytes

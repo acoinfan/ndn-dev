@@ -1,0 +1,5 @@
+host,hit,cold_miss,suppress_miss,retry_miss
+client0,1287,715671,13,61
+client1,2096,700036,33,60
+client2,3862,682129,22,63
+client3,522,724208,4,60

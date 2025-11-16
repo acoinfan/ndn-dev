@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE platform
+  SYSTEM 'https://simgrid.org/simgrid.dtd'>
+<platform version="4.1">
+ <zone id="AS0" routing="Floyd">
+  <!--Node Definition-->
+  <host id="client0" speed="1Gf"/>
+  <host id="client1" speed="1Gf"/>
+  <host id="client2" speed="1Gf"/>
+  <host id="client3" speed="1Gf"/>
+  <host id="client4" speed="1Gf"/>
+  <host id="client5" speed="1Gf"/>
+  <host id="client6" speed="1Gf"/>
+  <host id="client7" speed="1Gf"/>
+  <!--Router Definition-->
+  <router id="s0"/>
+  <router id="s1"/>
+  <router id="s2"/>
+  <router id="s3"/>
+  <router id="s4"/>
+  <router id="s5"/>
+  <router id="s6"/>
+  <!--Link Definition-->
+  <link id="client0_s0" bandwidth="100Mbps" latency="0us"/>
+  <link id="client1_s0" bandwidth="100Mbps" latency="0us"/>
+  <link id="s2_s0" bandwidth="150Mbps" latency="0us"/>
+  <link id="client2_s1" bandwidth="100Mbps" latency="0us"/>
+  <link id="client3_s1" bandwidth="100Mbps" latency="0us"/>
+  <link id="s2_s1" bandwidth="150Mbps" latency="0us"/>
+  <link id="client4_s3" bandwidth="100Mbps" latency="0us"/>
+  <link id="client5_s3" bandwidth="100Mbps" latency="0us"/>
+  <link id="s5_s3" bandwidth="150Mbps" latency="0us"/>
+  <link id="client6_s4" bandwidth="100Mbps" latency="0us"/>
+  <link id="client7_s4" bandwidth="100Mbps" latency="0us"/>
+  <link id="s5_s4" bandwidth="150Mbps" latency="0us"/>
+  <link id="s6_s2" bandwidth="250Mbps" latency="0us"/>
+  <link id="s6_s5" bandwidth="250Mbps" latency="0us"/>
+  <!--Route Definition-->
+  <route src="client0" dst="client1">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client2">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client3">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client4">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client5">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client6">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client0" dst="client7">
+   <link_ctn id="client0_s0"/>
+  </route>
+  <route src="client1" dst="client2">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client3">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client4">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client5">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client6">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client1" dst="client7">
+   <link_ctn id="client1_s0"/>
+  </route>
+  <route src="client2" dst="client3">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client4">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client5">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client6">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client2" dst="client7">
+   <link_ctn id="client2_s1"/>
+  </route>
+  <route src="client3" dst="client4">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client5">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client6">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client3" dst="client7">
+   <link_ctn id="client3_s1"/>
+  </route>
+  <route src="client4" dst="client5">
+   <link_ctn id="client4_s3"/>
+  </route>
+  <route src="client4" dst="client6">
+   <link_ctn id="client4_s3"/>
+  </route>
+  <route src="client4" dst="client7">
+   <link_ctn id="client4_s3"/>
+  </route>
+  <route src="client5" dst="client6">
+   <link_ctn id="client5_s3"/>
+  </route>
+  <route src="client5" dst="client7">
+   <link_ctn id="client5_s3"/>
+  </route>
+  <route src="client6" dst="client7">
+   <link_ctn id="client6_s4"/>
+  </route>
+ </zone>
+</platform>

@@ -1,0 +1,746 @@
+Producer initialized with prefix: /pro0 and data directory: /home/a_coin_fan/code/ndn-dev/experiments
+Producer ready to serve files from directory: /home/a_coin_fan/code/ndn-dev/experiments
+pro0 is ready!
+Interest: /pro0/1MB.txt/seg=0?Nonce=fec56256&Lifetime=40000
+Loading file: 1MB.txt with prefix: /pro0/1MB.txt
+Segmenting took 8656 μs
+Segmenter returned 123 segments
+First segment name (preview): /pro0/1MB.txt/seg=0
+Successfully loaded 1MB.txt with 123 segments, total size: 1000000 bytes
+Data: Name: /pro0/1MB.txt/seg=0
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=1?Nonce=12f585cc&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=1
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=2?Nonce=dd9710b0&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=2
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=3?Nonce=a552c87a&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=3
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=4?Nonce=10840db4&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=4
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=5?Nonce=ac23d56e&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=5
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=6?Nonce=307f3a78&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=6
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=7?Nonce=558126b6&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=7
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=8?Nonce=3b855371&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=8
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=9?Nonce=d66bca42&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=9
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=10?Nonce=63224e7e&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=10
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=11?Nonce=903c7c5f&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=11
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=12?Nonce=f4f8ea74&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=12
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=13?Nonce=2d71c342&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=13
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=14?Nonce=fd353167&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=14
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=15?Nonce=fe647e32&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=15
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=16?Nonce=fb068e30&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=16
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=17?Nonce=886ca913&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=17
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=18?Nonce=b9258985&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=18
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=19?Nonce=a97121e7&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=19
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=20?Nonce=894a9da4&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=20
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=21?Nonce=900962ff&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=21
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=22?Nonce=642577ee&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=22
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=23?Nonce=1cf767f6&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=23
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=24?Nonce=cbe03813&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=24
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=25?Nonce=ff9ffc29&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=25
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=26?Nonce=98243c0d&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=26
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=27?Nonce=8b509521&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=27
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=28?Nonce=5bf0c5f1&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=28
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=29?Nonce=8105bf08&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=29
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=30?Nonce=4d318491&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=30
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=31?Nonce=262b8bb7&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=31
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=32?Nonce=afc7d8db&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=32
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=33?Nonce=ab58f3c9&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=33
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=34?Nonce=2bd03aaf&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=34
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=35?Nonce=545a7064&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=35
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=36?Nonce=fb3eb63e&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=36
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=37?Nonce=ab2740b0&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=37
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=38?Nonce=03d35dc3&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=38
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=39?Nonce=55984244&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=39
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=40?Nonce=8800e5f7&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=40
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=41?Nonce=e548405e&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=41
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=42?Nonce=82cfd444&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=42
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=43?Nonce=1ffce8b8&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=43
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=44?Nonce=e77663d8&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=44
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=45?Nonce=b9215a6d&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=45
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=46?Nonce=7f414c43&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=46
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=47?Nonce=3074a3ad&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=47
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=48?Nonce=e0eedb39&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=48
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=49?Nonce=600f9851&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=49
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=50?Nonce=0685145c&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=50
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=51?Nonce=78da8968&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=51
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=52?Nonce=d4db77a5&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=52
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=53?Nonce=6f31bffb&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=53
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=54?Nonce=095d595b&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=54
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=55?Nonce=048d658b&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=55
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=56?Nonce=9c379254&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=56
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=57?Nonce=81994fb8&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=57
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=58?Nonce=6a1e7e05&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=58
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=59?Nonce=42e2b83d&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=59
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=60?Nonce=8fe49b4e&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=60
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=61?Nonce=9a6719de&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=61
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=62?Nonce=d75ff829&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=62
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=63?Nonce=ebd286f0&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=63
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=64?Nonce=a860384c&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=64
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=65?Nonce=bcaca941&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=65
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=66?Nonce=6b64bfc8&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=66
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=67?Nonce=68ae54f1&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=67
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=68?Nonce=aae2e332&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=68
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=69?Nonce=3e04e4a4&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=69
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=70?Nonce=30df8f60&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=70
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=71?Nonce=e812e181&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=71
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=72?Nonce=eb68fbbe&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=72
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=73?Nonce=37330283&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=73
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=74?Nonce=3cba9b8a&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=74
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 69]
+
+Interest: /pro0/1MB.txt/seg=75?Nonce=db5d2f6b&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=75
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=76?Nonce=5cd327eb&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=76
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=77?Nonce=5d37c691&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=77
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=78?Nonce=59c498bc&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=78
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=79?Nonce=d066a044&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=79
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=80?Nonce=f6119486&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=80
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=81?Nonce=5d44df11&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=81
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=82?Nonce=37ab59cb&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=82
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=83?Nonce=82f9cc3a&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=83
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=84?Nonce=052e95bd&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=84
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=85?Nonce=c96c4a3e&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=85
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=86?Nonce=40631fff&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=86
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=87?Nonce=65b9270f&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=87
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=88?Nonce=0d04fb6d&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=88
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=89?Nonce=8c75632c&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=89
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=90?Nonce=b5f02bf1&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=90
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=91?Nonce=6c2b0a4c&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=91
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=92?Nonce=5c7827b6&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=92
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=93?Nonce=ce4e38e1&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=93
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=94?Nonce=179a708c&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=94
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=95?Nonce=4b226ebf&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=95
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=96?Nonce=26009444&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=96
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=97?Nonce=f19c61e8&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=97
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=98?Nonce=b9719e14&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=98
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=99?Nonce=436c25b7&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=99
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=100?Nonce=78e5a448&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=100
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=101?Nonce=310c5359&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=101
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=102?Nonce=df52f2a6&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=102
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=103?Nonce=70db718b&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=103
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=104?Nonce=b0f98e1e&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=104
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=105?Nonce=9ad36c55&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=105
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=106?Nonce=88ad0986&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=106
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=107?Nonce=fcd38261&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=107
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=108?Nonce=b32d21fc&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=108
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=109?Nonce=74d3b107&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=109
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=110?Nonce=5a3db949&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=110
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=111?Nonce=1a33e8cb&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=111
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=112?Nonce=635f2e24&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=112
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=113?Nonce=5ab4be1c&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=113
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=114?Nonce=5d538d4f&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=114
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=115?Nonce=491587df&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=115
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 70]
+
+Interest: /pro0/1MB.txt/seg=116?Nonce=47516bee&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=116
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=117?Nonce=46cfa7c8&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=117
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=118?Nonce=858f4f1d&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=118
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=119?Nonce=3fce3e40&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=119
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 72]
+
+Interest: /pro0/1MB.txt/seg=120?Nonce=1e2e67b8&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=120
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=121?Nonce=ed04fca1&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=121
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [8192 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+
+Interest: /pro0/1MB.txt/seg=122?Nonce=c742bba3&Lifetime=40000
+Data: Name: /pro0/1MB.txt/seg=122
+MetaInfo: [ContentType: 0, FreshnessPeriod: 10000000 milliseconds, FinalBlockId: seg=122]
+Content: [576 bytes]
+Signature: [type: SignatureSha256WithEcdsa, length: 71]
+

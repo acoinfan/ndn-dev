@@ -69,9 +69,20 @@ if [[ $? -ne 0 || ! -f "$TEST_FILE" ]]; then
 fi
 
 echo
+read -p "Enter log directory (leave empty to skip): " LOG_DIR
+
+CMD="sudo python3 minindn-simulator.py --topo-file \"$SELECTED_TOPO\" --test-file \"$TEST_FILE\" --nfdc-file \"$NFDC_FILE\" --client-file \"$CLIENT_FILE\""
+
+# 只有用户输入了 log-dir 才添加参数
+if [[ -n "$LOG_DIR" ]]; then
+    CMD="$CMD --log-dir \"$LOG_DIR\""
+fi
+
+echo
+
 echo "=== Running Test ==="
 cd "$PROJECT_ROOT" || exit
-sudo python3 minindn-simulator.py --topo-file "$SELECTED_TOPO" --test-file "$TEST_FILE" --nfdc-file "$NFDC_FILE" --client-file "$CLIENT_FILE"
-
+echo "Running command: $CMD"
+eval $CMD
 echo
 echo "=== End Of Test ==="
